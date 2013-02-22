@@ -21,7 +21,16 @@ class config {
 		}
 	}
 
-	public static function get($name) {
+	public function get($name,$key,$default=null) {
+		$array = $this->read($name);
+		if (isset($array[$key])) {
+			return $array[$key];
+		} else {
+			return $default;
+		}
+	}
+
+	public function read($name) {
 		if (isset(self::$data[$name])) {
 			return self::$data[$name];
 		}

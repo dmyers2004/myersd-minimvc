@@ -82,7 +82,7 @@ class Application {
 		$method = $this->method.$this->request.'Action';
 
 		/* This throws a error and 4005 - handle it in your error handler */
-		if (!method_exists($this->main_controller,$method)) {
+		if (!is_callable(array($this->main_controller,$method))) {
 			throw new Exception($classname.' method '.$method.' not found',4005);
 		}
 

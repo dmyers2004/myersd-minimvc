@@ -15,7 +15,7 @@ class Database {
 
 	public function __construct($config = NULL) {
 		if ($config) {
-			self::$config = $config;
+			self::$config = $config->read(get_class($this));
 		}
 	}
 

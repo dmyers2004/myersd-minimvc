@@ -18,9 +18,8 @@ class logger {
 	public function __construct($path=null,$config=null) {
 		if ($path) {
 			self::$path = $path;
-			self::$config = $config;
-			self::$stamp = $this->configGet('stamp','Y-m-d H:i:s');
-			self::$filestamp = $this->configGet('filestamp','Y-m-d');
+			self::$stamp = $config->get(get_class($this),'stamp','Y-m-d H:i:s');
+			self::$filestamp = $config->get(get_class($this),'filestamp','Y-m-d');
 
 			if (!is_dir(self::$path)) mkdir(self::$path, 0777, true);
 		}
@@ -31,10 +30,6 @@ class logger {
 			fwrite($log_handle,date(self::$stamp).' '.$msg.chr(10));
 			fclose($log_handle);
 		}
-	}
-
-	public function configGet($name,$default=null) {
-		return (self::$config[$name]) ? self::$config[$name] : $default;
 	}
 
 }

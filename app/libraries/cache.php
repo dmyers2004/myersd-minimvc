@@ -12,12 +12,11 @@
 class cache {
 	public static $time;
 	public static $path;
-	public static $config;
 
 	public function __construct($path=null,$config=null) {
 		if ($path) {
 			self::$path = $path;
-			self::$time = $this->configGet('time',3600);
+			self::$time = $config->get(get_class($this),'time',3600);
 
 			if (!is_dir(self::$path)) mkdir(self::$path, 0777, true);
 		}
@@ -43,10 +42,6 @@ class cache {
     $file = $folder.'/temp-'.md5(uniqid(md5(rand()), true));
     file_put_contents($file,serialize($data));
     rename($file,$folder.'/'.md5($key));
-	}
-
-	public function configGet($name,$default=null) {
-		return (self::$config[$name]) ? self::$config[$name] : $default;
 	}
 
 }

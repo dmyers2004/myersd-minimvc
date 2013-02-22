@@ -25,8 +25,9 @@ class view {
 	public function __construct($path=null,$config=null) {
 		if ($path) {
 			self::$path = $path;
-			self::$config = $config;
-			self::$throwError = $this->configGet('throw errors',false);
+			self::$throwError = $config->get(get_class($this),'throw errors',false);
+			self::$layout = $config->get(get_class($this),'layout','layout');
+			self::$body = $config->get(get_class($this),'body','body');
 			self::$data = new stdClass;
 		}
 	}
@@ -49,7 +50,7 @@ class view {
 		render('viewfile','template'); load this view file into body data variable and output using template
 	*/
 	public function render($template=NULL) {
-		$template = ($template) ? $template : $this->configGet('layout','layout');
+		$template = ($template) ? $template : self::$layout;
 
 		$this->load($template,NULL,FALSE);
 
@@ -57,7 +58,7 @@ class view {
 	}
 
 	public function partial($file,$name=NULL,$data=NULL) {
-		$name = ($name) ? $name : $this->configGet('body','body');
+		$name = ($name) ? $name : self::$body;
 
 		self::$data->$name = $this->load($file,$data,TRUE);
 
@@ -121,10 +122,6 @@ class view {
 		ob_start();
 		include($_mvc_file);
 		return ob_get_clean();
-	}
-
-	public function configGet($name,$default=null) {
-		return (self::$config[$name]) ? self::$config[$name] : $default;
 	}
 
 }

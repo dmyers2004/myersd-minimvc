@@ -33,10 +33,10 @@ class hooks {
 
 		new ErrorHandler;
 		new Config(self::$app->path.'config/');
-		new Cache(self::$app->path.'var/cache/',Config::get('cache'));
-		new Logger(self::$app->path.'var/logs/');
-		new Database(Config::get('db'));
-		new View(self::$app->path.'views/', Config::get('view'));
+		new Cache(self::$app->path.'var/cache/',new Config);
+		new Logger(self::$app->path.'var/logs/', new Config);
+		new Database(new Config);
+		new View(self::$app->path.'views/', new Config);
 
 		/* Start Session */
 		/*
@@ -48,7 +48,7 @@ class hooks {
 	}
 
 	public function preRouter() {
-		$router = new Router(Config::get('routes'));
+		$router = new Router(new Config);
 
 		self::$app->uri = $router->uri(self::$app->raw_uri);
 		self::$app->request = $router->request(self::$app->raw_request);

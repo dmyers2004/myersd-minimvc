@@ -12,17 +12,19 @@
 class router {
 
 	public static $uri;
-	public static $config;
+	public static $routes;
+	public static $requests;
 
 	public function __construct($config=null) {
 		if ($config) {
-			self::$config = $config;
+			self::$routes = $config->get(get_class($this),'routes',array());
+			self::$requests = $config->get(get_class($this),'requests',array());
 		}
 	}
 
 	public function uri($uri) {
 
-		foreach (self::$config['routes'] as $regex_path => $switchto) {
+		foreach (self::$routes as $regex_path => $switchto) {
 			$matches = array();
 			if (preg_match($regex_path, $uri, $matches)) {
 				self::$uri = $uri = preg_replace($regex_path, $switchto, $uri);
@@ -35,7 +37,7 @@ class router {
 
 	public function request($request) {
 
-		foreach (self::$config['requests'] as $regex_path => $switchto) {
+		foreach (self::$requests as $regex_path => $switchto) {
 			$matches = array();
 			if (preg_match($regex_path, strtolower($request).'/'.self::$uri, $matches)) {
 				return $switchto;
