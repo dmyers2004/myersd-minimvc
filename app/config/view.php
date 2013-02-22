@@ -2,3 +2,4 @@
 
 $config['layout'] = 'layout';
 $config['body'] = 'body';
+$config['throw errors'] = false;

@@ -104,9 +104,6 @@ class Application {
 		if (substr($name,-10) == 'Controller') {
 			$path = 'controllers';
 			$name = substr($name,0,-10);
-		} elseif (substr($name,0,6) == 'filter') {
-			$path = 'filters';
-			$name = substr($name,6);
 		} else {
 			$path = ($name{0} >= 'A' && $name{0} <='Z') ? 'libraries' : 'models';
 		}

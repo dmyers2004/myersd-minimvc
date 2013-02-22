@@ -20,11 +20,13 @@ class view {
 	public static $data; /* view data */
 	public static $path;
 	public static $config;
+	public static $throwError;
 
 	public function __construct($path=null,$config=null) {
 		if ($path) {
 			self::$path = $path;
 			self::$config = $config;
+			self::$throwError = $this->configGet('throw errors',false);
 			self::$data = new stdClass;
 		}
 	}
@@ -70,6 +72,8 @@ class view {
 
 		if (is_file($file)) {
 			$capture = $this->_capture($file,$data);
+		} elseif(self::$throwError) {
+			throw new Exception('View file "'.$file.'" not found',4006);
 		}
 
 		if (!$return) {
@@ -97,9 +101,17 @@ class view {
 		return $this;
 	}
 
-	public function filter($name=null) {
-		$completename = 'filter'.ucfirst(strtolower($name));
-		self::$data->$completename = new $completename();
+	public function filter($name) {
+		$classname = 'filter'.ucfirst(strtolower($name));
+		
+		$load = self::$path.$path.'filters/'.strtolower($name).'.php';
+
+		if (file_exists($load)) {
+			require_once($load);
+			self::$data->$classname = new $classname();
+		} elseif(self::$throwError) {
+			throw new Exception('View Filter "'.$name.'" at "'.$load.'" not found',4007);		
+		}
 
 		return $this;
 	}

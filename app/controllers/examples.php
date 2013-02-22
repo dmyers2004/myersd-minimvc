@@ -58,6 +58,7 @@ class examplesController extends basePublicController {
 
 	public function pluginAction($input = '') {
 		$this->View->input = (string) $input;
+		$this->View->filter('bogus');
 		$this->View->filter('stringer')->partial('examples/plugin')->render();
 	}
 
