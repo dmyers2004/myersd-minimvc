@@ -21,7 +21,9 @@ class logger {
 			self::$stamp = $config->get(get_class($this),'stamp','Y-m-d H:i:s');
 			self::$filestamp = $config->get(get_class($this),'filestamp','Y-m-d');
 
-			if (!is_dir(self::$path)) mkdir(self::$path, 0777, true);
+			if (!is_dir(self::$path)) {
+				mkdir(self::$path, 0777, true);
+			}
 		}
 	}
 

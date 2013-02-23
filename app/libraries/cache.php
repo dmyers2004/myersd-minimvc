@@ -18,7 +18,9 @@ class cache {
 			self::$path = $path;
 			self::$time = $config->get(get_class($this),'time',3600);
 
-			if (!is_dir(self::$path)) mkdir(self::$path, 0777, true);
+			if (!is_dir(self::$path)) {
+				mkdir(self::$path, 0777, true);
+			}
 		}
 	}
 
