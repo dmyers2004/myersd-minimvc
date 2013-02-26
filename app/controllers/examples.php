@@ -62,4 +62,10 @@ class examplesController extends basePublicController {
 		$this->View->filter('stringer')->partial('examples/plugin')->render();
 	}
 
+	public function eventsAction($log='') {
+		Events::trigger('xlog','Log this');
+		Events::trigger('xlog','and Log this');
+		Events::trigger('xlog','Sent In '.$log);
+	}
+
 }

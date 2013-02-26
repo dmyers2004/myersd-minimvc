@@ -37,6 +37,9 @@ class hooks {
 		new Logger(self::$app->path.'var/logs/', new Config);
 		new Database(new Config);
 		new View(self::$app->path.'views/', new Config);
+		new Events();
+		
+		Events::register('xlog','Logger','_');
 
 		/* Start Session */
 		/*
