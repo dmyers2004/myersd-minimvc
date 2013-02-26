@@ -2,6 +2,7 @@
 
 /* setup the routes */
 $config['routes'] = array(
+	'#^hello/(.*)$#i' => 'main/hello/$1',
 	'#^unit/test$#i' => 'main/unit_test',
 	'#^user/(.*)$#i' => 'main/user/$1',
 	'#^app/test(.*)#i' => 'main/index/$1',

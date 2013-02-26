@@ -16,5 +16,9 @@ class mainController {
 		echo('mainController Loaded indexAction Run<pre>');
 		print_r($this->App);
 	}
+	
+	public function helloAction($name) {
+		echo 'Hello '.$name;
+	}
 
 } /* end controller */
