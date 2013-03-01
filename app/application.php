@@ -94,8 +94,7 @@ class Application {
 
 	public function trigger($trigger) {
 		if (class_exists('Hooks')) {
-			$hook = new Hooks($this);
-			$hook->$trigger();
+			(new Hooks)->$trigger($this);
 		}
 	}
 

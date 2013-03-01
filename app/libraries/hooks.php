@@ -16,15 +16,7 @@
 */
 
 class hooks {
-	public static $app;
-
-	public function __construct(&$app=null) {
-		if ($app) {
-			self::$app = $app;
-		}
-	}
-
-	public function startup() {
+	public function startup(&$app) {
 		/* default errors */
 		error_reporting(E_ALL & ~E_NOTICE);
 
@@ -32,39 +24,39 @@ class hooks {
 		date_default_timezone_set('UTC');
 
 		new ErrorHandler;
-		new Config(self::$app->path.'config/');
-		new Cache(self::$app->path.'var/cache/',new Config);
-		new Logger(self::$app->path.'var/logs/', new Config);
+		new Config($app->path.'config/');
+		new Cache($app->path.'var/cache/',new Config);
+		new Logger($app->path.'var/logs/', new Config);
 		new Database(new Config);
-		new View(self::$app->path.'views/', new Config);
+		new View($app->path.'views/', new Config);
 		new Events();
 		
 		Events::register('xlog','Logger','_');
 
 		/* Start Session */
 		/*
-		session_save_path(self::$app->path.'var/sessions');
-		session_name(md5(self::$app->base_url));
+		session_save_path($app->path.'var/sessions');
+		session_name(md5($app->base_url));
 
 		session_start();
 		*/
 	}
 
-	public function preRouter() {
+	public function preRouter(&$app) {
 		$router = new Router(new Config);
 
-		self::$app->uri = $router->uri(self::$app->raw_uri);
-		self::$app->request = $router->request(self::$app->raw_request);
+		$app->uri = $router->uri($app->raw_uri);
+		$app->request = $router->request($app->raw_request);
 	}
 
 	/* pre controller junk here */
-	public function preController() {
+	public function preController(&$app) {
 		$view = new View;
 		$view->data(array(
 			'sitename'=>'Simple MVC Template',
-			'baseurl'=>self::$app->base_url,
-			'base_url'=>self::$app->base_url,
-			'uri'=>self::$app->uri
+			'baseurl'=>$app->base_url,
+			'base_url'=>$app->base_url,
+			'uri'=>$app->uri
 		));
 
 		/* inject into basecontroller here */
@@ -72,11 +64,11 @@ class hooks {
 
 		/* inject these this way to we can use $this->Config */
 		/* App already set in Application incase your not using all the extra files */
-		self::$app->main_controller->Config = new Config;
-		self::$app->main_controller->View = new View;
+		$app->main_controller->Config = new Config;
+		$app->main_controller->View = new View;
 	}
 
-	public function shutdown() {
+	public function shutdown(&$app) {
 	}
 
 } /* end hooks */
