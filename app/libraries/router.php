@@ -29,15 +29,13 @@ class router {
 			$matches = array();
 			if (preg_match($regex_path, self::$app->raw_uri, $matches)) {
 				self::$app->uri = preg_replace($regex_path, $switchto, self::$app->raw_uri);
-				break;
-			}
-		}
-
-		foreach (self::$requests as $regex_path => $switchto) {
-			$matches = array();
-			if (preg_match($regex_path, strtolower(self::$app->raw_request).'/'.self::$app->uri, $matches)) {
-				self::$app->request = $switchto;
-				break;
+				foreach (self::$requests as $regex_path => $switchto) {
+					$matches = array();
+					if (preg_match($regex_path, self::$app->raw_request.'/'.self::$app->uri, $matches)) {
+						self::$app->request = $switchto;
+						return $this;
+					}
+				}
 			}
 		}
 
