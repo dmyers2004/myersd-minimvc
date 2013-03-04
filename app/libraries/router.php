@@ -11,40 +11,38 @@
 
 class router {
 
-	public static $uri;
+	public static $app;
 	public static $routes;
 	public static $requests;
 
-	public function __construct($config=null) {
-		if ($config) {
+	public function __construct(&$app = null, &$config=null) {
+		if ($app) {
+			self::$app = $app;
 			self::$routes = $config->get(get_class($this),'routes',array());
 			self::$requests = $config->get(get_class($this),'requests',array());
 		}
 	}
 
-	public function uri($uri) {
+	public function route() {
 
 		foreach (self::$routes as $regex_path => $switchto) {
 			$matches = array();
-			if (preg_match($regex_path, $uri, $matches)) {
-				self::$uri = $uri = preg_replace($regex_path, $switchto, $uri);
-				return $uri;
+			if (preg_match($regex_path, self::$app->raw_uri, $matches)) {
+				self::$app->uri = preg_replace($regex_path, $switchto, self::$app->raw_uri);
+				break;
 			}
 		}
-
-		return $uri;
-	}
-
-	public function request($request) {
 
 		foreach (self::$requests as $regex_path => $switchto) {
 			$matches = array();
-			if (preg_match($regex_path, strtolower($request).'/'.self::$uri, $matches)) {
-				return $switchto;
+			if (preg_match($regex_path, strtolower(self::$app->raw_request).'/'.self::$app->uri, $matches)) {
+				self::$app->request = $switchto;
+				break;
 			}
 		}
 
-		return $request;
-	}
+		return $this;
+		
+	} /* end route */
 
 }

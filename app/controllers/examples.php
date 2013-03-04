@@ -2,14 +2,17 @@
 
 class examplesController extends basePublicController {
 
-	public function indexAction() {
-		$this->View->sitename = 'Most Basic Example';
-		$this->View->Memory_get_peak_usage_TRUE = memory_get_peak_usage(TRUE)/1024;
-		$this->View->Memory_get_peak_usage = memory_get_peak_usage()/1024;
-		$this->View->Memory_get_usage_TRUE = memory_get_usage(TRUE)/1024;
-		$this->View->Memory_get_usage = memory_get_usage()/1024;
+	public function __construct() {
+		parent::__construct();
+	}
 
-		$this->View->partial('examples/index')->render();
+	public function indexAction() {
+		$this->view->Memory_get_peak_usage_TRUE = memory_get_peak_usage(TRUE)/1024;
+		$this->view->Memory_get_peak_usage = memory_get_peak_usage()/1024;
+		$this->view->Memory_get_usage_TRUE = memory_get_usage(TRUE)/1024;
+		$this->view->Memory_get_usage = memory_get_usage()/1024;
+
+		$this->view->partial('examples/index')->render();
 	}
 
 	public function errorAction() {
@@ -18,30 +21,30 @@ class examplesController extends basePublicController {
 
 	/* get */
 	public function testAction($a='',$b='') {
-		$this->View->method = 'GET';
-		$this->View->a = $a;
-		$this->View->b = $b;
-		$this->View->partial('examples/test')->render();
+		$this->view->method = 'GET';
+		$this->view->a = $a;
+		$this->view->b = $b;
+		$this->view->partial('examples/test')->render();
 	}
 
 	/* same but method is post */
 	public function testPostAction($a='',$b='') {
-		$this->View->method = 'POST';
-		$this->View->a = $a;
-		$this->View->b = $b;
+		$this->view->method = 'POST';
+		$this->view->a = $a;
+		$this->view->b = $b;
 	}
 
 	public function menuAction() {
-		$this->View->projectname = 'Example';
-		$this->View->activemenu = 'Example';
-		$this->View->menus = array('menua'=>'Menu A','menub'=>'Menu B','menuc'=>'Menu C','menud'=>'Menu D');
-		$this->View->name = 'Joe Coffee';
+		$this->view->projectname = 'Example';
+		$this->view->activemenu = 'Example';
+		$this->view->menus = array('menua'=>'Menu A','menub'=>'Menu B','menuc'=>'Menu C','menud'=>'Menu D');
+		$this->view->name = 'Joe Coffee';
 
-		$this->View->partial('partial/nav','nav')->partial('examples/menu')->render();
+		$this->view->partial('partial/nav','nav')->partial('examples/menu')->render();
 	}
 
 	public function jsonAction() {
-		$this->View->set('data',array('name'=>'John Doe','age'=>21))->render('json');
+		$this->view->set('data',array('name'=>'John Doe','age'=>21))->render('json');
 	}
 
 	public function unit_testAction() {
@@ -52,14 +55,14 @@ class examplesController extends basePublicController {
 		$unit[] = 'main/menu';
 		$unit[] = 'main/json';
 
-		$this->View->unit = $unit;
-		$this->View->render('unit_test');
+		$this->view->unit = $unit;
+		$this->view->render('unit_test');
 	}
 
 	public function pluginAction($input = '') {
-		$this->View->input = (string) $input;
-		$this->View->filter('bogus');
-		$this->View->filter('stringer')->partial('examples/plugin')->render();
+		$this->view->input = (string) $input;
+		$this->view->filter('bogus');
+		$this->view->filter('stringer')->partial('examples/plugin')->render();
 	}
 
 	public function eventsAction($log='') {

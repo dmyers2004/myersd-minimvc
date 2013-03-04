@@ -73,7 +73,7 @@ class Application {
 		$this->main_controller = new $classname;
 
 		/* if we are just using this single file without all the rest we need some way to reference app */
-		$this->main_controller->App = $this;
+		$this->main_controller->app = $this;
 
 		/* try to call hook if it's there */
 		$this->trigger('preController');
@@ -92,7 +92,7 @@ class Application {
 		$this->trigger('shutdown');
 	}
 
-	public function trigger($trigger) {
+	private function trigger($trigger) {
 		if (class_exists('Hooks')) {
 			(new Hooks)->$trigger($this);
 		}

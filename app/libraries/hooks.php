@@ -23,14 +23,16 @@ class hooks {
 		/* Default timezone of server */
 		date_default_timezone_set('UTC');
 
+		/* setup classes app is really just used for variables since it has no useful methods */
 		new ErrorHandler;
 		new Config($app->path.'config/');
 		new Cache($app->path.'var/cache/',new Config);
 		new Logger($app->path.'var/logs/', new Config);
+		new Events();
 		new Database(new Config);
 		new View($app->path.'views/', new Config);
-		new Events();
-		
+		new basePublicController($app, new Config, new View);
+
 		Events::register('xlog','Logger','_');
 
 		/* Start Session */
@@ -43,31 +45,15 @@ class hooks {
 	}
 
 	public function preRouter(&$app) {
-		$router = new Router(new Config);
-
-		$app->uri = $router->uri($app->raw_uri);
-		$app->request = $router->request($app->raw_request);
+		/* run our router */
+		(new Router($app, new Config))->route();
 	}
 
 	/* pre controller junk here */
 	public function preController(&$app) {
-		$view = new View;
-		$view->data(array(
-			'sitename'=>'Simple MVC Template',
-			'baseurl'=>$app->base_url,
-			'base_url'=>$app->base_url,
-			'uri'=>$app->uri
-		));
-
-		/* inject into basecontroller here */
-		//new basePublicController($app, new Config, new View);
-
-		/* inject these this way to we can use $this->Config */
-		/* App already set in Application incase your not using all the extra files */
-		$app->main_controller->Config = new Config;
-		$app->main_controller->View = new View;
 	}
 
+	/* before the app finished */
 	public function shutdown(&$app) {
 	}
 
