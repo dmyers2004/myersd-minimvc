@@ -28,12 +28,13 @@ class hooks {
 		new Config($app->path.'config/');
 		new Cache($app->path.'var/cache/',new Config);
 		new Logger($app->path.'var/logs/', new Config);
-		new Events();
 		new Database(new Config);
 		new View($app->path.'views/', new Config);
 		new basePublicController($app, new Config, new View);
 
-		Events::register('xlog','Logger','_');
+		$events = new Events;
+		$events->register('xlog','Logger','_');
+		/* shorthand in 5.4 (new Events)->reqister... */
 
 		/* Start Session */
 		/*
@@ -46,7 +47,8 @@ class hooks {
 
 	public function preRouter(&$app) {
 		/* run our router */
-		(new Router($app, new Config))->route();
+		$router = new Router($app, new Config);
+		$router->route();
 	}
 
 	/* pre controller junk here */

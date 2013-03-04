@@ -66,9 +66,10 @@ class examplesController extends basePublicController {
 	}
 
 	public function eventsAction($log='') {
-		Events::trigger('xlog','Log this');
-		Events::trigger('xlog','and Log this');
-		Events::trigger('xlog','Sent In '.$log);
+		$events = new Events;
+		$events->trigger('xlog','Log this');
+		$events->trigger('xlog','and Log this');
+		$events->trigger('xlog','Sent In '.$log);
 	}
 
 }

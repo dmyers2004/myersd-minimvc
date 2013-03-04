@@ -20,12 +20,12 @@ class events {
 	
 	public function __construct() {}
 	
-	public static function register($name,$class,$method) {
+	public function register($name,$class,$method) {
 		/* call back in array('class','method') */
 		self::$events[$name][$class.$method] = array($class,$method);
 	}
 	
-	public static function trigger($name) {
+	public function trigger($name) {
 		$args = func_get_args();
 		array_shift($args); /* shift off $name */
 		
@@ -42,7 +42,7 @@ class events {
 		return (!count($rtn)) ? $rtn : null;
 	}
 
-	public static function has($name) {
+	public function has($name) {
 		return isset(self::$events[$name]);
 	}
 	
