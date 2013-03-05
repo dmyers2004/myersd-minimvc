@@ -12,6 +12,20 @@
 class Application {
 
 	public $config;
+	public $folder;
+	public $run_code;
+	public $server;
+	public $is_ajax;
+	public $base_url;
+	public $raw_request;
+	public $request;
+	public $raw_uri;
+	public $uri;
+	public $input;
+	public $controller;
+	public $method;
+	public $segs;
+	public $main_controller;
 
 	public function __construct($config=null) {
 		$this->config = $config;

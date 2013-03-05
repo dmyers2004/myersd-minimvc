@@ -1,0 +1,14 @@
+#!/bin/bash
+BASEDIR=$(dirname $0)
+
+echo --Application--
+$BASEDIR/phpunit.phar --colors $BASEDIR/application.php
+
+echo --Hooks--
+$BASEDIR/phpunit.phar --colors $BASEDIR/hooks.php
+
+echo --Config--
+$BASEDIR/phpunit.phar --colors $BASEDIR/config.php
+
+echo --Router--
+$BASEDIR/phpunit.phar --colors $BASEDIR/router.php
