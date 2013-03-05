@@ -10,8 +10,9 @@
 *
 * Hooks:
 * startup
-* pre_router
-* pre_controller
+* preRouter
+* preController
+* preOutput
 * shutdown
 */
 
@@ -25,11 +26,11 @@ class hooks {
 
 		/* setup classes app is really just used for variables since it has no useful methods */
 		new ErrorHandler;
-		new Config($app->path.'config/');
-		new Cache($app->path.'var/cache/',new Config);
-		new Logger($app->path.'var/logs/', new Config);
+		new Config($app->folder.'/config/');
+		new Cache($app->folder.'/var/cache/',new Config);
+		new Logger($app->folder.'/var/logs/', new Config);
 		new Database(new Config);
-		new View($app->path.'views/', new Config);
+		new View($app->folder.'/views/', new Config);
 		new basePublicController($app, new Config, new View);
 
 		$events = new Events;
@@ -53,6 +54,10 @@ class hooks {
 
 	/* pre controller junk here */
 	public function preController(&$app) {
+	}
+
+	/* pre output junk here */
+	public function preOutput(&$app) {
 	}
 
 	/* before the app finished */

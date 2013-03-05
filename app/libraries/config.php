@@ -23,27 +23,35 @@ class config {
 
 	public function get($name,$key,$default=null) {
 		$array = $this->read($name);
+		
 		if (isset($array[$key])) {
 			return $array[$key];
 		} else {
 			return $default;
 		}
+	
 	}
 
 	public function read($name) {
-		if (isset(self::$data[$name])) {
-			return self::$data[$name];
+		if (isset(self::$data[self::$folder.$name])) {
+			return self::$data[self::$folder.$name];
 		}
 
 		/* manually load file so $config variable is local */
-		$file = self::$path.$folder.$name.'.php';
+		$file_default = self::$path.$name.'.php';
+		$file_folder = self::$path.self::$folder.$name.'.php';
 
-		if (is_file($file)) {
-			include($file);
-			self::$data[$name] = $config;
+		if (is_file($file_folder)) {
+			include($file_folder);
+			self::$data[self::$folder.$name] = $config;
 
-			return $config;
+		} elseif (is_file($file_default)) {
+			include($file_default);
+			self::$data[self::$folder.$name] = $config;
+
 		}
+
+		return (array)self::$data[self::$folder.$name];
 	}
 
 }

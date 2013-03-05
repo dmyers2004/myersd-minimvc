@@ -52,20 +52,18 @@ class view {
 	public function render($template=NULL) {
 		$template = ($template) ? $template : self::$layout;
 
-		$this->load($template,NULL,FALSE);
-
-		return $this;
+		return $this->load($template,NULL);
 	}
 
 	public function partial($file,$name=NULL,$data=NULL) {
 		$name = ($name) ? $name : self::$body;
 
-		self::$data->$name = $this->load($file,$data,TRUE);
+		self::$data->$name = $this->load($file,$data);
 
 		return $this;
 	}
 
-	public function load($file,$data=NULL,$return=TRUE) {
+	public function load($file,$data=NULL) {
 		$capture = '';
 
 		$data = ($data) ? $data : self::$data;
@@ -75,10 +73,6 @@ class view {
 			$capture = $this->_capture($file,$data);
 		} elseif(self::$throwError) {
 			throw new Exception('View file "'.$file.'" not found',4006);
-		}
-
-		if (!$return) {
-			echo $capture;
 		}
 
 		return $capture;

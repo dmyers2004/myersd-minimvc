@@ -12,7 +12,7 @@ class examplesController extends basePublicController {
 		$this->view->Memory_get_usage_TRUE = memory_get_usage(TRUE)/1024;
 		$this->view->Memory_get_usage = memory_get_usage()/1024;
 
-		$this->view->partial('examples/index')->render();
+		return $this->view->partial('examples/index')->render();
 	}
 
 	public function errorAction() {

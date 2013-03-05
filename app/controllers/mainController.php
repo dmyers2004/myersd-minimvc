@@ -13,12 +13,11 @@
 class mainController {
 
 	public function indexAction() {
-		echo('mainController Loaded indexAction Run<pre>');
-		print_r($this->App);
+		return 'mainController Loaded indexAction Run';
 	}
 	
 	public function helloAction($name) {
-		echo 'Hello '.$name;
+		return 'Hello '.$name;
 	}
 
 } /* end controller */
