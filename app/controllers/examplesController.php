@@ -6,6 +6,12 @@ class examplesController extends basePublicController {
 		parent::__construct();
 	}
 
+	public function testAction() {
+		//return $this->view->set('body','Doe')->render();
+		$this->view->body = 'John Doe '.date('Y-m-d H:i:s');
+		return $this->view->render();
+	}
+
 	public function indexAction() {
 		$this->view->Memory_get_peak_usage_TRUE = memory_get_peak_usage(TRUE)/1024;
 		$this->view->Memory_get_peak_usage = memory_get_peak_usage()/1024;
@@ -20,7 +26,7 @@ class examplesController extends basePublicController {
 	}
 
 	/* get */
-	public function testAction($a='',$b='') {
+	public function getAction($a='',$b='') {
 		$this->view->method = 'GET';
 		$this->view->a = $a;
 		$this->view->b = $b;
@@ -28,7 +34,7 @@ class examplesController extends basePublicController {
 	}
 
 	/* same but method is post */
-	public function testPostAction($a='',$b='') {
+	public function postPostAction($a='',$b='') {
 		$this->view->method = 'POST';
 		$this->view->a = $a;
 		$this->view->b = $b;

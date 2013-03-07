@@ -19,5 +19,5 @@ class mainController {
 	public function helloAction($name) {
 		return 'Hello '.$name;
 	}
-
+	
 } /* end controller */

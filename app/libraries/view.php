@@ -10,7 +10,7 @@
 *
 * @Singleton
 * @Inject path string
-* @Inject config array()
+* @Inject config object
 *
 */
 
@@ -42,7 +42,7 @@ class view {
 		$name = strtolower($name);
 		return self::$data->$name;
 	}
-
+	
 	/* load view into variable and output */
 	/*
 		render(); load default page into body and output default template
@@ -52,7 +52,7 @@ class view {
 	public function render($template=NULL) {
 		$template = ($template) ? $template : self::$layout;
 
-		return $this->load($template,NULL);
+		return $this->load($template);
 	}
 
 	public function partial($file,$name=NULL,$data=NULL) {
