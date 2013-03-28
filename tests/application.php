@@ -43,7 +43,7 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 		$config = $this->default_config($server,array(),$post);
 		$config['run code'] = 'debug';
 
-	  $app = new Application($config);  
+	  $app = new Application($config); 
 		$this->assertEquals($app->run_code, 'debug');
 		$this->assertTrue($app->is_ajax);
 		$this->assertEquals($app->base_url, 'http://dev.somethingelse.com');
@@ -88,7 +88,7 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testAjaxPut() {
-		$server = $this->default_server('/main/ajax/','PUT',true);
+		$server = $this->default_server('/main/foo/','PUT',true);
 
 		$post = array();
 		$post['a'] = 'Black';
@@ -101,12 +101,12 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($app->run_code, 'production');
 		$this->assertTrue($app->is_ajax);
 		$this->assertEquals($app->base_url, 'http://www.devlocal.com');
-		$this->assertEquals($app->raw_uri, 'main/ajax');
-		$this->assertEquals($app->uri, 'main/ajax');
+		$this->assertEquals($app->raw_uri, 'main/foo');
+		$this->assertEquals($app->uri, 'main/foo');
 		$this->assertEquals($app->raw_request, 'Put');
 		$this->assertEquals($app->request, 'Put');
 		$this->assertEquals($app->controller, 'main');
-		$this->assertEquals($app->method, 'ajax');
+		$this->assertEquals($app->method, 'foo');
 		$this->assertEquals($app->segs, Array());
 		$this->assertInstanceOf('mainController', $app->main_controller);
 		$this->assertEquals($app->input['a'], 'Black');
@@ -133,6 +133,7 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 			'method suffix' => 'Action',
 			'default request type' => 'Get',
 			'display errors' => 'On',
+			'include ajax' => 'Ajax'
 		);
 	}
 	

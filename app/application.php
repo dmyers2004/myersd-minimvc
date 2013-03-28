@@ -94,8 +94,10 @@ class Application {
 		/* try to call hook if it's there */
 		$this->trigger('preController');
 
+		$ajax = ($this->is_ajax && $this->config['include ajax']) ? $this->config['include ajax'] : '';
+
 		/* call the method - will throw an error you must catch if it's not there */
-		$method = $this->method.$this->request.$config['method suffix'];
+		$method = $this->method.$this->request.$ajax.$config['method suffix'];
 
 		/* This throws a error and 4005 - handle it in your error handler */
 		if (!is_callable(array($this->main_controller,$method))) {

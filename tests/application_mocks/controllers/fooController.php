@@ -7,6 +7,11 @@ class fooController {
 	}
 	
 	public function barPutAction() {
+
+	}
+
+	public function barPutAjaxAction() {
+	
 	}
 
 }

@@ -14,7 +14,7 @@ class mainController {
 		return 'A: '.$a.' B: '.$b;
 	}
 
-	public function ajaxPutAction() {
+	public function fooPutAjaxAction() {
 		return 'A: '.$this->app->input['a'].' B: '.$this->app->input['b'];
 	}
 
