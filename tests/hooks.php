@@ -2,7 +2,7 @@
 class TestHooks extends PHPUnit_Framework_TestCase {  
 
 	protected function setUp() {
-		require_once '../app/libraries/hooks.php';
+		require_once __DIR__.'/../app/libraries/hooks.php';
 	}
 
 	public function testBasic() {

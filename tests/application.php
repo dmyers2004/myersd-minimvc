@@ -5,7 +5,7 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 		ini_set('display_errors','On');
 		error_reporting(E_ALL);
 	
-		require_once '../app/application.php';
+		require_once __DIR__.'/../app/application.php';
 	}
 
   protected function tearDown() {

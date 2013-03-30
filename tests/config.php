@@ -2,7 +2,7 @@
 class TestConfig extends PHPUnit_Framework_TestCase {  
 
 	protected function setUp() {
-		require_once '../app/libraries/config.php';
+		require_once __DIR__.'/../app/libraries/config.php';
 	}
 
 	function testBasic() {

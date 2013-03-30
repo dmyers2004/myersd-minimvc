@@ -5,7 +5,7 @@ class TestRouter extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		/* get our real class */
-		require_once '../app/libraries/router.php';
+		require_once __DIR__.'/../app/libraries/router.php';
 		
 		/* get our mocks */
 		require_once 'router_mocks/app.php';

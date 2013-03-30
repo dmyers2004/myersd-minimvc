@@ -17,7 +17,7 @@ $config = array(
 	'method suffix' => 'Action',
 	'default request type' => 'Get',
 	'display errors' => 'On',
-	'include ajax' => 'Ajax';
+	'include ajax' => 'Ajax'
 );
 
 $app = new Application($config);
