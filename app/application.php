@@ -109,7 +109,7 @@ class Application {
 		/* try to call hook before output is shown ie. cache, clean, parse, etc... )*/
 		$this->trigger('preOutput');
 		
-		/* This should be our only echo (in a normal application) */
+		/* This should be our only echo (in a normal application) cache it or something */
 		echo $this->output;
 
 		/* try to call hook if it's there */
