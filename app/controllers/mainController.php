@@ -13,7 +13,7 @@
 class mainController {
 
 	public function indexAction() {
-		return 'mainController Loaded indexAction Run';
+		return '<pre>mainController Loaded indexAction Run '.print_r($this,true);
 	}
 	
 	public function helloAction($name) {

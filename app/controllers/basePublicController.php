@@ -22,7 +22,7 @@ class basePublicController {
 			self::$config = $config;
 			self::$view = $view;
 
-			$view->data(array(
+			$view->set(array(
 				'sitename'=>$config->get('view','title','set in config > title'),
 				'baseurl'=>&$app->base_url,
 				'base_url'=>&$app->base_url,

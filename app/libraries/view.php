@@ -15,100 +15,74 @@
 */
 
 class view {
-	public static $layout; /* default template */
-	public static $body; /* default body variable */
 	public static $data; /* view data */
 	public static $path;
-	public static $config;
-	public static $throwError;
 
-	public function __construct($path=null,$config=null) {
+	public function __construct($path=null) {
 		if ($path) {
 			self::$path = $path;
-			self::$throwError = $config->get(get_class($this),'throw errors',false);
-			self::$layout = $config->get(get_class($this),'layout','layout');
-			self::$body = $config->get(get_class($this),'body','body');
-			self::$data = new stdClass;
+			self::$data = array();
 		}
 	}
 
-	public function __set($name,$value) {
-		$name = strtolower($name);
-		self::$data->$name = $value;
-		return $this;
-	}
-
-	public function __get($name) {
-		$name = strtolower($name);
-		return self::$data->$name;
-	}
-	
-	/* load view into variable and output */
-	/*
-		render(); load default page into body and output default template
-		render('template'); load this template and output
-		render('viewfile','template'); load this view file into body data variable and output using template
-	*/
-	public function render($template=NULL) {
-		$template = ($template) ? $template : self::$layout;
-
-		return $this->load($template);
-	}
-
-	public function partial($file,$name=NULL,$data=NULL) {
-		$name = ($name) ? $name : self::$body;
-
-		self::$data->$name = $this->load($file,$data);
-
-		return $this;
-	}
-
-	public function load($file,$data=NULL) {
+	public function load($file,$return=TRUE) {
 		$capture = '';
 
-		$data = ($data) ? $data : self::$data;
 		$file = self::$path.$file.'.php';
 
 		if (is_file($file)) {
-			$capture = $this->_capture($file,$data);
-		} elseif(self::$throwError) {
-			throw new Exception('View file "'.$file.'" not found',4006);
+			$capture = $this->_capture($file,self::$data);
 		}
 
-		return $capture;
-	}
-
-	public function set($name,$value) {
-		$this->$name = $value;
-
-		return $this;
-	}
-
-	public function data($ary) {
-		self::$data = (object) array_merge_recursive((array) self::$data,(array) $ary);
-
-		return $this;
-	}
-
-	public function append($name, $value) {
-		self::$data[$name] .= $value;
-
-		return $this;
-	}
-
-	public function filter($name) {
-		$classname = 'filter'.ucfirst(strtolower($name));
+		if ($return === false) {
+			echo $capture;
+		}
 		
-		$load = self::$path.$path.'filters/'.strtolower($name).'.php';
+		if ($return === true) {
+			return $capture;	
+		}
 
-		if (file_exists($load)) {
-			require_once($load);
-			self::$data->$classname = new $classname();
-		} elseif(self::$throwError) {
-			throw new Exception('View Filter "'.$name.'" at "'.$load.'" not found',4007);		
+		if (is_string($return)) {
+			self::$data[$name] = $capture;
+		}
+		
+		return $this;
+	}
+
+	public function set($name,$value=null,$where=null) {
+		if (is_array($name)) {
+			foreach ($name as $key => $value) {
+				$this->set($key,$value);	
+			}
+			return $this;
+		}
+		
+		if (is_string($value)) {
+			$where = ($where) ? $where : '>';
+		} else {
+			$where = '#';
+		}
+		
+		switch ($where) {
+			case '>':
+				self::$data[$name] = self::$data[$name].$value;
+			break;
+			case '<':
+				self::$data[$name] = $value.self::$data[$name];
+			break;
+			default:
+				self::$data[$name] = $value;
 		}
 
 		return $this;
+	}
+	
+	public function get($name=null) {
+		if ($name == null) {
+			return self::$data;
+		}
+		
+		return self::$data[$name];
 	}
 
 	private function _capture($_mvc_file,$_mvc_data) {

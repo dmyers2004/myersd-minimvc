@@ -44,6 +44,8 @@ class hooks {
 
 		session_start();
 		*/
+		$db = new Database();
+		$dbc = $db->connection();
 	}
 
 	public function preRouter(&$app) {
