@@ -34,7 +34,7 @@ class Database {
 	}
 
 	public function connection($connection='default') {
-		$prefix = ($connection == 'default') ? '' : $connection.'_';
+		$prefix = ($connection == 'default') ? '' : $connection.'.';
 
 		$dsn = self::$config['db.'.$prefix.'dsn'];
 		$user = self::$config['db.'.$prefix.'user'];

@@ -200,7 +200,7 @@ class orm {
 		}
 	}
 
-	public function execute($sql,$bindings=NULL) {
+	public function execute($sql,$bindings=NULL) {		
 		$statement = $this->connection->prepare($sql);
 
 		if ($this->debug) {

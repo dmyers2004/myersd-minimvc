@@ -15,10 +15,10 @@ class mPeople extends Orm {
 	public function __construct() {
 		$fields = 'id,hash,keyword_id';
 
-		$this->tablename = 'default_keywords_applied';
+		$this->tablename = 'people';
 		$this->pkname = 'id'; //Name of auto-incremented Primary Key
 		$this->fields = explode(',',$fields);
-		$this->connection = new Database(); // name of database connection
+		$this->connection = (new Database)->connection(); // database connection
 
 		parent::__construct();
 	}

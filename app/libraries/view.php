@@ -64,13 +64,13 @@ class view {
 		}
 		
 		switch ($where) {
-			case '>':
+			case '>': /* Apend */
 				self::$data[$name] = self::$data[$name].$value;
 			break;
-			case '<':
+			case '<': /* Prepend */
 				self::$data[$name] = $value.self::$data[$name];
 			break;
-			default:
+			default: /* Overwrite */
 				self::$data[$name] = $value;
 		}
 

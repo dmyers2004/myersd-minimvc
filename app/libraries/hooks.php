@@ -26,15 +26,16 @@ class hooks {
 
 		/* setup classes app is really just used for variables since it has no useful methods */
 		new ErrorHandler;
+		
 		new Config($app->folder.'/config/');
-		new Cache($app->folder.'/var/cache/',new Config);
-		new Logger($app->folder.'/var/logs/', new Config);
+		//new Cache($app->folder.'/var/cache/',new Config);
+		//new Logger($app->folder.'/var/logs/', new Config);
 		new Database(new Config);
-		new View($app->folder.'/views/', new Config);
+		new View($app->folder.'/views/');
 		new basePublicController($app, new Config, new View);
 
-		$events = new Events;
-		$events->register('xlog','Logger','_');
+		//$events = new Events;
+		//$events->register('xlog','Logger','_');
 		/* shorthand in 5.4 (new Events)->reqister... */
 
 		/* Start Session */
@@ -44,8 +45,6 @@ class hooks {
 
 		session_start();
 		*/
-		$db = new Database();
-		$dbc = $db->connection();
 	}
 
 	public function preRouter(&$app) {
