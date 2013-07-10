@@ -10,23 +10,21 @@
 */
 
 class cache {
-	public static $time;
-	public static $path;
+	public $time;
+	public $path;
 
-	public function __construct($path=null,$config=null) {
-		if ($path) {
-			self::$path = $path;
-			self::$time = $config->get(get_class($this),'time',3600);
+	public function __construct(&$app) {
+		$this->path = $app->config['cache']['cache folder'];
+		$this->time = $app->config['cache']['time'];
 
-			if (!is_dir(self::$path)) {
-				mkdir(self::$path, 0777, true);
-			}
+		if (!is_dir($this->path)) {
+			mkdir($this->path, 0777, true);
 		}
 	}
 
 	/* cache functions */
 	public function __get($key) {
-    $key = self::$path.'cache'.md5($key);
+    $key = $this->path.'cache'.md5($key);
 
     if (!file_exists($key) || (filemtime($key) < (time() - $seconds))) {
       return null;
@@ -40,7 +38,7 @@ class cache {
 	}
 
 	public function __set($key, $data) {
-    $folder = self::$path.'cache';
+    $folder = $this->path.'cache';
     $file = $folder.'/temp-'.md5(uniqid(md5(rand()), true));
     file_put_contents($file,serialize($data));
     rename($file,$folder.'/'.md5($key));

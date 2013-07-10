@@ -1,10 +1,15 @@
 <?php
-require('app/application.php');
 
-/* load regular */
-$config = include('app/config/application.php');
+define('RUNCODE', getenv('RUNCODE'));
+define('PATH', dirname(__FILE__));
 
-/* you could also mock here */
+/* load our config settings - or testing mockup */
+require PATH.'/app/config.php';
+
+/* load our application core */
+require PATH.'/app/application.php';
 
 /* start the application */
-new Application($config);
+$app = new application($config);
+
+echo $app->run();

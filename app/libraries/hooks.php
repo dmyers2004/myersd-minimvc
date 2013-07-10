@@ -12,57 +12,70 @@
 * startup
 * preRouter
 * preController
+* preMethod
 * preOutput
-* shutdown
 */
 
 class hooks {
+
+	/* called after turn off all errors (default) and register the autoloader */
 	public function startup(&$app) {
-		/* default errors */
+		/* turn them back on (this could be based on $app->config['app']['run code'] or something else */
 		error_reporting(E_ALL & ~E_NOTICE);
 
 		/* Default timezone of server */
 		date_default_timezone_set('UTC');
 
-		/* setup classes app is really just used for variables since it has no useful methods */
-		new ErrorHandler;
-		
-		new Config($app->folder.'/config/');
-		//new Cache($app->folder.'/var/cache/',new Config);
-		//new Logger($app->folder.'/var/logs/', new Config);
-		new Database(new Config);
-		new View($app->folder.'/views/');
-		new basePublicController($app, new Config, new View);
-
-		//$events = new Events;
-		//$events->register('xlog','Logger','_');
-		/* shorthand in 5.4 (new Events)->reqister... */
+		/* setup error handler */
+		new Errorhandler;
+				
+		/* Setup Database & View */
+		new Database($app);
+		new View($app);
 
 		/* Start Session */
 		/*
-		session_save_path($app->path.'var/sessions');
+		session_save_path($app->config['app']['session folder']);
 		session_name(md5($app->base_url));
-
 		session_start();
 		*/
 	}
 
+	/* called before the controller and method and request type is actually used */
 	public function preRouter(&$app) {
+
 		/* run our router */
-		$router = new Router($app, new Config);
-		$router->route();
+		foreach ($app->config['router']['routes'] as $regex_path => $switchto) {
+			$matches = array();
+			if (preg_match($regex_path, $app->config['app']['raw uri'], $matches)) {
+				$app->config['app']['uri'] = preg_replace($regex_path, $switchto, $app->config['app']['raw uri']);
+				break;
+			}
+		}
+
+		foreach ($app->config['router']['requests'] as $regex_path => $switchto) {
+			$matches = array();
+			if (preg_match($regex_path, $app->config['app']['raw request'].'/'.$app->config['app']['uri'], $matches)) {
+				$app->config['app']['request'] = $switchto;
+				break;
+			}
+		}
+		
 	}
 
-	/* pre controller junk here */
+	/* called before the controller is instantiated */
 	public function preController(&$app) {
+		new basePublicController($app);
+	}
+	
+	/* called before the method on the controller is called */
+	public function preMethod(&$app)
 	}
 
-	/* pre output junk here */
+	/* if the contoller has returned anything it will be in $app->output */
 	public function preOutput(&$app) {
 	}
-
-	/* before the app finished */
-	public function shutdown(&$app) {
-	}
+	
+	/* you can add additional hooks here */
 
 } /* end hooks */

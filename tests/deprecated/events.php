@@ -17,9 +17,7 @@
 class events {
 
 	public static $events = array();
-	
-	public function __construct() {}
-	
+		
 	public function register($name,$class,$method) {
 		/* call back in array('class','method') */
 		self::$events[$name][$class.$method] = array($class,$method);

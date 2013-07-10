@@ -1,11 +1,11 @@
 <?php
-class TestApplication extends PHPUnit_Framework_TestCase {  
+class Testapplication extends PHPUnit_Framework_TestCase {  
 
 	protected function setUp() {
 		ini_set('display_errors','On');
 		error_reporting(E_ALL);
 	
-		require_once __DIR__.'/../app/application.php';
+		require_once __DIR__.'/../../app/application.php';
 	}
 
   protected function tearDown() {
@@ -13,13 +13,12 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testBasic() {
-		$server = $this->default_server();
-		$config = $this->default_config($server);
-	
-	  $app = new Application($config);
+	  require __DIR__.'/../mocks/config.php';
 	  
-		$this->assertEquals($app->run_code, 'production');
-		$this->assertFalse($app->is_ajax);
+	  $app = new application($config);
+	  
+		$this->assertEquals($app->config['app']['run code'], 'production');
+		$this->assertFalse($app->config['app']['is ajax'], '');
 		$this->assertEquals($app->base_url, 'http://www.devlocal.com');
 		$this->assertEquals($app->raw_uri, '');
 		$this->assertEquals($app->uri, '');
@@ -43,7 +42,7 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 		$config = $this->default_config($server,array(),$post);
 		$config['run code'] = 'debug';
 
-	  $app = new Application($config); 
+	  $app = new application($config); 
 		$this->assertEquals($app->run_code, 'debug');
 		$this->assertTrue($app->is_ajax);
 		$this->assertEquals($app->base_url, 'http://dev.somethingelse.com');
@@ -63,7 +62,7 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 		$server = $this->default_server('/main/foo');		
 		$config = $this->default_config($server);
 
-	  $app = new Application($config);
+	  $app = new application($config);
 		
 		$this->assertEquals($app->raw_uri, 'main/foo');
 		$this->assertEquals($app->uri, 'main/foo');
@@ -75,7 +74,7 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 		$server = $this->default_server('/main/fobo/John/Doe');
 		$config = $this->default_config($server);
 
-	  $app = new Application($config);
+	  $app = new application($config);
 		
 		$this->assertEquals($app->raw_uri, 'main/fobo/John/Doe');
 		$this->assertEquals($app->uri, 'main/fobo/John/Doe');
@@ -96,7 +95,7 @@ class TestApplication extends PHPUnit_Framework_TestCase {
 
 		$config = $this->default_config($server,array(),$post);
 
-	  $app = new Application($config);
+	  $app = new application($config);
 
 		$this->assertEquals($app->run_code, 'production');
 		$this->assertTrue($app->is_ajax);

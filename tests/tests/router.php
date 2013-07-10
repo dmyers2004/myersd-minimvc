@@ -15,7 +15,7 @@ class TestRouter extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testBasic() {
-		$app = new MockApp('main/controller','Get');
+		$app = new Mockapp('main/controller','Get');
 	
 	  $router = new Router($app, $this->config);
 		$router->route();
@@ -27,7 +27,7 @@ class TestRouter extends PHPUnit_Framework_TestCase {
   }
 
 	public function testPutBasic() {
-		$app = new MockApp('main/controller','Put');
+		$app = new Mockapp('main/controller','Put');
 	
 	  $router = new Router($app, $this->config);
 		$router->route();
@@ -39,7 +39,7 @@ class TestRouter extends PHPUnit_Framework_TestCase {
   }
 
 	public function testHello() {
-		$app = new MockApp('hello/Joe','Get');
+		$app = new Mockapp('hello/Joe','Get');
 	
 	  $router = new Router($app, $this->config);
 		$router->route();
@@ -51,7 +51,7 @@ class TestRouter extends PHPUnit_Framework_TestCase {
   }
 
 	public function testUnitTest() {
-		$app = new MockApp('unit/test','Get');
+		$app = new Mockapp('unit/test','Get');
 	
 	  $router = new Router($app, $this->config);
 		$router->route();
@@ -63,7 +63,7 @@ class TestRouter extends PHPUnit_Framework_TestCase {
   }
 
 	public function testComplex() {
-		$app = new MockApp('complex/test/joe/black','Put');
+		$app = new Mockapp('complex/test/joe/black','Put');
 	
 	  $router = new Router($app, $this->config);
 		$router->route();

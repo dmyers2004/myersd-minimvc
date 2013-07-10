@@ -9,14 +9,12 @@
 * @license    Released under the MIT License.
 */
 
-class Database {
-	public static $connections = array();
-	public static $config;
+class database {
+	static public $connections = array();
+	static public $config;
 
-	public function __construct($config = NULL) {
-		if ($config) {
-			self::$config = $config->read(get_class($this));
-		}
+	public function __construct(&$app) {
+		self::$config = $app->config['database'];
 	}
 
 	public function connect($dsn,$user,$password,$connection='default') {
@@ -44,12 +42,12 @@ class Database {
 	}
 
 	public function columns($tablename,$connection='default') {
-		$connection = self::$connections[$connection];
+		$connection = $this->connection($connection);
 
 		$statement = $connection->prepare('DESCRIBE '.$tablename);
 		$statement->execute();
 		$table_fields = $statement->fetchAll(PDO::FETCH_COLUMN);
-		echo "\$fields = '".implode(',',$table_fields)."';";
+		echo "\$this->fields = array('".implode("','",$table_fields)."');";
 	}
 
 }

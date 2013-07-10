@@ -1,0 +1,12 @@
+
+$config['logger'] = array(
+	'stamp' => 'Y-m-d H:i:s',
+	'filestamp' => 'Y-m-d'
+);
+
+
+
+
+$config['cache'] = array(
+	'time' => 3600
+);
