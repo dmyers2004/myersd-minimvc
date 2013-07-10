@@ -35,6 +35,9 @@ class Application {
 		/* The GET method is default so controller methods look like openAction, others are handled directly openPostAction, openPutAction, openDeleteAction, etc... */
 		$this->config['app']['raw request'] = ucfirst(strtolower($this->config['app']['server']['REQUEST_METHOD']));
 		$this->config['app']['request'] = ($this->config['app']['raw request'] == $config['app']['default request type']) ? '' : $this->config['app']['raw request'];
+		
+		/* if you don't want different method call for ajax turn this off in preRouter */
+		$this->config['app']['is ajax'] = isset($this->config['app']['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->config['app']['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
 		/* Merge Get, Post, Delete, Put into input */
 		$rest = array();
@@ -46,6 +49,23 @@ class Application {
 
 		/* try to call hook if it's there */
 		$this->trigger('preRouter');
+
+		/* run our router */
+		foreach ($app->config['app']['routes'] as $regex_path => $switchto) {
+			$matches = array();
+			if (preg_match($regex_path, $app->config['app']['raw uri'], $matches)) {
+				$app->config['app']['uri'] = preg_replace($regex_path, $switchto, $app->config['app']['raw uri']);
+				break;
+			}
+		}
+
+		foreach ($app->config['app']['requests'] as $regex_path => $switchto) {
+			$matches = array();
+			if (preg_match($regex_path, $app->config['app']['raw request'].'/'.$app->config['app']['uri'], $matches)) {
+				$app->config['app']['request'] = $switchto;
+				break;
+			}
+		}
 
 		/* get the uri pieces */
 		$segs = explode('/',$this->config['app']['uri']);
@@ -73,7 +93,6 @@ class Application {
 		/* if we are just using this single file without all the rest we need some way to reference app */
 		$this->config['app']['main controller']->app = $this;
 
-		$this->config['app']['is ajax'] = isset($this->config['app']['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->config['app']['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
 		$ajax = ($this->config['app']['is ajax'] && $this->config['app']['include ajax']) ? $this->config['app']['include ajax'] : '';
 
@@ -88,6 +107,7 @@ class Application {
 		/* try to call hook if it's there */
 		$this->trigger('preMethod');
 
+		/* let's call our method and capture the output */
 		$this->output = call_user_func_array(array($this->config['app']['main controller'],$this->config['app']['called method']),$this->config['app']['segs']);
 
 		/* try to call hook before output is shown ie. cache, clean, parse, etc... )*/

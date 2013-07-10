@@ -29,7 +29,7 @@ $config['app'] = array(
 );
 
 /* setup the routes */
-$config['router']['routes'] = array(
+$config['app']['routes'] = array(
 	'#^hello/(.*)$#i' => 'main/hello/$1',
 	'#^unit/test$#i' => 'main/unit_test',
 	'#^user/(.*)$#i' => 'main/user/$1',
@@ -39,22 +39,13 @@ $config['router']['routes'] = array(
 );
 
 /*
+Request is now prepended to the beginning of the new url
 
-we then take the match from
-above (if any) and prepend
-the raw request to
-the uri and run these matches
-
-ie raw uri /hello/don converted to /main/hello/don
-then the request is prepended to the uri
-get/main/hello/don
-
-therefore the "get" gets converted to post using the following
-
-^Get/main/hello(.*)$ => 'post'
+/main/index get request becomes get/main/index
+/main/index post request becomes post/main/index
 
 */
-$config['router']['requests'] = array(
+$config['app']['requests'] = array(
 	'#^Get(.*)$#i' => '',
 );
 

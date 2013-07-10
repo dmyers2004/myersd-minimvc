@@ -43,24 +43,6 @@ class hooks {
 
 	/* called before the controller and method and request type is actually used */
 	public function preRouter(&$app) {
-
-		/* run our router */
-		foreach ($app->config['router']['routes'] as $regex_path => $switchto) {
-			$matches = array();
-			if (preg_match($regex_path, $app->config['app']['raw uri'], $matches)) {
-				$app->config['app']['uri'] = preg_replace($regex_path, $switchto, $app->config['app']['raw uri']);
-				break;
-			}
-		}
-
-		foreach ($app->config['router']['requests'] as $regex_path => $switchto) {
-			$matches = array();
-			if (preg_match($regex_path, $app->config['app']['raw request'].'/'.$app->config['app']['uri'], $matches)) {
-				$app->config['app']['request'] = $switchto;
-				break;
-			}
-		}
-		
 	}
 
 	/* called before the controller is instantiated */
@@ -69,7 +51,7 @@ class hooks {
 	}
 	
 	/* called before the method on the controller is called */
-	public function preMethod(&$app)
+	public function preMethod(&$app) {
 	}
 
 	/* if the contoller has returned anything it will be in $app->output */
