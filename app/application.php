@@ -28,8 +28,11 @@ class Application {
 		/* try to call hook if it's there */
 		$this->trigger('startup');
 
-		/* with http:// and with trailing slash - auto detect https adjustment will be needed here */
-		$this->config['app']['base url'] = trim('http://'.$this->config['app']['server']['HTTP_HOST'].dirname($this->config['app']['server']['SCRIPT_NAME']),'/');
+		/* what is the protocal http or https? this could be useful! */
+		$this->config['app']['protocol'] = (strstr('https',$_SERVER['SERVER_PROTOCOL']) === false) ? 'http' : 'https';
+
+		/* what is the base url */
+		$this->config['app']['base url'] = trim($this->config['app']['protocol'].'://'.$this->config['app']['server']['HTTP_HOST'].dirname($this->config['app']['server']['SCRIPT_NAME']),'/');
 
 		/* The GET method is default so controller methods look like openAction, others are handled directly openPostAction, openPutAction, openDeleteAction, etc... */
 		$this->config['app']['request'] = ucfirst(strtolower($this->config['app']['server']['REQUEST_METHOD']));
