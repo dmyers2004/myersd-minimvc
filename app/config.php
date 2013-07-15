@@ -12,45 +12,31 @@ $config['app'] = array(
 	'default method' => 'index',
 	'controller suffix' => 'Controller',
 	'method suffix' => 'Action',
-	'default request type' => 'Get',
-	'display errors' => 'On',
-	'include ajax' => 'Ajax',
+	'ajax prefix' => 'Ajax',
 
 	'folder' => PATH.'/app/',
-	'controller folder' => PATH.'/app/controllers/',
-	'libraries folder' => PATH.'/app/libraries/',
-	'models folder' => PATH.'/app/models/',
-	'view folder' => PATH.'/app/views/',
-	'config folder' => PATH.'/app/config/',
-	'logger folder' => PATH.'/app/var/logs/',
-	'cache folder' => PATH.'/app/var/cache/',
-	'session folder' => PATH.'/app/var/sessions/',
-	'sqlite folder' => PATH.'/app/var/sqlite/'
 );
 
-/* setup the routes */
+$config['app']['folders'] = array(
+	'controller' => PATH.'/app/controllers/',
+	'libraries' => PATH.'/app/libraries/',
+	'models' => PATH.'/app/models/',
+	'view' => PATH.'/app/views/',
+	'logs' => PATH.'/app/var/logs/',
+	'cache' => PATH.'/app/var/cache/',
+	'session' => PATH.'/app/var/sessions/',
+	'sqlite' => PATH.'/app/var/sqlite/'
+);
+
+/* setup the routes mainController/indexGet[Ajax]Action/a/b/c */
 $config['app']['routes'] = array(
-	'#^hello/(.*)$#i' => 'main/hello/$1',
-	'#^unit/test$#i' => 'main/unit_test',
-	'#^user/(.*)$#i' => 'main/user/$1',
-	'#^app/test(.*)#i' => 'main/index$1',
-	'#^app(.*)$#i' => 'main/app$1',
-	'#^rest/(.*)$#i' => 'rest/index/$1',
-);
-
-/*
-Request is now prepended to the beginning of the new url
-
-/main/index get request becomes get/main/index
-/main/index post request becomes post/main/index
-
-*/
-$config['app']['requests'] = array(
-	'#^Get(.*)$#i' => '',
+	'#^helloController/(.*)GetAction(.*)$#i' => 'mainController/helloAction/$1$2',
+	'#^(.*)/(.*)GetAction$#i' => '$1/$2Action',
+	'#^(.*)Controller/(.*)GetAction(.*)$#i' => '$1Controller/$2Action$3',
 );
 
 $config['database'] = array(
-	'db.dsn' => 'sqlite:'.$config['app']['sqlite folder'] .'messaging.sqlite3',
+	'db.dsn' => 'sqlite:'.$config['app']['folders']['sqlite'] .'messaging.sqlite3',
 	'db.user' => null,
 	'db.password' => null,
 
@@ -59,3 +45,11 @@ $config['database'] = array(
 	'db.mysql.password' => 'root'
 );
 
+/*
+	'#^hello/(.*)$#i' => 'main/hello/$1',
+	'#^unit/test$#i' => 'main/unit_test',
+	'#^user/(.*)$#i' => 'main/user/$1',
+	'#^app/test(.*)#i' => 'main/index$1',
+	'#^app(.*)$#i' => 'main/app$1',
+	'#^rest/(.*)$#i' => 'rest/index/$1',
+*/

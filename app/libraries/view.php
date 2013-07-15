@@ -18,7 +18,7 @@ class view {
 
 	public function __construct(&$app) {
 		$app->View = $this; /* assign a copy of me to the application */
-		$this->folder = $app->config['app']['view folder'];
+		$this->folder = $app->config['app']['folders']['view'];
 	}
 
 	public function load($file,$return=true) {

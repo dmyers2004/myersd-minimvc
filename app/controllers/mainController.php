@@ -21,7 +21,7 @@ class mainController extends basePublicController {
 	}
 	
 	public function helloAction($name) {
-		return 'Hello '.$name;
+		return 'Hello '.$name.'<pre>'.print_r($this->app,true);
 	}
 	
 	public function viewAction($name=null) {

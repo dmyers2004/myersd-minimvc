@@ -28,10 +28,6 @@ class hooks {
 
 		/* setup error handler */
 		new Errorhandler;
-				
-		/* Setup Database & View */
-		new Database($app);
-		new View($app);
 
 		/* Start Session */
 		/*
@@ -47,6 +43,9 @@ class hooks {
 
 	/* called before the controller is instantiated */
 	public function preController(&$app) {
+		/* Setup Database & View */
+		//new Database($app);
+		new View($app);
 		new basePublicController($app);
 	}
 	
