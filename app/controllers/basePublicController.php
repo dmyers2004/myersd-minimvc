@@ -15,9 +15,6 @@ class basePublicController {
 	
 	public function __construct(&$app) {
 		$this->app = $app;
-		
-		$this->app->View->set('baseurl',$this->app->config['app']['base url'],'#');
-		
 	}
 
 } /* end controller */

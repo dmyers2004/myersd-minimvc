@@ -1,7 +1,5 @@
 <?php
-/* ALL config goes in here */
-
-/* HTTP Put handler */
+/* PHP HTTP Put handler */
 $_PUT = array();
 parse_str(file_get_contents('php://input'), $_PUT);
 
@@ -15,9 +13,10 @@ $config['app'] = array(
 	'method suffix' => 'Action',
 	'ajax prefix' => 'Ajax',
 
-	'folder' => PATH.'/app/',
+	'folder' => PATH.'/app/'
 );
 
+/* injection! baby! */
 $config['app']['input'] = array(
 	'server' => $_SERVER,
 	'get' => $_GET,
@@ -26,9 +25,10 @@ $config['app']['input'] = array(
 	'cookies' => $_COOKIE,
 	'env' => $_ENV,
 	'session' => $_SESSION,
-	'put' => $_PUT,
+	'put' => $_PUT
 );
 
+/* customization baby! */
 $config['app']['folders'] = array(
 	'controller' => PATH.'/app/controllers/',
 	'libraries' => PATH.'/app/libraries/',
@@ -40,11 +40,11 @@ $config['app']['folders'] = array(
 	'sqlite' => PATH.'/app/var/sqlite/'
 );
 
-/* setup the routes mainController/indexGet[Ajax]Action/a/b/c */
+/* Routes mainController/indexGet[Ajax]Action/a/b/c?name=John */
 $config['app']['routes'] = array(
 	'#^helloController/(.*)GetAction(.*)$#i' => 'mainController/helloAction/$1$2',
 	'#^(.*)/(.*)GetAction$#i' => '$1/$2Action',
-	'#^(.*)Controller/(.*)GetAction(.*)$#i' => '$1Controller/$2Action$3',
+	'#^(.*)Controller/(.*)GetAction(.*)$#i' => '$1Controller/$2Action$3'
 );
 
 /* database config */

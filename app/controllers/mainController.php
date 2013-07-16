@@ -32,13 +32,19 @@ class mainController extends basePublicController {
 	}
 	
 	public function viewAction() {
-		
+		/* you could do this in basePublicController construct or with a hook */
+		new View($this->app);
+		$this->app->View->set('baseurl',$this->app->config['app']['base url'],'#');
+
 		return $this->app->View
 			->set('body','<h2>This is the body</h2>')
 			->load('layout');
 	}
 	
 	public function dbAction() {
+		/* you could do this in basePublicController construct or with a hook */
+		new Database($this->app);
+		
 		echo '<pre>';
 
 		$mPeople = new mPeople;
@@ -53,6 +59,9 @@ class mainController extends basePublicController {
 	}
 	
 	public function jsonAction() {
+		/* you could do this in basePublicController construct or with a hook */
+		new View($this->app);
+		
 		return $this->app->View
 			->set(array('name'=>'Don','age'=>42))
 			->json($data);

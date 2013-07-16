@@ -9,7 +9,7 @@
 * @license    Released under the MIT License.
 */
 
-class orm extends database {
+class orm extends Database {
 
 	public $records = array();
 	public $count = 0;

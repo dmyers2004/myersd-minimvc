@@ -30,11 +30,9 @@ class hooks {
 		new Errorhandler;
 
 		/* Start Session */
-		/*
-		session_save_path($app->config['app']['session folder']);
-		session_name(md5($app->base_url));
+		session_save_path($app->config['app']['folders']['session']);
+		session_name('s'.md5($app->config['app']['base url']));
 		session_start();
-		*/
 	}
 
 	/* called before the controller and method and request type is actually used */
@@ -43,10 +41,6 @@ class hooks {
 
 	/* called before the controller is instantiated */
 	public function preController(&$app) {
-		/* Setup Database & View */
-		//new Database($app);
-		new View($app);
-		new basePublicController($app);
 	}
 	
 	/* called before the method on the controller is called */
