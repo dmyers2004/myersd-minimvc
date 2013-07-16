@@ -6,6 +6,7 @@ parse_str(file_get_contents('php://input'), $_PUT);
 /* setup "assume nothing" config/injection and start the party! */
 $config['app'] = array(
  	'run code' => getenv('RUNCODE'),
+ 	'run version' => php_sapi_name(),
 
 	'default controller' => 'main',
 	'default method' => 'index',
