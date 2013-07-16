@@ -61,13 +61,8 @@ class Application {
 		$controller = (!empty($segs[0])) ? strtolower(array_shift($segs)) : $this->config['app']['default controller'];
 		$method = (!empty($segs[0])) ? strtolower(array_shift($segs)) : $this->config['app']['default method'];
 
-		/* class name of the controller */
-		$this->config['app']['classname'] = $controller.$this->config['app']['controller suffix'];
-
-		/* call the method - will throw an error you must catch if it's not there */
-		$this->config['app']['called method'] = $method.($this->config['app']['is ajax'] ? $this->config['app']['ajax prefix'] : '').$this->config['app']['request'].$this->config['app']['method suffix'];
-
-		$this->config['app']['route'] = $this->config['app']['raw route'] = rtrim($this->config['app']['classname'].'/'.$this->config['app']['called method'].'/'.implode('/',$segs),'/');
+		/* what are we looking for? raw route will also contain the "raw" pre router route incase you need it */
+		$this->config['app']['route'] = $this->config['app']['raw route'] = rtrim($controller.$this->config['app']['controller suffix'].'/'.$method.($this->config['app']['is ajax'] ? $this->config['app']['ajax prefix'] : '').$this->config['app']['request'].$this->config['app']['method suffix'].'/'.implode('/',$segs),'/');
 
 		/* try to call hook if it's there */
 		$this->trigger('preRouter');
@@ -80,7 +75,7 @@ class Application {
 			}
 		}
 
-		/* ok let's explode our new route */
+		/* ok let's explode our post router route */
 		$segs = explode('/',$this->config['app']['route']);
 
 		/* new routed classname and called method */
@@ -117,6 +112,7 @@ class Application {
 		/* try to call hook before output is shown ie. cache, clean, parse, etc... )*/
 		$this->trigger('preOutput');
 
+		/* return it to index.php for final echo */
 		return $this->output;
 	}
 
