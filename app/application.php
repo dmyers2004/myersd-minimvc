@@ -12,10 +12,13 @@
 class Application {
 
 	public $config;
+	public $input;
 	public $output;
 
 	public function __construct(&$config){
 		$this->config = $config;
+		$this->input = $config['app']['input'];
+		$this->output = '';
 	}
 
 	public function run() {
@@ -29,24 +32,19 @@ class Application {
 		$this->trigger('startup');
 
 		/* what is the protocal http or https? this could be useful! */
-		$this->config['app']['protocol'] = (strstr('https',$_SERVER['SERVER_PROTOCOL']) === false) ? 'http' : 'https';
+		$this->config['app']['https'] = (strstr('https',$this->input['server']['SERVER_PROTOCOL']) === TRUE);
 
 		/* what is the base url */
-		$this->config['app']['base url'] = trim($this->config['app']['protocol'].'://'.$this->config['app']['server']['HTTP_HOST'].dirname($this->config['app']['server']['SCRIPT_NAME']),'/');
+		$this->config['app']['base url'] = ($this->config['app']['https'] ? 'https' : 'http').'://'.trim($this->input['server']['HTTP_HOST'].dirname($this->input['server']['SCRIPT_NAME']),'/');
 
 		/* The GET method is default so controller methods look like openAction, others are handled directly openPostAction, openPutAction, openDeleteAction, etc... */
-		$this->config['app']['request'] = ucfirst(strtolower($this->config['app']['server']['REQUEST_METHOD']));
+		$this->config['app']['request'] = ucfirst(strtolower($this->input['server']['REQUEST_METHOD']));
 
 		/* if you don't want different method call for ajax turn this off in preRouter */
-		$this->config['app']['is ajax'] = isset($this->config['app']['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->config['app']['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
-
-		/* RAW input for Rest */
-		$rest = array();
-		parse_str(file_get_contents('php://input'), $rest);
-		$this->config['app']['raw input'] = $rest;
+		$this->config['app']['is ajax'] = isset($this->input['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->input['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
 		/* get the uri (uniform resource identifier) */
-		$this->config['app']['uri'] = trim(urldecode(substr(parse_url($this->config['app']['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->config['app']['server']['SCRIPT_NAME'])))),'/');
+		$this->config['app']['uri'] = trim(urldecode(substr(parse_url($this->input['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->input['server']['SCRIPT_NAME'])))),'/');
 
 		/* get the uri pieces */
 		$segs = explode('/',$this->config['app']['uri']);
@@ -110,8 +108,6 @@ class Application {
 		/* try to call hook before output is shown ie. cache, clean, parse, etc... )*/
 		$this->trigger('preOutput');
 
-		echo $this->config['app']['benchmark'] = microtime(true) - $this->config['app']['server']['REQUEST_TIME_FLOAT'];
-
 		return $this->output;
 	}
 
@@ -126,11 +122,11 @@ class Application {
 
 		$load = $path.$name.'.php';
 
-		$isfound = false;
+		$isfound = FALSE;
 
 		if (file_exists($load)) {
 			require_once($load);
-			$isfound = true;
+			$isfound = TRUE;
 		}
 
 		return $isfound;

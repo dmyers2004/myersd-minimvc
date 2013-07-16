@@ -81,6 +81,14 @@ class view {
 		return $this->data[$name];
 	}
 
+	public function json($value,$options=0) {
+		header('Cache-Control: no-cache, must-revalidate');
+		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+		header('Content-Type: application/json; charset=utf=8');
+		
+		return json_encode($value,$options);
+	}
+
 	private function _capture($_mvc_file,$_mvc_data) {
 		extract((array) $_mvc_data);
 		ob_start();

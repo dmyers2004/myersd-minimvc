@@ -1,12 +1,12 @@
 <?php
 
-/* setup "assume nothing" config and start the party! */
-$config['app'] = array(
- 	'run code' => RUNCODE,
+/* HTTP Put handler */
+$_PUT = array();
+parse_str(file_get_contents('php://input'), $_PUT);
 
-	'server' => $_SERVER,
-	'get' => $_GET,
-	'post' => $_POST,
+/* setup "assume nothing" config/injection and start the party! */
+$config['app'] = array(
+ 	'run code' => getenv('RUNCODE'),
 
 	'default controller' => 'main',
 	'default method' => 'index',
@@ -15,6 +15,17 @@ $config['app'] = array(
 	'ajax prefix' => 'Ajax',
 
 	'folder' => PATH.'/app/',
+);
+
+$config['app']['input'] = array(
+	'server' => $_SERVER,
+	'get' => $_GET,
+	'post' => $_POST,
+	'files' => $_FILES,
+	'cookies' => $_COOKIE,
+	'env' => $_ENV,
+	'session' => $_SESSION,
+	'put' => $_PUT,
 );
 
 $config['app']['folders'] = array(

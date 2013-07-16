@@ -46,4 +46,9 @@ class mainController extends basePublicController {
 		var_dump($mPeople->count());
 	}
 	
+	public function jsonAction() {
+		$data = array('name'=>'Don','age'=>42);
+		return $this->app->View->json($data);
+	}
+	
 } /* end controller */
