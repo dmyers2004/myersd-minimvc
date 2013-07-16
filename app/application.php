@@ -16,9 +16,17 @@ class Application {
 	public $output;
 
 	public function __construct(&$config){
-		$this->config = $config;
-		$this->input = $config['app']['input'];
+		/* set output */
 		$this->output = '';
+		
+		/* setup input */
+		$this->input = $config['app']['input'];
+		
+		/* clear out input in config to save memory and not have a 2nd copy */
+		unset($config['app']['input']);
+		
+		/* setup config */
+		$this->config = &$config;
 	}
 
 	public function run() {
@@ -32,10 +40,10 @@ class Application {
 		$this->trigger('startup');
 
 		/* what is the protocal http or https? this could be useful! */
-		$this->config['app']['https'] = (strstr('https',$this->input['server']['SERVER_PROTOCOL']) === TRUE);
+		$this->config['app']['is https'] = (strstr('https',$this->input['server']['SERVER_PROTOCOL']) === TRUE);
 
 		/* what is the base url */
-		$this->config['app']['base url'] = ($this->config['app']['https'] ? 'https' : 'http').'://'.trim($this->input['server']['HTTP_HOST'].dirname($this->input['server']['SCRIPT_NAME']),'/');
+		$this->config['app']['base url'] = ($this->config['app']['is https'] ? 'https' : 'http').'://'.trim($this->input['server']['HTTP_HOST'].dirname($this->input['server']['SCRIPT_NAME']),'/');
 
 		/* The GET method is default so controller methods look like openAction, others are handled directly openPostAction, openPutAction, openDeleteAction, etc... */
 		$this->config['app']['request'] = ucfirst(strtolower($this->input['server']['REQUEST_METHOD']));
@@ -46,7 +54,7 @@ class Application {
 		/* get the uri (uniform resource identifier) */
 		$this->config['app']['uri'] = trim(urldecode(substr(parse_url($this->input['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->input['server']['SCRIPT_NAME'])))),'/');
 
-		/* get the uri pieces */
+		/* get the raw uri pieces */
 		$segs = explode('/',$this->config['app']['uri']);
 
 		/* If they didn't include a controller and method use the defaults  main & index */
@@ -72,10 +80,13 @@ class Application {
 			}
 		}
 
+		/* ok let's explode our new route */
 		$segs = explode('/',$this->config['app']['route']);
 
 		/* new routed classname and called method */
 		$this->config['app']['classname'] = array_shift($segs);
+		
+		/* new method to call on classname */
 		$this->config['app']['called method'] = array_shift($segs);
 
 		/* store what ever is left over in segs */
@@ -89,21 +100,19 @@ class Application {
 			throw new Exception($this->config['app']['classname'].' not found',4004);
 		}
 
-		$main = new $this->config['app']['classname'];
-
-		/* if we are just using this single file without all the rest we need some way to reference app */
-		$main->app = $this;
+		/* create new controller inject $app ($this) */	
+		$main_controller = new $this->config['app']['classname']($this);
 
 		/* try to call hook if it's there */
 		$this->trigger('preMethod');
 
 		/* This throws a error and 4005 - handle it in your error handler */
-		if (!is_callable(array($main,$this->config['app']['called method']))) {
+		if (!is_callable(array($main_controller,$this->config['app']['called method']))) {
 			throw new Exception($this->config['app']['classname'].' method '.$this->config['app']['called method'].' not found',4005);
 		}
 
 		/* let's call our method and capture the output */
-		$this->output = call_user_func_array(array($main,$this->config['app']['called method']),$this->config['app']['segs']);
+		$this->output = call_user_func_array(array($main_controller,$this->config['app']['called method']),$this->config['app']['segs']);
 
 		/* try to call hook before output is shown ie. cache, clean, parse, etc... )*/
 		$this->trigger('preOutput');

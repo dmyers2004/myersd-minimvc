@@ -9,6 +9,7 @@
 	<body>
 		<div class="container">
 		<?=$body ?>
+		<p><?=$baseurl ?></p>
 		</div>
 	</body>
 </html>

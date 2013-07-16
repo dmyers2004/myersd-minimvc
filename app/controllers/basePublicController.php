@@ -12,21 +12,12 @@
 
 class basePublicController {
 	public $app;
-
-	public function __construct(&$app=null) {
-		
-		if ($app !== null) {		
-			$this->app = $app;
-			
-			$this->app->View->set(array(
-				'baseurl'=>$this->app->config['app']['base url'],
-				'uri'=>$this->app->config['app']['uri']
-			));
-			
-			
-			
-		}
 	
+	public function __construct(&$app) {
+		$this->app = $app;
+		
+		$this->app->View->set('baseurl',$this->app->config['app']['base url'],'#');
+		
 	}
 
 } /* end controller */

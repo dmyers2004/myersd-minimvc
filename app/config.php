@@ -1,4 +1,5 @@
 <?php
+/* ALL config goes in here */
 
 /* HTTP Put handler */
 $_PUT = array();
@@ -46,6 +47,7 @@ $config['app']['routes'] = array(
 	'#^(.*)Controller/(.*)GetAction(.*)$#i' => '$1Controller/$2Action$3',
 );
 
+/* database config */
 $config['database'] = array(
 	'db.dsn' => 'sqlite:'.$config['app']['folders']['sqlite'] .'messaging.sqlite3',
 	'db.user' => null,

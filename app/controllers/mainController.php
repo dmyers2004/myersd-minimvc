@@ -12,8 +12,15 @@
 
 class mainController extends basePublicController {
 
-	public function __construct() {
-		parent::__construct();
+	/*
+	pass injected $app to parent to setup
+	you could handle it here but by extending
+	basePublicController I only need to write the logic once
+	another base class could be baseAdminController or jsonPublicContoller
+	which could also extend basePublicController for example
+	*/
+	public function __construct(&$app) {
+		parent::__construct($app);
 	}
 	
 	public function indexAction() {
@@ -24,12 +31,11 @@ class mainController extends basePublicController {
 		return 'Hello '.$name.'<pre>'.print_r($this->app,true);
 	}
 	
-	public function viewAction($name=null) {
+	public function viewAction() {
 		
 		return $this->app->View
-			->set('body',$name)
+			->set('body','<h2>This is the body</h2>')
 			->load('layout');
-		
 	}
 	
 	public function dbAction() {
@@ -47,8 +53,9 @@ class mainController extends basePublicController {
 	}
 	
 	public function jsonAction() {
-		$data = array('name'=>'Don','age'=>42);
-		return $this->app->View->json($data);
+		return $this->app->View
+			->set(array('name'=>'Don','age'=>42))
+			->json($data);
 	}
 	
 } /* end controller */

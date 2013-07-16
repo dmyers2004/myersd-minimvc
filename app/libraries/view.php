@@ -81,7 +81,9 @@ class view {
 		return $this->data[$name];
 	}
 
-	public function json($value,$options=0) {
+	public function json($value=null,$options=0) {
+		$value = ($value == null) ? $this->data : $value;
+		
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 		header('Content-Type: application/json; charset=utf=8');
