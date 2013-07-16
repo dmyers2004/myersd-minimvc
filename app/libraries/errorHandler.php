@@ -9,7 +9,7 @@
 * @license    Released under the MIT License.
 */
 
-class errorhandler {
+class Errorhandler {
 
 	public function __construct() {
 		set_exception_handler(array($this,'exceptionHandler'));
