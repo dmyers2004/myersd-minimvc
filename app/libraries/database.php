@@ -9,7 +9,7 @@
 * @license    Released under the MIT License.
 */
 
-class database {
+class Database {
 	static public $connections = array();
 	static public $config;
 
@@ -41,7 +41,7 @@ class database {
 		return $this->connect($dsn,$user,$password,$connection);
 	}
 
-	public function columns($tablename,$connection='default') {
+	public function _columns($tablename,$connection='default') {
 		$connection = $this->connection($connection);
 
 		$statement = $connection->prepare('DESCRIBE '.$tablename);

@@ -16,7 +16,7 @@
 * preOutput
 */
 
-class hooks {
+class Hooks {
 
 	/* called after turn off all errors (default) and register the autoloader */
 	public function startup(&$app) {

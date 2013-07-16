@@ -12,7 +12,7 @@
 *
 */
 
-class view {
+class View {
 	public $data = array(); /* view data */
 	public $folder = '';
 
