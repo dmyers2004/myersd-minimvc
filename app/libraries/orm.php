@@ -23,6 +23,7 @@ class Orm extends Database {
 	public $data = array();
 
 	public function __construct() {
+		/* no need to call database parent it should already be setup */
 		$this->clear();
 	}
 
