@@ -2,13 +2,13 @@
 BASEDIR=$(dirname $0)
 
 echo --application--
-$BASEDIR/phpunit.phar --colors $BASEDIR/application.php
+$BASEDIR/phpunit.phar --colors $BASEDIR/tests/application.php
 
 echo --Hooks--
-$BASEDIR/phpunit.phar --colors $BASEDIR/hooks.php
+$BASEDIR/phpunit.phar --colors $BASEDIR/tests/hooks.php
 
 echo --Config--
-$BASEDIR/phpunit.phar --colors $BASEDIR/config.php
+$BASEDIR/phpunit.phar --colors $BASEDIR/tests/config.php
 
 echo --Router--
-$BASEDIR/phpunit.phar --colors $BASEDIR/router.php
+$BASEDIR/phpunit.phar --colors $BASEDIR/tests/router.php
