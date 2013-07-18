@@ -1,6 +1,11 @@
 <?php
 /* where are we? - this is used a lot so let's define it */
-define('PATH', __DIR__.'/..');
+define('PATH', realpath(__DIR__.'/..'));
+
+/* examples
+define('PATH', __DIR__); - everything in root folder
+define('PATH', realpath(__DIR__.'/..')); - everything in "public" folder and app 1 level down 
+*/
 
 /* load our config settings - or testing mockup */
 require PATH.'/app/config.php';
