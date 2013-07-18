@@ -31,7 +31,7 @@ $config['app']['input'] = array(
 
 /* customization baby! */
 $config['app']['folders'] = array(
-	'controller' => PATH.'/app/controllers/',
+	'controllers' => PATH.'/app/controllers/',
 	'libraries' => PATH.'/app/libraries/',
 	'models' => PATH.'/app/models/',
 	'view' => PATH.'/app/views/',

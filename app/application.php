@@ -119,7 +119,7 @@ class Application {
 	/* Controller, Library, Model Autoloader */
 	public function autoLoader($name) {
 		if (substr($name,-strlen($this->config['app']['controller suffix'])) == $this->config['app']['controller suffix']) {
-			$path = $this->config['app']['folders']['controller'];
+			$path = $this->config['app']['folders']['controllers'];
 		} else {
 			$path = ($name{0} >= 'A' && $name{0} <='Z') ? $this->config['app']['folders']['libraries'] : $this->config['app']['folders']['models'];
 			$name = strtolower($name);

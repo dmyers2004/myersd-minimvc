@@ -1,6 +1,6 @@
 <?php
 /* where are we? - this is used a lot so let's define it */
-define('PATH', __DIR__);
+define('PATH', __DIR__.'/..');
 
 /* load our config settings - or testing mockup */
 require PATH.'/app/config.php';
