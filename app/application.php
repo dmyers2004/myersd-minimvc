@@ -58,8 +58,8 @@ class Application {
 		$segs = explode('/',$this->config['app']['uri']);
 
 		/* If they didn't include a controller and method use the defaults  main & index */
-		$controller = (!empty($segs[0])) ? strtolower(array_shift($segs)) : $this->config['app']['default controller'];
-		$method = (!empty($segs[0])) ? strtolower(array_shift($segs)) : $this->config['app']['default method'];
+		$controller = (!empty($segs[0])) ? array_shift($segs) : $this->config['app']['default controller'];
+		$method = (!empty($segs[0])) ? array_shift($segs) : $this->config['app']['default method'];
 
 		/* what are we looking for? raw route will also contain the "raw" pre router route incase you need it */
 		$this->config['app']['route'] = $this->config['app']['raw route'] = rtrim($controller.$this->config['app']['controller suffix'].'/'.$method.($this->config['app']['is ajax'] ? $this->config['app']['ajax prefix'] : '').$this->config['app']['request'].$this->config['app']['method suffix'].'/'.implode('/',$segs),'/');
@@ -70,7 +70,7 @@ class Application {
 		/* run our router http://www.example.com/main/index/a/b/c = mainController/indexGet[Ajax]Action/a/b/c */
 		foreach ($this->config['app']['routes'] as $regex_path => $switchto) {
 			if (preg_match($regex_path, $this->config['app']['raw route'])) {
-				$this->config['app']['route'] = preg_replace($regex_path, $switchto, $this->config['app']['raw route']);
+				$this->config['app']['route'] = preg_replace($regex_path, $switchto, $this->config['app']['route']);
 				break;
 			}
 		}

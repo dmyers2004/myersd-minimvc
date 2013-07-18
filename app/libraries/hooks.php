@@ -30,9 +30,11 @@ class Hooks {
 		new Errorhandler;
 
 		/* Start Session */
-		session_save_path($app->config['app']['folders']['session']);
-		session_name('s'.md5($app->config['app']['base url']));
-		session_start();
+		if (!headers_sent()) {
+			session_save_path($app->config['app']['folders']['session']);
+			session_name('s'.md5($app->config['app']['base url']));
+			session_start();
+		}
 	}
 
 	/* called before the controller and method and request type is actually used */

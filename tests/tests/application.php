@@ -1,16 +1,17 @@
 <?php
-class Testapplication extends PHPUnit_Framework_TestCase {  
+class Testapplication extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		ini_set('display_errors','On');
 		error_reporting(E_ALL);
-		
-		define('PATH', realpath(__DIR__.'/../../'));
-		define('HERE', realpath(__DIR__.'/../'));
-		
-		echo chr(10).'Application Path '.PATH.chr(10);
-		echo 'Tests Path '.HERE.chr(10);
-		
+
+		if (!defined('PATH')) {
+			define('PATH', realpath(__DIR__.'/../../'));
+			define('HERE', realpath(__DIR__.'/../'));
+			echo chr(10).'Application Path '.PATH.chr(10);
+			echo 'Tests Path '.HERE.chr(10);
+		}
+
 		/* go out and get the real application.php file */
 		require_once PATH.'/app/application.php';
 	}
@@ -19,11 +20,11 @@ class Testapplication extends PHPUnit_Framework_TestCase {
 
 	}
 
-	public function testBasic() {
+	public function testConfig() {
 	  require HERE.'/mocks/config.php';
 
 	  $app = new application($config);
-	  
+
 		$this->assertEquals($app->config['app']['run code'], 'mock');
 		$this->assertEquals($app->config['app']['handler'], 'mocker');
 		$this->assertEquals($app->config['app']['default controller'], 'main');
@@ -34,120 +35,229 @@ class Testapplication extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($app->config['app']['folder'], '/Applications/MAMP/htdocs/basicmvc-template/app/');
   }
 
-	public function xtestStandard() {
-		$server = $this->default_server('/foo/bar/model/put','PUT',true);
-		$server['HTTP_HOST'] = 'dev.somethingelse.com';
-		
-		$post = array(
-			'name' => 'Joe',
-			'thing' => 'Coffee',
-		);
-		
-		$config = $this->default_config($server,array(),$post);
-		$config['run code'] = 'debug';
+	public function testEmpty() {
+	  require HERE.'/mocks/config.php';
 
-	  $app = new application($config); 
-		$this->assertEquals($app->run_code, 'debug');
-		$this->assertTrue($app->is_ajax);
-		$this->assertEquals($app->base_url, 'http://dev.somethingelse.com');
-		$this->assertEquals($app->raw_uri, 'foo/bar/model/put');
-		$this->assertEquals($app->uri, 'foo/bar/model/put');
-		$this->assertEquals($app->raw_request, 'Put');
-		$this->assertEquals($app->request, 'Put');
-		$this->assertEquals($app->controller, 'foo');
-		$this->assertEquals($app->method, 'bar');
-		$this->assertEquals($app->segs, Array('model','put'));
-		$this->assertEquals($app->input['name'], 'Joe');
-		$this->assertEquals($app->input['thing'], 'Coffee');
-		$this->assertInstanceOf('fooController',$app->main_controller);
-  }  
-
-	public function xtestOutput() {
-		$server = $this->default_server('/main/foo');		
-		$config = $this->default_config($server);
-
-	  $app = new application($config);
-		
-		$this->assertEquals($app->raw_uri, 'main/foo');
-		$this->assertEquals($app->uri, 'main/foo');
-		$this->assertInstanceOf('mainController',$app->main_controller);
-		$this->assertEquals($app->output, 'Bar');
-	}
-
-	public function xtestInput() {
-		$server = $this->default_server('/main/fobo/John/Doe');
-		$config = $this->default_config($server);
-
-	  $app = new application($config);
-		
-		$this->assertEquals($app->raw_uri, 'main/fobo/John/Doe');
-		$this->assertEquals($app->uri, 'main/fobo/John/Doe');
-		$this->assertEquals($app->raw_request, 'Get');
-		$this->assertEquals($app->request, '');
-		$this->assertEquals($app->controller, 'main');
-		$this->assertEquals($app->method, 'fobo');
-		$this->assertEquals($app->segs, Array('John','Doe'));
-		$this->assertEquals($app->output, 'A: John B: Doe');
-	}
-
-	public function xtestAjaxPut() {
-		$server = $this->default_server('/main/foo/','PUT',true);
-
-		$post = array();
-		$post['a'] = 'Black';
-		$post['b'] = 'Coffee';
-
-		$config = $this->default_config($server,array(),$post);
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
 
 	  $app = new application($config);
 
-		$this->assertEquals($app->run_code, 'production');
-		$this->assertTrue($app->is_ajax);
-		$this->assertEquals($app->base_url, 'http://www.devlocal.com');
-		$this->assertEquals($app->raw_uri, 'main/foo');
-		$this->assertEquals($app->uri, 'main/foo');
-		$this->assertEquals($app->raw_request, 'Put');
-		$this->assertEquals($app->request, 'Put');
-		$this->assertEquals($app->controller, 'main');
-		$this->assertEquals($app->method, 'foo');
-		$this->assertEquals($app->segs, Array());
-		$this->assertInstanceOf('mainController', $app->main_controller);
-		$this->assertEquals($app->input['a'], 'Black');
-		$this->assertEquals($app->input['b'], 'Coffee');
-		$this->assertEquals($app->output, 'A: Black B: Coffee');
+		$this->assertEquals($app->run(),'<h1>MainIndex</h1>');
+  }
+
+  public function testMain() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['config']['uri'] = 'main';
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'<h1>MainIndex</h1>');
+  }
+
+  public function testMainIndex() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['config']['uri'] = 'main/index';
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'<h1>MainIndex</h1>');
+  }
+
+  public function testBlue() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_URI'] = '/blue';
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'<h1>BlueIndex</h1>');
+  }
+
+  public function testBlueShoes() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_URI'] = '/blue/shoes';
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'<h1>BlueShoes</h1>');
+  }
+
+  public function testBlueShoes2() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_URI'] = '/BlUe/';
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'<h1>BlueIndex</h1>');
+  }
+
+  public function testBlueShoes3() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_URI'] = '/blue///';
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'<h1>BlueIndex</h1>');
+  }
+
+  public function testRouter1() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_URI'] = '/blue';
+		$config['app']['routes'] = array('#^blueController/indexGetAction(.*)$#i' => 'mainController/indexAction/$1$2');
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'<h1>MainIndex</h1>');
+  }
+
+  public function testRouter2() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_URI'] = '/hello/John';
+		$config['app']['routes'] = array('#^helloController/(.*)GetAction(.*)$#i' => 'mainController/helloAction/$1$2');
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'Hello John');
+  }
+
+  public function testRouter3() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_URI'] = '/hello/there/John';
+		$config['app']['routes'] = array('#^helloController/(.*)GetAction(.*)$#i' => 'mainController/helloAction$2');
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'Hello John');
+  }
+
+  public function testRouter4() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_URI'] = '/hello/foo/BAR';
+		$config['app']['routes'] = array('#^helloController/(.*)GetAction(.*)$#i' => 'mainController/helloAction$2');
+
+	  $app = new application($config);
+
+		$this->assertEquals($app->run(),'Hello BAR');
+  }
+
+  public function testInput1() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+
+	  $app = new application($config);
+
+		$html = $app->run();
+
+		$this->assertEquals($app->config['app']['is https'],'');
+		$this->assertEquals($app->config['app']['base url'],'http://basicmvc-template.localtest.me');
+		$this->assertEquals($app->config['app']['request'],'Get');
+		$this->assertEquals($app->config['app']['is ajax'],'');
+		$this->assertEquals($app->config['app']['uri'],'');
+		$this->assertEquals($app->config['app']['raw route'],'mainController/indexGetAction');
+		$this->assertEquals($app->config['app']['route'],'mainController/indexAction');
+		$this->assertEquals($app->config['app']['classname'],'mainController');
+		$this->assertEquals($app->config['app']['called method'],'indexAction');
+		$this->assertEquals($app->config['app']['segs'],array());
+
+		$this->assertEquals($html,'<h1>MainIndex</h1>');
+  }
+
+	public function testOutput1() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+
+	  $app = new application($config);
+
+		$html = $app->run();
+
+		$this->assertEquals($app->output,'<h1>MainIndex</h1>');
+		$this->assertEquals($html,'<h1>MainIndex</h1>');
+	} 
+
+	public function testPost1() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_METHOD'] = 'POST';
+
+	  $app = new application($config);
+		$html = $app->run();
+
+		$this->assertEquals($app->output,'<h1>MainPostIndex</h1>');
+		$this->assertEquals($html,'<h1>MainPostIndex</h1>');
 	}
 
-	/* helper functions */
-	private function xdefault_config($server=array(),$get=array(),$post=array(),$files=array(),$cookies=array()) {
-		$app_dir = realpath(__DIR__.'/application_mocks');
-	
-		return array(
-			'run code' => 'production',
-			'default controller' => 'main',
-			'default method' => 'index',
-			'server' => $server,
-			'get' => $get,
-			'post' => $post,
-			'folder' => $app_dir.'/',
-			'controller folder' => $app_dir.'/controllers',
-			'libraries folder' => $app_dir.'/libraries',
-			'models folder' => $app_dir.'/models',
-			'controller suffix' => 'Controller',
-			'method suffix' => 'Action',
-			'default request type' => 'Get',
-			'display errors' => 'On',
-			'include ajax' => 'Ajax'
-		);
+	public function testPost2() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_METHOD'] = 'POST';
+		$config['app']['input']['server']['REQUEST_URI'] = '/hello/foo/BAR';		
+		$config['app']['routes'] = array('#^helloController/(.*)PostAction(.*)$#i' => 'mainController/helloAction$2');
+
+	  $app = new application($config);
+
+		$html = $app->run();
+
+		$this->assertEquals($app->output,'Hello BAR');
+		$this->assertEquals($html,'Hello BAR');
 	}
-	
-	private function xdefault_server($uri='/',$method='GET',$isajax=false) {
-		return array(  	
-			'HTTP_X_REQUESTED_WITH' => ($isajax) ? 'xmlhttprequest' : '',
-			'SCRIPT_NAME' => '/index.php',
-			'REQUEST_METHOD' => strtoupper($method),
-			'REQUEST_URI' => $uri,
-			'HTTP_HOST' => 'www.devlocal.com',
-		);
+
+	public function testPost3() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_METHOD'] = 'POST';
+		$config['app']['input']['server']['REQUEST_URI'] = '/hello/foo/BAR';		
+		$config['app']['routes'] = array('#^helloController/(.*)PostAction(.*)$#i' => 'mainController/helloAction$2');
+
+	  $app = new application($config);
+
+		$html = $app->run();
+
+		$this->assertEquals($app->input['post']['name'],'John Post');
+
+		$this->assertEquals($app->output,'Hello BAR');
+		$this->assertEquals($html,'Hello BAR');
+	}
+
+	public function testPut1() {
+	  require HERE.'/mocks/config.php';
+
+		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
+		$config['app']['input']['server']['REQUEST_METHOD'] = 'POST';
+		$config['app']['input']['server']['REQUEST_URI'] = '/hello/foo/BAR';		
+		$config['app']['routes'] = array('#^helloController/(.*)PostAction(.*)$#i' => 'mainController/helloAction$2');
+
+	  $app = new application($config);
+
+		$html = $app->run();
+
+		$this->assertEquals($app->input['put']['name'],'John Put');
+
+		$this->assertEquals($app->output,'Hello BAR');
+		$this->assertEquals($html,'Hello BAR');
 	}
 
 }
