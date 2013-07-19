@@ -19,9 +19,6 @@ $app = new application($config);
 /* echo any output */
 echo $app->run();
 
-
-
-
 /* Show Request time & memory usage -- comment/uncomment */
 /*
 echo '<p>'.(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']).'ms</p>';
