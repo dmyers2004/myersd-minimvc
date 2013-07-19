@@ -15,8 +15,9 @@
 * preMethod
 * preOutput
 */
+namespace libraries;
 
-class Hooks {
+class hooks {
 
 	/* called after turn off all errors (default) and register the autoloader */
 	public function startup(&$app) {
@@ -27,7 +28,7 @@ class Hooks {
 		date_default_timezone_set('UTC');
 
 		/* setup error handler */
-		new Errorhandler;
+		new \libraries\errorhandler;
 
 		/* Start Session */
 		if (!headers_sent()) {

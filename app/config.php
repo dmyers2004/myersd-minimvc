@@ -1,7 +1,7 @@
 <?php
 /* PHP HTTP Put handler */
 $_PUT = array();
-parse_str(file_get_contents('php://input'), $_PUT);
+\parse_str(file_get_contents('php://input'), $_PUT);
 
 /* setup "assume nothing" config/injection and start the party! */
 $config['app'] = array(

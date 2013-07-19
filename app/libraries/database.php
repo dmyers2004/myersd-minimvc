@@ -8,8 +8,9 @@
 * @copyright  Copyright (c) 2011
 * @license    Released under the MIT License.
 */
+namespace libraries;
 
-class Database {
+class database {
 	static public $connections = array();
 	static public $config;
 
@@ -21,9 +22,9 @@ class Database {
 		/* if the connection isn't there then try to create it */
 		if (!isset(self::$connections[$connection])) {
 			try {
-				$handle = new PDO($dsn , $user, $password);
+				$handle = new \PDO($dsn , $user, $password);
 			} catch (PDOException $e) {
-				throw new Exception($e->getMessage());
+				throw new \Exception($e->getMessage());
 			}
 			self::$connections[$connection] = $handle;
 		}

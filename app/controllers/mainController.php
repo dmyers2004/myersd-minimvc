@@ -9,6 +9,7 @@
 	* @license    Released under the MIT License.
 	*
 	*/
+namespace controllers;
 
 class mainController extends basePublicController {
 
@@ -33,7 +34,7 @@ class mainController extends basePublicController {
 	
 	public function viewAction() {
 		/* you could create the view object in basePublicController construct or within a hook */
-		new View($this->app);
+		new \libraries\view($this->app);
 		
 		$this->app->View->set('baseurl',$this->app->config['app']['base url'],'#');
 
@@ -44,11 +45,11 @@ class mainController extends basePublicController {
 	
 	public function dbAction() {
 		/* you could do this in basePublicController construct or with a hook */
-		new Database($this->app);
+		new \libraries\database($this->app);
 		
 		echo '<pre>';
 
-		$mPeople = new mPeople;
+		$mPeople = new \models\mpeople;
 
 		$mPeople->keyword_id = mt_rand(1, 9999);
 		$mPeople->hash = md5($mPeople->keyword_id);
@@ -61,7 +62,7 @@ class mainController extends basePublicController {
 	
 	public function jsonAction() {
 		/* you could do this in basePublicController construct or with a hook */
-		new View($this->app);
+		new \libraries\view($this->app);
 		
 		return $this->app->View
 			->set(array('name'=>'Don','age'=>42))

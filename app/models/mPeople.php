@@ -9,8 +9,9 @@
 	* @license    Released under the MIT License.
 	*
 	*/
+namespace models;
 
-class mPeople extends Orm {
+class mpeople extends \libraries\orm {
 
 	public function __construct() {
 

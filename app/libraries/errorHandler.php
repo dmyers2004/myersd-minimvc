@@ -8,8 +8,9 @@
 * @copyright  Copyright (c) 2011
 * @license    Released under the MIT License.
 */
+namespace libraries;
 
-class Errorhandler {
+class errorhandler {
 
 	public function __construct() {
 		set_exception_handler(array($this,'exceptionHandler'));
@@ -27,7 +28,7 @@ class Errorhandler {
 
 	/* wrapper old school error handler into new error handler */
 	public function oldSchoolErrorHandler($errno, $errstr, $errfile, $errline) {
-		$e = new ErrorException($errstr,$errno,0,$errfile,$errline);
+		$e = new \ErrorException($errstr,$errno,0,$errfile,$errline);
 		$this->exceptionHandler($e);
 		return true;
 	}

@@ -23,7 +23,7 @@ class Testapplication extends PHPUnit_Framework_TestCase {
 	public function testConfig() {
 	  require HERE.'/mocks/config.php';
 
-	  $app = new application($config);
+	  $app = new \application($config);
 
 		$this->assertEquals($app->config['app']['run code'], 'mock');
 		$this->assertEquals($app->config['app']['handler'], 'mocker');
@@ -40,7 +40,7 @@ class Testapplication extends PHPUnit_Framework_TestCase {
 
 		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
 
-	  $app = new application($config);
+	  $app = new \application($config);
 
 		$this->assertEquals($app->run(),'<h1>MainIndex</h1>');
   }
@@ -51,7 +51,7 @@ class Testapplication extends PHPUnit_Framework_TestCase {
 		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
 		$config['app']['config']['uri'] = 'main';
 
-	  $app = new application($config);
+	  $app = new \application($config);
 
 		$this->assertEquals($app->run(),'<h1>MainIndex</h1>');
   }
@@ -62,7 +62,7 @@ class Testapplication extends PHPUnit_Framework_TestCase {
 		$config['app']['folders']['controllers'] = HERE.'/mocks/controllers/';
 		$config['app']['config']['uri'] = 'main/index';
 
-	  $app = new application($config);
+	  $app = new \application($config);
 
 		$this->assertEquals($app->run(),'<h1>MainIndex</h1>');
   }

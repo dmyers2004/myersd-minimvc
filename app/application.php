@@ -8,7 +8,6 @@
 * @copyright  Copyright (c) 2011
 * @license    Released under the MIT License.
 */
-
 class Application {
 
 	public $config;
@@ -31,13 +30,23 @@ class Application {
 
 	public function run() {
 		/* Turn off all by default */
-		error_reporting(0);
+		//error_reporting(0);
 
 		/* register the autoloader */
-		spl_autoload_register(array($this,'autoLoader'));
+		spl_autoload_register(function ($classname) {
+		  preg_match('/^(.+)?([^\\\\]+)$/U', ltrim($classname, "\\"), $match);
+		  include_once __DIR__.'/'.str_replace("\\", "/", $match[1]).str_replace(["\\", '_'], '/', $match[2]).'.php';
+		});
+
+		$trigger = function($trigger,&$app=null) {
+			if (class_exists('\libraries\hooks')) {
+				$hooks = new \libraries\hooks;
+				$hooks->$trigger($app);
+			}
+		};
 
 		/* try to call hook if it's there */
-		$this->trigger('startup');
+		$trigger('startup',$this);
 
 		/* what is the protocal http or https? this could be useful! */
 		$this->config['app']['is https'] = (strstr('https',$this->input['server']['SERVER_PROTOCOL']) === TRUE);
@@ -65,7 +74,7 @@ class Application {
 		$this->config['app']['route'] = $this->config['app']['raw route'] = rtrim($controller.$this->config['app']['controller suffix'].'/'.$method.($this->config['app']['is ajax'] ? $this->config['app']['ajax prefix'] : '').$this->config['app']['request'].$this->config['app']['method suffix'].'/'.implode('/',$segs),'/');
 
 		/* try to call hook if it's there */
-		$this->trigger('preRouter');
+		$trigger('preRouter',$this);
 
 		/* run our router http://www.example.com/main/index/a/b/c = mainController/indexGet[Ajax]Action/a/b/c */
 		foreach ($this->config['app']['routes'] as $regex_path => $switchto) {
@@ -79,7 +88,7 @@ class Application {
 		$segs = explode('/',$this->config['app']['route']);
 
 		/* new routed classname and called method */
-		$this->config['app']['classname'] = array_shift($segs);
+		$this->config['app']['classname'] = '\controllers\\'.array_shift($segs);
 		
 		/* new method to call on classname */
 		$this->config['app']['called method'] = array_shift($segs);
@@ -88,60 +97,32 @@ class Application {
 		$this->config['app']['segs'] = $segs;
 
 		/* try to call hook if it's there */
-		$this->trigger('preController');
+		$trigger('preController',$this);
 
 		/* This throws a error and 4004 - handle it in your error handler */
 		if (!class_exists($this->config['app']['classname'])) {
-			throw new Exception($this->config['app']['classname'].' not found',4004);
+			throw new \Exception($this->config['app']['classname'].' not found',4004);
 		}
 
 		/* create new controller inject $app ($this) */	
 		$main_controller = new $this->config['app']['classname']($this);
 
 		/* try to call hook if it's there */
-		$this->trigger('preMethod');
+		$trigger('preMethod',$this);
 
 		/* This throws a error and 4005 - handle it in your error handler */
 		if (!is_callable(array($main_controller,$this->config['app']['called method']))) {
-			throw new Exception($this->config['app']['classname'].' method '.$this->config['app']['called method'].' not found',4005);
+			throw new \Exception($this->config['app']['classname'].' method '.$this->config['app']['called method'].' not found',4005);
 		}
 
 		/* let's call our method and capture the output */
 		$this->output = call_user_func_array(array($main_controller,$this->config['app']['called method']),$this->config['app']['segs']);
 
 		/* try to call hook before output is shown ie. cache, clean, parse, etc... )*/
-		$this->trigger('preOutput');
+		$trigger('preOutput',$this);
 
 		/* return it to index.php for final echo */
 		return $this->output;
-	}
-
-	/* Controller, Library, Model Autoloader */
-	public function autoLoader($name) {
-		if (substr($name,-strlen($this->config['app']['controller suffix'])) == $this->config['app']['controller suffix']) {
-			$path = $this->config['app']['folders']['controllers'];
-		} else {
-			$path = ($name{0} >= 'A' && $name{0} <='Z') ? $this->config['app']['folders']['libraries'] : $this->config['app']['folders']['models'];
-			$name = strtolower($name);
-		}
-
-		$load = $path.$name.'.php';
-
-		$isfound = FALSE;
-
-		if (file_exists($load)) {
-			require_once($load);
-			$isfound = TRUE;
-		}
-
-		return $isfound;
-	}
-
-	public function trigger($trigger) {
-		if (class_exists('Hooks')) {
-			$hooks = new Hooks;
-			$hooks->$trigger($this);
-		}
 	}
 
 } /* end mvc controller class */

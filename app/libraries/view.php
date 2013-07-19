@@ -11,8 +11,9 @@
 * @Singleton
 *
 */
+namespace libraries;
 
-class View {
+class view {
 	public $data = array(); /* view data */
 	public $folder = '';
 

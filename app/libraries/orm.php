@@ -8,8 +8,9 @@
 * @copyright  Copyright (c) 2011
 * @license    Released under the MIT License.
 */
+namespace libraries;
 
-class Orm extends Database {
+class orm extends database {
 
 	public $records = array();
 	public $count = 0;

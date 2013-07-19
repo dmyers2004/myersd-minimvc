@@ -9,6 +9,7 @@
 	* @license    Released under the MIT License.
 	*
 	*/
+namespace controllers;
 
 class basePublicController {
 	public $app;
