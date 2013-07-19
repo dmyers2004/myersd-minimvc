@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title><?=$sitename ?></title>
+		<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>
 		<link href="/assets/site.css" rel="stylesheet">
 		<script src="/assets/site.js"></script>
 	</head>
