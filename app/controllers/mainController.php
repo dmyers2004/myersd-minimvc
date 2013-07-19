@@ -32,8 +32,9 @@ class mainController extends basePublicController {
 	}
 	
 	public function viewAction() {
-		/* you could do this in basePublicController construct or with a hook */
+		/* you could create the view object in basePublicController construct or within a hook */
 		new View($this->app);
+		
 		$this->app->View->set('baseurl',$this->app->config['app']['base url'],'#');
 
 		return $this->app->View
