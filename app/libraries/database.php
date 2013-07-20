@@ -11,33 +11,32 @@
 namespace libraries;
 
 class database {
-	static public $connections = array();
-	static public $config;
+	static public $c;
 
-	public function __construct(&$app) {
-		self::$config = $app->config['database'];
+	public function __construct(&$c) {
+		self::$c = $c;
 	}
 
 	public function connect($dsn,$user,$password,$connection='default') {
 		/* if the connection isn't there then try to create it */
-		if (!isset(self::$connections[$connection])) {
+		if (!isset(self::$c['config']['database'][$connection])) {
 			try {
 				$handle = new \PDO($dsn , $user, $password);
 			} catch (PDOException $e) {
 				throw new \Exception($e->getMessage());
 			}
-			self::$connections[$connection] = $handle;
+			self::$c['config']['database'][$connection] = $handle;
 		}
 
-		return self::$connections[$connection];
+		return self::$c['config']['database'][$connection];
 	}
 
 	public function connection($connection='default') {
 		$prefix = ($connection == 'default') ? '' : $connection.'.';
 
-		$dsn = self::$config['db.'.$prefix.'dsn'];
-		$user = self::$config['db.'.$prefix.'user'];
-		$password = self::$config['db.'.$prefix.'password'];
+		$dsn = self::$c['config']['database']['db.'.$prefix.'dsn'];
+		$user = self::$c['config']['database']['db.'.$prefix.'user'];
+		$password = self::$c['config']['database']['db.'.$prefix.'password'];
 
 		return $this->connect($dsn,$user,$password,$connection);
 	}

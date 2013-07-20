@@ -14,7 +14,6 @@ namespace models;
 class mpeople extends \libraries\orm {
 
 	public function __construct() {
-
 		$this->tablename = 'people';
 		$this->pkname = 'id'; //Name of auto-incremented Primary Key
 		$this->fields = array('id','hash','keyword_id');

@@ -12,10 +12,10 @@
 namespace controllers;
 
 class basePublicController {
-	public $app;
+	public $c;
 	
-	public function __construct(&$app) {
-		$this->app = $app;
+	public function __construct(&$c) {
+		$this->c = $c;
 	}
 
 } /* end controller */

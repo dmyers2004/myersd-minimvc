@@ -20,7 +20,7 @@ namespace libraries;
 class hooks {
 
 	/* called after turn off all errors (default) and register the autoloader */
-	public function startup(&$app) {
+	public function startup(&$c) {
 		/* turn them back on (this could be based on $app->config['app']['run code'] or something else */
 		error_reporting(E_ALL & ~E_NOTICE);
 
@@ -39,19 +39,19 @@ class hooks {
 	}
 
 	/* called before the controller and method and request type is actually used */
-	public function preRouter(&$app) {
+	public function preRouter(&$c) {
 	}
 
 	/* called before the controller is instantiated */
-	public function preController(&$app) {
+	public function preController(&$c) {
 	}
 	
 	/* called before the method on the controller is called */
-	public function preMethod(&$app) {
+	public function preMethod(&$c) {
 	}
 
 	/* if the contoller has returned anything it will be in $app->output */
-	public function preOutput(&$app) {
+	public function preOutput(&$c) {
 	}
 	
 	/* you can add additional hooks here */

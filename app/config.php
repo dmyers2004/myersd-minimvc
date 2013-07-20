@@ -1,10 +1,7 @@
 <?php
-/* PHP HTTP Put handler */
-$_PUT = array();
-\parse_str(file_get_contents('php://input'), $_PUT);
 
 /* setup "assume nothing" config/injection and start the party! */
-$config['app'] = array(
+$config['dispatch'] = array(
  	'run code' => getenv('RUNCODE'),
  	'handler' => php_sapi_name(),
 
@@ -14,35 +11,23 @@ $config['app'] = array(
 	'method suffix' => 'Action',
 	'ajax prefix' => 'Ajax',
 
-	'folder' => PATH.'/app/'
-);
-
-/* injection! baby! */
-$config['app']['input'] = array(
-	'server' => $_SERVER,
-	'get' => $_GET,
-	'post' => $_POST,
-	'files' => $_FILES,
-	'cookies' => $_COOKIE,
-	'env' => $_ENV,
-	'session' => $_SESSION,
-	'put' => $_PUT
+	'folder' => PATH
 );
 
 /* customization baby! */
-$config['app']['folders'] = array(
-	'controllers' => PATH.'/app/controllers/',
-	'libraries' => PATH.'/app/libraries/',
-	'models' => PATH.'/app/models/',
-	'view' => PATH.'/app/views/',
-	'logs' => PATH.'/app/var/logs/',
-	'cache' => PATH.'/app/var/cache/',
-	'session' => PATH.'/app/var/sessions/',
-	'sqlite' => PATH.'/app/var/sqlite/'
+$config['dispatch']['folders'] = array(
+	'controllers' => PATH.'controllers/',
+	'libraries' => PATH.'libraries/',
+	'models' => PATH.'models/',
+	'view' => PATH.'views/',
+	'logs' => PATH.'var/logs/',
+	'cache' => PATH.'var/cache/',
+	'session' => PATH.'var/sessions/',
+	'sqlite' => PATH.'var/sqlite/'
 );
 
 /* Routes mainController/indexGet[Ajax]Action/a/b/c?name=John */
-$config['app']['routes'] = array(
+$config['dispatch']['routes'] = array(
 	'#^helloController/(.*)GetAction(.*)$#i' => 'mainController/helloAction/$1$2',
 	'#^(.*)/(.*)GetAction$#i' => '$1/$2Action',
 	'#^(.*)Controller/(.*)GetAction(.*)$#i' => '$1Controller/$2Action$3'
@@ -50,7 +35,7 @@ $config['app']['routes'] = array(
 
 /* database config */
 $config['database'] = array(
-	'db.dsn' => 'sqlite:'.$config['app']['folders']['sqlite'] .'messaging.sqlite3',
+	'db.dsn' => 'sqlite:'.$config['dispatch']['folders']['sqlite'] .'messaging.sqlite3',
 	'db.user' => null,
 	'db.password' => null,
 
