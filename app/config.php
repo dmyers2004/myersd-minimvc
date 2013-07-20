@@ -11,26 +11,22 @@ $config['dispatch'] = array(
 	'method suffix' => 'Action',
 	'ajax prefix' => 'Ajax',
 
-	'folder' => PATH
-);
+	'folder' => PATH,
+	
+	'folders' => array(
+		'view' => PATH.'views/',
+		'logs' => PATH.'var/logs/',
+		'cache' => PATH.'var/cache/',
+		'session' => PATH.'var/sessions/',
+		'sqlite' => PATH.'var/sqlite/'
+	),
 
-/* customization baby! */
-$config['dispatch']['folders'] = array(
-	'controllers' => PATH.'controllers/',
-	'libraries' => PATH.'libraries/',
-	'models' => PATH.'models/',
-	'view' => PATH.'views/',
-	'logs' => PATH.'var/logs/',
-	'cache' => PATH.'var/cache/',
-	'session' => PATH.'var/sessions/',
-	'sqlite' => PATH.'var/sqlite/'
-);
+	'routes' => array(
+		'#^helloController/(.*)GetAction(.*)$#i' => 'mainController/helloAction/$1$2',
+		'#^(.*)/(.*)GetAction$#i' => '$1/$2Action',
+		'#^(.*)Controller/(.*)GetAction(.*)$#i' => '$1Controller/$2Action$3'
+	)
 
-/* Routes mainController/indexGet[Ajax]Action/a/b/c?name=John */
-$config['dispatch']['routes'] = array(
-	'#^helloController/(.*)GetAction(.*)$#i' => 'mainController/helloAction/$1$2',
-	'#^(.*)/(.*)GetAction$#i' => '$1/$2Action',
-	'#^(.*)Controller/(.*)GetAction(.*)$#i' => '$1Controller/$2Action$3'
 );
 
 /* database config */
@@ -43,6 +39,23 @@ $config['database'] = array(
 	'db.mysql.user' => 'root',
 	'db.mysql.password' => 'root'
 );
+
+/* PHP HTTP Put handler */
+$_PUT = array();
+\parse_str(file_get_contents('php://input'), $_PUT);
+
+/* injection! baby! */
+$input = array(
+	'server' => $_SERVER,
+	'get' => $_GET,
+	'post' => $_POST,
+	'files' => $_FILES,
+	'cookies' => $_COOKIE,
+	'env' => $_ENV,
+	'session' => $_SESSION,
+	'put' => $_PUT
+);
+
 
 /*
 	'#^hello/(.*)$#i' => 'main/hello/$1',

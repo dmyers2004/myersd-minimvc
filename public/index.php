@@ -16,12 +16,12 @@ spl_autoload_register(function ($classname) {
 /* setup our dependency injection container */
 $c = array();
 
-/* load our config settings - or testing mockup */
+/* load our config & input settings - or testing mockup */
 require PATH.'config.php';
+
 $c['config'] = $config;
 
 /* load our "input" - or testing mockup */
-require PATH.'input.php';
 $c['input'] = $input;
 
 /* setup our output */
