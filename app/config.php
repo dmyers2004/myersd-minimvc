@@ -22,9 +22,9 @@ $config['dispatch'] = array(
 	),
 
 	'routes' => array(
-		'#^helloController/(.*)GetAction(.*)$#i' => 'mainController/helloAction/$1$2',
-		'#^(.*)/(.*)GetAction$#i' => '$1/$2Action',
-		'#^(.*)Controller/(.*)GetAction(.*)$#i' => '$1Controller/$2Action$3'
+		'#^/AjaxGet/section/(.*)$#i' => '/Ajax/main/section/$1',
+		'#^/AjaxGet/(.*)/(.*)$#i' => '/Ajax/$1/$2',
+		'#^/Get/(.*)/(.*)$#i' => '//$1/$2'
 	)
 
 );

@@ -42,7 +42,7 @@ class dispatch {
 		$method = (!empty($segs[0])) ? array_shift($segs) : $c['config']['dispatch']['default method'];
 
 		/* what are we looking for? raw route will also contain the "raw" pre router route incase you need it */
-		$c['config']['dispatch']['route'] = $c['config']['dispatch']['raw route'] = rtrim(($c['config']['dispatch']['is ajax'] ? $c['config']['dispatch']['ajax prefix'] : '').$c['config']['dispatch']['request'].'/'.$controller.'/'.$method.'/'.implode('/',$segs),'/');
+		$c['config']['dispatch']['route'] = $c['config']['dispatch']['raw route'] = rtrim('/'.($c['config']['dispatch']['is ajax'] ? $c['config']['dispatch']['ajax prefix'] : '').$c['config']['dispatch']['request'].'/'.$controller.'/'.$method.'/'.implode('/',$segs),'/');
 
 		/* call dispatch hook */
 		$c['hooks']->preRouter($c);
@@ -57,6 +57,9 @@ class dispatch {
 
 		/* ok let's explode our post router route */
 		$segs = explode('/',$c['config']['dispatch']['route']);
+
+		/* burn off the 1st slash */
+		array_shift($segs);
 
 		/* new request type if any */
 		$c['config']['dispatch']['request'] = array_shift($segs);
