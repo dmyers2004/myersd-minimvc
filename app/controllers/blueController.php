@@ -25,4 +25,13 @@ class blueController extends basePublicController {
 		return '<h1>BlueShoes</h1><pre>'.print_r($this,true);
 	}
 	
+	public function inputAction($a=null) {
+		return '<h1>inputAction</h1><p>'.$a.'</p><pre>'.print_r($this,true);
+	}
+
+	public function input_moreAction($a=null,$b=null) {
+		return '<h1>inputAction</h1><p>'.$a.'</p><p>'.$b.'</p><pre>'.print_r($this,true);
+	}
+
+	
 } /* end controller */

@@ -2,7 +2,7 @@
 /**
 * DMyers Super Simple MVC
 *
-* @package    Hooks
+* @package    Startup
 * @language   PHP
 * @author     Don Myers
 * @copyright  Copyright (c) 2011

@@ -37,20 +37,18 @@ class dispatch {
 		/* get the raw uri pieces */
 		$segs = explode('/',$c['config']['dispatch']['uri']);
 
-		/* If they didn't include a controller and method use the defaults  main & index */
-		$controller = (!empty($segs[0])) ? array_shift($segs) : $c['config']['dispatch']['default controller'];
-		$method = (!empty($segs[0])) ? array_shift($segs) : $c['config']['dispatch']['default method'];
-
 		/* what are we looking for? raw route will also contain the "raw" pre router route incase you need it */
-		$c['config']['dispatch']['route'] = $c['config']['dispatch']['raw route'] = rtrim('/'.($c['config']['dispatch']['is ajax'] ? 'Ajax' : '').$c['config']['dispatch']['request'].'/'.$controller.'/'.$method.'/'.implode('/',$segs),'/');
+		$c['config']['dispatch']['route'] = $c['config']['dispatch']['route raw'] = '/'.($c['config']['dispatch']['is ajax'] ? 'Ajax' : '').'/'.$c['config']['dispatch']['request'].'/'.array_shift($segs).'/'.array_shift($segs).'/'.implode('/',$segs);
 
 		/* call dispatch hook */
 		$c['events']->trigger('preRouter',$c);
 
-		/* rewrite /[Ajax]Request/Controller/Method[/Arg1/Arg2...] */
-		foreach ($c['config']['dispatch']['routes'] as $regex_path => $switchto) {
-			if (preg_match($regex_path, $c['config']['dispatch']['raw route'])) {
-				$c['config']['dispatch']['route'] = preg_replace($regex_path, $switchto, $c['config']['dispatch']['raw route']);
+		/* rewrite dispatch route */
+		foreach ($c['config']['dispatch']['routes'] as $regexpath => $switchto) {
+			if (preg_match($regexpath, $c['config']['dispatch']['route'])) {
+				/* we got a match */
+				$c['config']['dispatch']['route'] = preg_replace($regexpath, $switchto, $c['config']['dispatch']['route']);
+				$c['config']['dispatch']['route matched'] = $regexpath;
 				break;
 			}
 		}
@@ -58,19 +56,13 @@ class dispatch {
 		/* ok let's explode our post router route */
 		$segs = explode('/',$c['config']['dispatch']['route']);
 
-		/* burn off the 1st slash store some where incase they actually use it */
-		$c['config']['dispatch']['prefix'] = array_shift($segs);
-
-		/* new request type if any. used as method prefix */
-		$c['config']['dispatch']['request'] = array_shift($segs);
-
 		/* new routed classname (Controller) */
-		$c['config']['dispatch']['classname'] = '\controllers\\'.array_shift($segs);
+		$c['config']['dispatch']['classname'] = str_replace('-','_',array_shift($segs));
 		
-		/* new method to call on classname (Method or Action) */
-		$c['config']['dispatch']['called method'] = array_shift($segs).$c['config']['dispatch']['request'];
+		/* new method to call on classname (Method or Action) replace dashes with underscores */
+		$c['config']['dispatch']['called method'] = str_replace('-','_',array_shift($segs));
 
-		/* store what ever is left over in segs */
+		/* store whatever is left over in segs */
 		$c['config']['dispatch']['segs'] = $segs;
 
 		/* call dispatch hook */

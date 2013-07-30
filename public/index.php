@@ -16,17 +16,8 @@ spl_autoload_register(function ($classname) {
 /* setup our dependency injection container */
 $c = array();
 
-/* load our config & input settings - or testing mockup */
+/* load our config, input & output settings - or testing mockup */
 require PATH.'config.php';
-
-/* store them in a container "location" */
-$c['config'] = $config;
-
-/* store our "input" in a container */
-$c['input'] = $input;
-
-/* setup our output */
-$c['output'] = '';
 
 /* load our application personalized startup */
 require PATH.'startup.php';
