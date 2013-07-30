@@ -2,7 +2,7 @@
 /**
 * DMyers Super Simple MVC
 *
-* @package    error handler for SSMVC
+* @package    error handler
 * @language   PHP
 * @author     Don Myers
 * @copyright  Copyright (c) 2011

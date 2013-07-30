@@ -2,7 +2,7 @@
 /**
 * DMyers Super Simple MVC
 *
-* @package    view for SSMVC
+* @package    View File
 * @language   PHP
 * @author     Don Myers
 * @copyright  Copyright (c) 2011

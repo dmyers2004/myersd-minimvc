@@ -2,7 +2,7 @@
 /**
 	* DMyers Super Simple MVC
 	*
-	* @package    Bootstrap File
+	* @package    main Controller File
 	* @language   PHP
 	* @author     Don Myers
 	* @copyright  Copyright (c) 2011
@@ -14,11 +14,10 @@ namespace controllers;
 class mainController extends basePublicController {
 
 	/*
-	pass injected $app to parent to setup
-	you could handle it here but by extending
-	basePublicController I only need to write the logic once
-	another base class could be baseAdminController or jsonPublicContoller
-	which could also extend basePublicController for example
+	pass in container
+	I then pass it to the base controller but there doesn't have to be one.
+	I could just store it locally here but,
+	by extending base classes I can inherit a number of methods etc...
 	*/
 	public function __construct(&$c) {
 		parent::__construct($c);

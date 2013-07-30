@@ -2,7 +2,7 @@
 /**
 	* DMyers Super Simple MVC
 	*
-	* @package    Bootstrap File
+	* @package    blue Controller File
 	* @language   PHP
 	* @author     Don Myers
 	* @copyright  Copyright (c) 2011

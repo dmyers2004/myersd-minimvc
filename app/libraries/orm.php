@@ -2,7 +2,7 @@
 /**
 * DMyers Super Simple MVC
 *
-* @package    orm for SSMVC
+* @package    orm file
 * @language   PHP
 * @author     Don Myers
 * @copyright  Copyright (c) 2011
