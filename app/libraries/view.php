@@ -18,7 +18,7 @@ class view {
 	public $folder = '';
 
 	public function __construct(&$c) {
-		$c['view'] = $this; /* assign a copy of me to the application */
+		$c['view'] = $this; /* assign a copy of me to the container */
 		$this->folder = $c['config']['folders']['view'];
 	}
 

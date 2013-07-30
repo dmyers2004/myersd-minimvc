@@ -17,7 +17,7 @@ class events {
 	public $events = array();
 
 	public function __construct(&$c) {
-		$c['events'] = $this; /* assign a copy of me to the application */
+		$c['events'] = $this; /* assign a copy of me to the container */
 	}
 
 	public function register($event,$callback) {
