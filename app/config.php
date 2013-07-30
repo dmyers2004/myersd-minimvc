@@ -16,14 +16,6 @@ $c['config']['dispatch'] = array(
  	'handler' => php_sapi_name(),
 
 	'folder' => PATH,
-	
-	'folders' => array(
-		'view' => PATH.'views/',
-		'logs' => PATH.'var/logs/',
-		'cache' => PATH.'var/cache/',
-		'session' => PATH.'var/sessions/',
-		'sqlite' => PATH.'var/sqlite/'
-	),
 
 	'routes' => array(
 		'#^/([a-zA-Z0-9-]*)/Get///$#i' => '\controllers\\\mainController/index$1Action',
@@ -45,9 +37,17 @@ $c['config']['dispatch'] = array(
 
 );
 
+$c['config']['folders'] = array(
+	'view' => PATH.'views/',
+	'logs' => PATH.'var/logs/',
+	'cache' => PATH.'var/cache/',
+	'session' => PATH.'var/sessions/',
+	'sqlite' => PATH.'var/sqlite/'
+);
+
 /* database config */
 $c['config']['database'] = array(
-	'db.dsn' => 'sqlite:'.$config['dispatch']['folders']['sqlite'] .'messaging.sqlite3',
+	'db.dsn' => 'sqlite:'.$c['config']['folders']['sqlite'] .'messaging.sqlite3',
 	'db.user' => null,
 	'db.password' => null,
 

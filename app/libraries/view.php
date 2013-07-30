@@ -19,7 +19,7 @@ class view {
 
 	public function __construct(&$c) {
 		$c['view'] = $this; /* assign a copy of me to the application */
-		$this->folder = $c['config']['dispatch']['folders']['view'];
+		$this->folder = $c['config']['folders']['view'];
 	}
 
 	public function load($file,$return=true) {
