@@ -1,4 +1,14 @@
 <?php
+/**
+* DMyers Super Simple MVC
+*
+* @package    Events
+* @language   PHP
+* @author     Don Myers
+* @copyright  Copyright (c) 2011
+* @license    Released under the MIT License.
+*
+*/
 
 namespace libraries;
 
