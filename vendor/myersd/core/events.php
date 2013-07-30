@@ -10,7 +10,7 @@
 *
 */
 
-namespace libraries;
+namespace myersd\core;
 
 class events {
 

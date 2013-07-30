@@ -15,10 +15,13 @@ $c['config']['dispatch'] = array(
  	'run code' => getenv('RUNCODE'),
  	'handler' => php_sapi_name(),
 
-	'folder' => PATH,
+	'app' => APP,
+	'folder' => FOLDER,
 	'include path' => get_include_path(),
 
 	'routes' => array(
+		'#^/([a-zA-Z0-9-_]*)/Get/red/([a-zA-Z0-9-_]*)/$#i' => '\\\example\\\controllers\\\redController/$2$1Action',
+
 		'#^/([a-zA-Z0-9-_]*)/Get///$#i' => '\controllers\\\mainController/index$1Action',
 		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)//$#i' => '\controllers\\\$2Controller/index$1Action',
 		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$1$3Action',
@@ -33,17 +36,17 @@ $c['config']['dispatch'] = array(
 		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action',
 		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5',
 		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5/$6',
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5/$6/$7',
+		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5/$6/$7',	
 	)
 
 );
 
 $c['config']['folders'] = array(
-	'view' => PATH.'views/',
-	'logs' => PATH.'var/logs/',
-	'cache' => PATH.'var/cache/',
-	'session' => PATH.'var/sessions/',
-	'sqlite' => PATH.'var/sqlite/'
+	'view' => APP.'views/',
+	'logs' => APP.'var/logs/',
+	'cache' => APP.'var/cache/',
+	'session' => APP.'var/sessions/',
+	'sqlite' => APP.'var/sqlite/'
 );
 
 /* database config */

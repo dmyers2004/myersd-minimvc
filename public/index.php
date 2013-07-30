@@ -1,32 +1,33 @@
 <?php
 /* where are we? - this is used a lot so let's define it */
-define('PATH', realpath(__DIR__.'/../app').'/');
+define('FOLDER', realpath(__DIR__.'/../').'/');
 
-/* examples
-define('PATH', __DIR__); - everything in root folder
-define('PATH', realpath(__DIR__.'/..')); - everything in "public" folder and app 1 level down 
+define('APP', FOLDER.'app/');
+
+/* add include paths for app and vendor folders */
+set_include_path(get_include_path().':'.APP);
+set_include_path(get_include_path().':'.FOLDER.'/vendor/');
+
+/*
+register the PSR-0-ish autoloader
+copied from http://stackoverflow.com/questions/12082507/php-most-lightweight-psr-0-compliant-autoloader
 */
-
-/* add a include path to the core files */
-set_include_path(get_include_path().':'.PATH);
-
-/* register the PSR-0-ish autoloader */
-spl_autoload_register(function ($classname) {
-  preg_match('/^(.+)?([^\\\\]+)$/U', ltrim($classname, "\\"), $match);
-  include_once str_replace("\\", "/", $match[1]).str_replace(["\\", '_'], '/', $match[2]).'.php';
+spl_autoload_register(function($c) {
+	@include preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';
 });
+
 
 /* setup our dependency injection container */
 $c = array();
 
 /* load our config, input & output settings - or testing mockup */
-require PATH.'config.php';
+require APP.'config.php';
 
 /* load our application personalized startup */
-require PATH.'startup.php';
+require APP.'startup.php';
 
 /* create dispatcher and dispatch! */
-$c['dispatch'] = new \libraries\dispatch($c);
+$c['dispatch'] = new \myersd\core\dispatch($c);
 
 /* send output */
 echo $c['output'];

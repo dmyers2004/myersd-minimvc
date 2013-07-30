@@ -17,10 +17,10 @@ error_reporting(E_ALL & ~E_NOTICE);
 date_default_timezone_set('UTC');
 
 /* setup error handler */
-new \libraries\errorhandler;
+new \myersd\core\errorhandler;
 
 /* setup event handler */
-new \libraries\events($c);
+new \myersd\core\events($c);
 
 /* Start Session */
 if (!headers_sent()) {

@@ -74,7 +74,7 @@ $config['app'] = array(
 	'method suffix' => 'Action',
 	'ajax prefix' => 'Ajax',
 
-	'folder' => PATH.'/app/'
+	'folder' => APP.'/app/'
 );
 
 /* injection! baby! */
@@ -91,14 +91,14 @@ $config['app']['input'] = array(
 
 /* customization baby! */
 $config['app']['folders'] = array(
-	'controllers' => PATH.'/app/controllers/',
-	'libraries' => PATH.'/app/libraries/',
-	'models' => PATH.'/app/models/',
-	'view' => PATH.'/app/views/',
-	'logs' => PATH.'/app/var/logs/',
-	'cache' => PATH.'/app/var/cache/',
-	'session' => PATH.'/app/var/sessions/',
-	'sqlite' => PATH.'/app/var/sqlite/'
+	'controllers' => APP/app/controllers/',
+	'libraries' => APP/app/libraries/',
+	'models' => APP/app/models/',
+	'view' => APP/app/views/',
+	'logs' => APP/app/var/logs/',
+	'cache' => APP/app/var/cache/',
+	'session' => APP/app/var/sessions/',
+	'sqlite' => APP/app/var/sqlite/'
 );
 
 /* Routes mainController/indexGet[Ajax]Action/a/b/c?name=John */
