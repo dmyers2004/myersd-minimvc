@@ -2,7 +2,7 @@
 /**
 * DMyers Super Simple MVC
 *
-* @package    application File
+* @package    Dispatch file
 * @language   PHP
 * @author     Don Myers
 * @copyright  Copyright (c) 2011
@@ -17,7 +17,7 @@ class dispatch {
 		//error_reporting(0);
 
 		/* call dispatch hook */
-		$c['hooks']->startup($c);
+		$c['events']->trigger('startup',$c);
 
 		/* what is the protocal http or https? this could be useful! */
 		$c['config']['dispatch']['is https'] = (strstr('https',$c['input']['server']['SERVER_PROTOCOL']) === TRUE);
@@ -45,9 +45,9 @@ class dispatch {
 		$c['config']['dispatch']['route'] = $c['config']['dispatch']['raw route'] = rtrim('/'.($c['config']['dispatch']['is ajax'] ? $c['config']['dispatch']['ajax prefix'] : '').$c['config']['dispatch']['request'].'/'.$controller.'/'.$method.'/'.implode('/',$segs),'/');
 
 		/* call dispatch hook */
-		$c['hooks']->preRouter($c);
+		$c['events']->trigger('preRouter',$c);
 
-		/* run our router http://www.example.com/main/index/a/b/c = mainController/indexGet[Ajax]Action/a/b/c */
+		/* rewrite /[Ajax]Request/Controller/Method[/Arg1/Arg2...] */
 		foreach ($c['config']['dispatch']['routes'] as $regex_path => $switchto) {
 			if (preg_match($regex_path, $c['config']['dispatch']['raw route'])) {
 				$c['config']['dispatch']['route'] = preg_replace($regex_path, $switchto, $c['config']['dispatch']['raw route']);
@@ -58,23 +58,23 @@ class dispatch {
 		/* ok let's explode our post router route */
 		$segs = explode('/',$c['config']['dispatch']['route']);
 
-		/* burn off the 1st slash */
-		array_shift($segs);
+		/* burn off the 1st slash store some where incase they actually use it */
+		$c['config']['dispatch']['prefix'] = array_shift($segs);
 
-		/* new request type if any */
+		/* new request type if any. used as method prefix */
 		$c['config']['dispatch']['request'] = array_shift($segs);
 
-		/* new routed classname and called method */
-		$c['config']['dispatch']['classname'] = '\controllers\\'.array_shift($segs).$c['config']['dispatch']['controller suffix'];
+		/* new routed classname (Controller) */
+		$c['config']['dispatch']['classname'] = '\controllers\\'.array_shift($segs);
 		
-		/* new method to call on classname */
-		$c['config']['dispatch']['called method'] = array_shift($segs).$c['config']['dispatch']['request'].$c['config']['dispatch']['method suffix'];
+		/* new method to call on classname (Method or Action) */
+		$c['config']['dispatch']['called method'] = array_shift($segs).$c['config']['dispatch']['request'];
 
 		/* store what ever is left over in segs */
 		$c['config']['dispatch']['segs'] = $segs;
 
 		/* call dispatch hook */
-		$c['hooks']->preController($c);
+		$c['events']->trigger('preController',$c);
 
 		/* This throws a error and 4004 - handle it in your error handler */
 		if (!class_exists($c['config']['dispatch']['classname'])) {
@@ -85,7 +85,7 @@ class dispatch {
 		$main_controller = new $c['config']['dispatch']['classname']($c);
 
 		/* call dispatch hook */
-		$c['hooks']->preMethod($c);
+		$c['events']->trigger('preMethod',$c);
 
 		/* This throws a error and 4005 - handle it in your error handler */
 		if (!is_callable(array($main_controller,$c['config']['dispatch']['called method']))) {
@@ -96,7 +96,7 @@ class dispatch {
 		$c['output'] = call_user_func_array(array($main_controller,$c['config']['dispatch']['called method']),$c['config']['dispatch']['segs']);
 
 		/* call dispatch hook */
-		$c['hooks']->preOutput($c);
+		$c['events']->trigger('preOutput',$c);
 	}
 
 }

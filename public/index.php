@@ -19,20 +19,22 @@ $c = array();
 /* load our config & input settings - or testing mockup */
 require PATH.'config.php';
 
+/* store them in a container "location" */
 $c['config'] = $config;
 
-/* load our "input" - or testing mockup */
+/* store our "input" in a container */
 $c['input'] = $input;
 
 /* setup our output */
 $c['output'] = '';
 
-/* attach our hook system */
-$c['hooks'] = new \libraries\hooks($c);
+/* load our application personalized startup */
+require PATH.'startup.php';
 
 /* create dispatcher and dispatch! */
 $c['dispatch'] = new \libraries\dispatch($c);
 
+/* send output */
 echo $c['output'];
 
 /* Show Request time & memory usage -- comment/uncomment */

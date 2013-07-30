@@ -7,8 +7,6 @@ $config['dispatch'] = array(
 
 	'default controller' => 'main',
 	'default method' => 'index',
-	'controller suffix' => 'Controller',
-	'method suffix' => 'Action',
 	'ajax prefix' => 'Ajax',
 
 	'folder' => PATH,
@@ -22,9 +20,9 @@ $config['dispatch'] = array(
 	),
 
 	'routes' => array(
-		'#^/AjaxGet/section/(.*)$#i' => '/Ajax/main/section/$1',
-		'#^/AjaxGet/(.*)/(.*)$#i' => '/Ajax/$1/$2',
-		'#^/Get/(.*)/(.*)$#i' => '//$1/$2'
+		'#^/AjaxGet/(.*)/(.*)$#i' => '/AjaxAction/$1Controller/$2',
+		'#^/Get/(.*)/(.*)$#i' => '/Action/$1Controller/$2',
+		'#^/(.*)/(.*)/(.*)$#i' => '/$1Action/$2Controller/$3'
 	)
 
 );
