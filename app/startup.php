@@ -19,6 +19,7 @@ date_default_timezone_set('UTC');
 /* setup error handler */
 new \libraries\errorhandler;
 
+/* setup event handler */
 new \libraries\events($c);
 
 /* Start Session */
