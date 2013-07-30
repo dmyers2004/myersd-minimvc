@@ -7,7 +7,6 @@ $config['dispatch'] = array(
 
 	'default controller' => 'main',
 	'default method' => 'index',
-	'ajax prefix' => 'Ajax',
 
 	'folder' => PATH,
 	
