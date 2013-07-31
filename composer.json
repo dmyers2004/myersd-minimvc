@@ -1,0 +1,14 @@
+{
+    "require": {
+        "monolog/monolog": "1.2.*"
+    },
+    "autoload": {
+        "psr-0": {
+        	"myersd\\core": "vendor/",
+        	"example": "vendor/",
+        	"": "app/"
+        }
+    }
+}
+
+

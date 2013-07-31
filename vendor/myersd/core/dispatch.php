@@ -13,10 +13,7 @@ namespace myersd\core;
 class dispatch {
 
 	public function __construct(&$c) {
-		/* Turn off all by default */
-		//error_reporting(0);
-
-		/* call dispatch hook */
+		/* call dispatch event */
 		$c['events']->trigger('startup',$c);
 
 		/* what is the protocal http or https? this could be useful! */
@@ -40,7 +37,7 @@ class dispatch {
 		/* what are we looking for? raw route will also contain the "raw" pre router route incase you need it */
 		$c['config']['dispatch']['route'] = $c['config']['dispatch']['route raw'] = '/'.($c['config']['dispatch']['is ajax'] ? 'Ajax' : '').'/'.$c['config']['dispatch']['request'].'/'.array_shift($segs).'/'.array_shift($segs).'/'.implode('/',$segs);
 
-		/* call dispatch hook */
+		/* call dispatch event */
 		$c['events']->trigger('preRouter',$c);
 
 		/* rewrite dispatch route */
@@ -65,7 +62,7 @@ class dispatch {
 		/* store whatever is left over in segs */
 		$c['config']['dispatch']['segs'] = $segs;
 
-		/* call dispatch hook */
+		/* call dispatch event */
 		$c['events']->trigger('preController',$c);
 
 		/* This throws a error and 4004 - handle it in your error handler */
@@ -76,7 +73,7 @@ class dispatch {
 		/* create new controller inject $app ($this) */	
 		$main_controller = new $c['config']['dispatch']['classname']($c);
 
-		/* call dispatch hook */
+		/* call dispatch event */
 		$c['events']->trigger('preMethod',$c);
 
 		/* This throws a error and 4005 - handle it in your error handler */
@@ -87,7 +84,7 @@ class dispatch {
 		/* let's call our method and capture the output */
 		$c['output'] = call_user_func_array(array($main_controller,$c['config']['dispatch']['called method']),$c['config']['dispatch']['segs']);
 
-		/* call dispatch hook */
+		/* call dispatch event */
 		$c['events']->trigger('preOutput',$c);
 	}
 

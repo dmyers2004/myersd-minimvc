@@ -16,12 +16,6 @@ error_reporting(E_ALL & ~E_NOTICE);
 /* Default timezone of server */
 date_default_timezone_set('UTC');
 
-/* setup error handler */
-new \myersd\core\errorhandler;
-
-/* setup event handler */
-new \myersd\core\events($c);
-
 /* Start Session */
 if (!headers_sent()) {
 	session_save_path($c['config']['folders']['session']);
