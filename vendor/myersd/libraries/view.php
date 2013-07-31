@@ -11,7 +11,7 @@
 * @Singleton
 *
 */
-namespace libraries;
+namespace myersd\libraries;
 
 class view {
 	public $data = array(); /* view data */

@@ -29,5 +29,5 @@ echo $c['output'];
 
 /* Show Request time & memory usage -- comment/uncomment */
 
-echo '<p>'.(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']).'ms</p>';
-echo '<p>'.(memory_get_peak_usage(true)/1024).'k</p>';
+//echo '<p>'.(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']).'ms</p>';
+//echo '<p>'.(memory_get_peak_usage(true)/1024).'k</p>';

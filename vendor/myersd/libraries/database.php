@@ -8,7 +8,7 @@
 * @copyright  Copyright (c) 2011
 * @license    Released under the MIT License.
 */
-namespace libraries;
+namespace myersd\libraries;
 
 class database {
 	static public $c;
