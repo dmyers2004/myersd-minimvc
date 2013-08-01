@@ -1,7 +1,6 @@
 <?php
 /* where are we? - this is used a lot so let's define it */
 define('FOLDER', realpath(__DIR__.'/../').'/');
-define('APP', FOLDER.'app/');
 
 /* PSR-0 autoloader */
 require FOLDER.'vendor/autoload.php';
@@ -10,16 +9,15 @@ require FOLDER.'vendor/autoload.php';
 $c = array();
 
 /* load our config, input & output settings - or testing mockup */
-require APP.'config.php';
-
-/* only other required class besides dispatcher */
-new \myersd\core\events($c);
+require FOLDER.'app/config.php';
 
 /* load our applications startup - users should modify this file as needed */
-require APP.'startup.php';
+require FOLDER.'app/startup.php';
 
 /* create dispatcher and dispatch! */
-new \myersd\core\dispatch($c);
+$c['Dispatcher'] = new \myersd\core\dispatcher($c);
+
+$c['Dispatcher']->dispatch();
 
 /* send output */
 echo $c['output'];

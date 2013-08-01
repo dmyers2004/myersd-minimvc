@@ -16,12 +16,12 @@ error_reporting(E_ALL & ~E_NOTICE);
 /* Default timezone of server */
 date_default_timezone_set('UTC');
 
-// create a log channel
-$c['logger'] = new \Monolog\Logger('name');
-$c['logger']->pushHandler(new \Monolog\Handler\StreamHandler($c['config']['folders']['logs'].'log.log', \Monolog\Logger::WARNING));
+/* mono log example - create a log channel */
+//$c['logger'] = new \Monolog\Logger('name');
+//$c['logger']->pushHandler(new \Monolog\Handler\StreamHandler($c['config']['folders']['logs'].'log.log', \Monolog\Logger::WARNING));
 
-$c['logger']->addWarning('Foo');
-$c['logger']->addError('Bar');
+//$c['logger']->addWarning('Foo');
+//$c['logger']->addError('Bar');
 
 /* Start Session */
 /*

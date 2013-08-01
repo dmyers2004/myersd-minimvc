@@ -11,11 +11,11 @@
 */
 
 /* setup "assume nothing" config/injection and start the party! */
-$c['config']['dispatch'] = array(
+$c['config']['dispatcher'] = array(
  	'run code' => getenv('RUNCODE'),
  	'handler' => php_sapi_name(),
 
-	'app' => APP,
+	'app' => FOLDER.'app/',
 	'folder' => FOLDER,
 	'include path' => get_include_path(),
 
@@ -42,11 +42,11 @@ $c['config']['dispatch'] = array(
 );
 
 $c['config']['folders'] = array(
-	'view' => APP.'views/',
-	'logs' => APP.'var/logs/',
-	'cache' => APP.'var/cache/',
-	'session' => APP.'var/sessions/',
-	'sqlite' => APP.'var/sqlite/'
+	'view' => FOLDER.'app/views/',
+	'logs' => FOLDER.'app/var/logs/',
+	'cache' => FOLDER.'app/var/cache/',
+	'session' => FOLDER.'app/var/sessions/',
+	'sqlite' => FOLDER.'app/var/sqlite/'
 );
 
 /* database config */

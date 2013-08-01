@@ -14,7 +14,7 @@ class database {
 	static public $c;
 
 	public function __construct(&$c) {
-		self::$c = $c;
+		self::$c = &$c;
 	}
 
 	public function connect($dsn,$user,$password,$connection='default') {

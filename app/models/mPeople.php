@@ -11,7 +11,7 @@
 	*/
 namespace models;
 
-class mpeople extends \myersd\extras\orm {
+class mpeople extends \myersd\libraries\orm {
 
 	public function __construct() {
 		$this->tablename = 'people';
