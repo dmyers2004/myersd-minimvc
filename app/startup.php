@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
 * DMyers Super Simple MVC
 *
@@ -11,10 +11,10 @@
 */
 
 /* turn them back on (this could be based on $app->config['app']['run code'] or something else */
-error_reporting(E_ALL & ~E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE);
 
-/* Default timezone of server */
-date_default_timezone_set('UTC');
+/* Setup your time zone */
+//date_default_timezone_set('UTC');
 
 /* mono log example - create a log channel */
 //$c['logger'] = new \Monolog\Logger('name');
@@ -30,4 +30,28 @@ if (!headers_sent()) {
 	session_name('s'.md5($c['config']['dispatch']['base url']));
 	session_start();
 }
+*/
+
+/* example event */
+/*
+class foo {
+	public function bar(&$c) {
+		echo 'Setting Foo to Bar<pre>';
+		$c['foo'] = 'Bar';
+	}
+
+	public function echo_bar(&$c) {
+		echo '<h1>foo is "'.$c['foo'].'"</h1>';
+		echo'<pre>';
+	}
+	
+	public function rot(&$c) {
+		$c['output'] = str_rot13($c['output']);
+	}
+	
+}
+
+$c['Dispatcher']->register('startup',array(new foo,'bar'));
+$c['Dispatcher']->register('preRouter',array(new foo,'echo_bar'));
+$c['Dispatcher']->register('preOutput',array(new foo,'rot'));
 */

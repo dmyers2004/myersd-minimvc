@@ -8,15 +8,16 @@ require FOLDER.'vendor/autoload.php';
 /* setup our "super simple" dependency injection container */
 $c = array();
 
-/* load our config, input & output settings - or testing mockup */
+/* load our config, input & output settings (or mocks for testing) */
 require FOLDER.'app/config.php';
 
-/* load our applications startup - users should modify this file as needed */
-require FOLDER.'app/startup.php';
-
-/* create dispatcher and dispatch! */
+/* instantiate dispatcher */
 $c['Dispatcher'] = new \myersd\core\dispatcher($c);
 
+/* load our applications startup - users can modify this file as needed */
+require FOLDER.'app/startup.php';
+
+/* Call Dispatch! */
 $c['Dispatcher']->dispatch();
 
 /* send output */

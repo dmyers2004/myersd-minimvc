@@ -17,21 +17,20 @@ $c['config']['dispatcher'] = array(
 
 	'app' => FOLDER.'app/',
 	'folder' => FOLDER,
-	'include path' => get_include_path(),
 
 	'routes' => array(
 		'#^/([a-zA-Z0-9-_]*)/Get/red/([a-zA-Z0-9-_]*)/$#i' => '\\\example\\\controllers\\\redController/$2$1Action',
 
-		'#^/([a-zA-Z0-9-_]*)/Get///$#i' => '\controllers\\\mainController/index$1Action',
-		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)//$#i' => '\controllers\\\$2Controller/index$1Action',
+		'#^/([a-zA-Z0-9-_]*)/Get/$#i' => '\controllers\\\mainController/index$1Action',
+		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/index$1Action',
 		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$1$3Action',
 		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$3$1Action',
 		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$3$1Action/$4',
 		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$3$1Action/$4/$5',
 		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$3$1Action/$4/$5/$6',
 
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)///$#i' => '\controllers\\\mainController/index$1$2Action',
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)//$#i' => '\controllers\\\$2Controller/index$1$2Action',
+		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/$#i' => '\controllers\\\mainController/index$1$2Action',
+		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/index$1$2Action',
 		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action',
 		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action',
 		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5',

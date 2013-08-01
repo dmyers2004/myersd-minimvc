@@ -17,12 +17,17 @@ class dispatcher {
 	
 	public function __construct(&$c) {
 		$this->c = &$c;
+		
+		/* NOTE: don't switch anything here - switch them in startup.php! */
+		
+		/* Set default timezone of server so PHP doesn't complain */
+		date_default_timezone_set('UTC');
+		
+		/* turn off error by default */
+		error_reporting(0);
 	}
 
 	public function dispatch() {
-		/* call dispatch event */
-		$this->trigger('startup',$this->c);
-
 		/* what is the protocal http or https? this could be useful! */
 		$this->c['config']['dispatcher']['is https'] = (strstr('https',$this->c['input']['server']['SERVER_PROTOCOL']) === TRUE);
 
@@ -32,20 +37,17 @@ class dispatcher {
 		/* The GET method is default so controller methods look like openAction, others are handled directly openPostAction, openPutAction, openDeleteAction, etc... */
 		$this->c['config']['dispatcher']['request'] = ucfirst(strtolower($this->c['input']['server']['REQUEST_METHOD']));
 
-		/* if you don't want different method call for ajax turn this off in preRouter */
+		/* Is this a ajax request? */
 		$this->c['config']['dispatcher']['is ajax'] = isset($this->c['input']['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->c['input']['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
 		/* get the uri (uniform resource identifier) */
 		$this->c['config']['dispatcher']['uri'] = trim(urldecode(substr(parse_url($this->c['input']['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->c['input']['server']['SCRIPT_NAME'])))),'/');
 
-		/* get the raw uri pieces */
-		$segs = explode('/',$this->c['config']['dispatcher']['uri']);
-
 		/* what are we looking for? raw route will also contain the "raw" pre router route incase you need it */
-		$this->c['config']['dispatcher']['route'] = $this->c['config']['dispatcher']['route raw'] = '/'.($this->c['config']['dispatcher']['is ajax'] ? 'Ajax' : '').'/'.$this->c['config']['dispatcher']['request'].'/'.array_shift($segs).'/'.array_shift($segs).'/'.implode('/',$segs);
+		$this->c['config']['dispatcher']['route'] = $this->c['config']['dispatcher']['route raw'] = '/'.($this->c['config']['dispatcher']['is ajax'] ? 'Ajax' : '').'/'.$this->c['config']['dispatcher']['request'].'/'.$this->c['config']['dispatcher']['uri'];
 
 		/* call dispatch event */
-		$this->trigger('preRouter',$this->c);
+		$this->trigger('preRouter');
 
 		/* rewrite dispatch route */
 		foreach ($this->c['config']['dispatcher']['routes'] as $regexpath => $switchto) {
@@ -70,18 +72,18 @@ class dispatcher {
 		$this->c['config']['dispatcher']['segs'] = $segs;
 
 		/* call dispatch event */
-		$this->trigger('preController',$this->c);
+		$this->trigger('preController');
 
-		/* This throws a error and 4004 - handle it in your error handler */
+		/* This throws a error and 4005 - handle it in your error handler */
 		if (!class_exists($this->c['config']['dispatcher']['classname'])) {
 			throw new \Exception($this->c['config']['dispatcher']['classname'].' not found',4004);
 		}
 
-		/* create new controller inject $app ($this) */	
+		/* create new controller inject the container */	
 		$main_controller = new $this->c['config']['dispatcher']['classname']($this->c);
 
 		/* call dispatch event */
-		$this->trigger('preMethod',$this->c);
+		$this->trigger('preMethod');
 
 		/* This throws a error and 4005 - handle it in your error handler */
 		if (!is_callable(array($main_controller,$this->c['config']['dispatcher']['called method']))) {
@@ -92,20 +94,20 @@ class dispatcher {
 		$this->c['output'] = call_user_func_array(array($main_controller,$this->c['config']['dispatcher']['called method']),$this->c['config']['dispatcher']['segs']);
 
 		/* call dispatch event */
-		$this->trigger('preOutput',$this->c);
+		$this->trigger('preOutput');
 	}
 	
 	public function register($event,$callback) {
 		$this->events[$event][get_class($callback[0]).'->'.$callback[1]] = $callback;
 	}
 
-	public function trigger($event,$data='') {
+	public function trigger($event) {
 		$returned = array();
 
 		if ($this->has_event($event)) {
 			foreach ($this->events[$event] as $event) {
 				if (is_callable($event)) {
-					$returned[] = call_user_func($event, $data);
+					$returned[] = call_user_func_array($event, array(&$this->c));
 				}
 			}
 		}
@@ -117,4 +119,4 @@ class dispatcher {
 		return (isset($this->events[$event]) && count($this->events[$event]) > 0);
 	}
 
-}
+} /* end dispatcher */
