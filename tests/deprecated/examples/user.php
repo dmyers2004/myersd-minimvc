@@ -1,1 +1,0 @@
-You entered userid: <?=$userid ?>

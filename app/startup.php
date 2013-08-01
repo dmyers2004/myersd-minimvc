@@ -23,11 +23,19 @@
 //$c['Logger']->addWarning('Foo');
 //$c['Logger']->addError('Bar');
 
-use Desarrolla2\Cache\Cache;
-use Desarrolla2\Cache\Adapter\NotCache;
+/*
+$c['Error Handler'] = new Whoops\Run();
+$c['Error Handler']->pushHandler(new Whoops\Handler\PrettyPageHandler());
+$c['Error Handler']->register();
+*/
 
-$c['Cache'] = new Cache(new NotCache());
+//$c['Error Handler'] = new myersd\libraries\errorHandler();
 
+$c['Error Handler'] = new libraries\errorhandler();
+
+
+
+$c['Cache'] = new Desarrolla2\Cache\Cache(new Desarrolla2\Cache\Adapter\NotCache());
 
 /* Start Session */
 /*
