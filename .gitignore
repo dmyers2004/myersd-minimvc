@@ -3,3 +3,5 @@
 sess_*
 .htaccess
 vendor/monolog
+vendor/*
+composer.lock

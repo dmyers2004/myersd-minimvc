@@ -17,11 +17,17 @@
 //date_default_timezone_set('UTC');
 
 /* mono log example - create a log channel */
-//$c['logger'] = new \Monolog\Logger('name');
-//$c['logger']->pushHandler(new \Monolog\Handler\StreamHandler($c['config']['folders']['logs'].'log.log', \Monolog\Logger::WARNING));
+//$c['Logger'] = new \Monolog\Logger('name');
+//$c['Logger']->pushHandler(new \Monolog\Handler\StreamHandler($c['config']['folders']['logs'].'log.log', \Monolog\Logger::WARNING));
 
-//$c['logger']->addWarning('Foo');
-//$c['logger']->addError('Bar');
+//$c['Logger']->addWarning('Foo');
+//$c['Logger']->addError('Bar');
+
+use Desarrolla2\Cache\Cache;
+use Desarrolla2\Cache\Adapter\NotCache;
+
+$c['Cache'] = new Cache(new NotCache());
+
 
 /* Start Session */
 /*
