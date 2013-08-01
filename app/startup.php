@@ -17,8 +17,8 @@
 //date_default_timezone_set('UTC');
 
 /* mono log example - create a log channel */
-//$c['Logger'] = new \Monolog\Logger('name');
-//$c['Logger']->pushHandler(new \Monolog\Handler\StreamHandler($c['config']['folders']['logs'].'log.log', \Monolog\Logger::WARNING));
+$c['Logger'] = new \Monolog\Logger($c['config']['dispatcher']['folder']);
+$c['Logger']->pushHandler(new \Monolog\Handler\RotatingFileHandler($c['config']['folders']['logs'].'log.log', 5, \Monolog\Logger::WARNING));
 
 //$c['Logger']->addWarning('Foo');
 //$c['Logger']->addError('Bar');
@@ -31,9 +31,7 @@ $c['Error Handler']->register();
 
 //$c['Error Handler'] = new myersd\libraries\errorHandler();
 
-$c['Error Handler'] = new libraries\errorhandler();
-
-
+$c['Error Handler'] = new libraries\errorhandlerbthp($c);
 
 $c['Cache'] = new Desarrolla2\Cache\Cache(new Desarrolla2\Cache\Adapter\NotCache());
 
