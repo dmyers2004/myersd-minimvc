@@ -24,7 +24,8 @@ class mainController extends basePublicController {
 	}
 	
 	public function indexAction() {
-		return '<pre>mainController Loaded indexAction Run '.print_r($this->c,true);
+		return 'Hello World';
+		//return '<pre>mainController Loaded indexAction Run '.print_r($this->c,true);
 	}
 	
 	public function helloAction($name) {
@@ -33,7 +34,7 @@ class mainController extends basePublicController {
 	
 	public function viewAction() {
 		/* you could create the view object in basePublicController construct or within a hook */
-		new \myersd\extras\view($this->c);
+		new \myersd\libraries\view($this->c);
 		
 		$this->c['view']->set('baseurl',$this->c['config']['dispatch']['base url'],'#');
 
@@ -44,7 +45,7 @@ class mainController extends basePublicController {
 	
 	public function dbAction() {
 		/* you could do this in basePublicController construct or with a hook */
-		new \myersd\extras\database($this->c);
+		new \myersd\libraries\database($this->c);
 		
 		echo '<pre>';
 
@@ -61,7 +62,7 @@ class mainController extends basePublicController {
 	
 	public function jsonAction() {
 		/* you could do this in basePublicController construct or with a hook */
-		new \myersd\extras\view($this->c);
+		new \myersd\libraries\view($this->c);
 		
 		return $this->c['view']
 			->set(array('name'=>'Don','age'=>42))

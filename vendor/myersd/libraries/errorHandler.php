@@ -8,7 +8,7 @@
 * @copyright  Copyright (c) 2011
 * @license    Released under the MIT License.
 */
-namespace myersd\core;
+namespace myersd\libraries;
 
 class errorhandler {
 

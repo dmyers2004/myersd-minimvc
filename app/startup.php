@@ -24,8 +24,10 @@ $c['logger']->addWarning('Foo');
 $c['logger']->addError('Bar');
 
 /* Start Session */
+/*
 if (!headers_sent()) {
 	session_save_path($c['config']['folders']['session']);
 	session_name('s'.md5($c['config']['dispatch']['base url']));
 	session_start();
 }
+*/

@@ -12,10 +12,7 @@ $c = array();
 /* load our config, input & output settings - or testing mockup */
 require APP.'config.php';
 
-/* setup error handler */
-new \myersd\core\errorhandler;
-
-/* setup event handler */
+/* only other required class besides dispatcher */
 new \myersd\core\events($c);
 
 /* load our applications startup - users should modify this file as needed */

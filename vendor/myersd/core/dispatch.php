@@ -11,6 +11,8 @@
 namespace myersd\core;
 
 class dispatch {
+	
+	public $events = array();
 
 	public function __construct(&$c) {
 		/* call dispatch event */

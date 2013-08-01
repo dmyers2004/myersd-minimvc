@@ -6,9 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'myersd\\extras' => array($vendorDir . false),
+    'myersd\\libraries' => array($vendorDir . false),
     'myersd\\core' => array($vendorDir . false),
     'example' => array($vendorDir . false),
+    'Whoops' => array($vendorDir . '/filp/whoops/src'),
     'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     '' => array($baseDir . '/app'),
 );

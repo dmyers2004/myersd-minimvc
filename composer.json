@@ -1,6 +1,7 @@
 {
     "require": {
-        "monolog/monolog": "1.2.*"
+        "monolog/monolog": "1.2.*",
+        "filp/whoops": "dev-master"
     },
     "autoload": {
         "psr-0": {
