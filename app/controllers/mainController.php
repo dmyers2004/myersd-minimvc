@@ -11,45 +11,51 @@
 	*/
 namespace controllers;
 
-class mainController extends basePublicController {
-
+class mainController extends basePublicController
+{
 	/*
 	pass in container
 	I then pass it to the base controller but there doesn't have to be one.
 	I could just store it locally here but,
 	by extending base classes I can inherit a number of methods etc...
 	*/
-	public function __construct(&$c) {
+	public function __construct(&$c)
+	{
 		parent::__construct($c);
 	}
-	
-	public function indexAction() {
+
+	public function indexAction()
+	{
 		return 'Hello World';
 	}
-	
-	public function debugAction() {
+
+	public function debugAction()
+	{
 		return '<pre><h3>debug</h3>'.print_r($this->c,true);
 	}
-	
-	public function helloAction($name) {
+
+	public function helloAction($name)
+	{
 		return 'Hello '.$name.'<pre>'.print_r($this->c,true);
 	}
-	
-	public function viewAction() {
+
+	public function viewAction()
+	{
 		/* you could create the view object in basePublicController construct or within a hook */
 		new \myersd\libraries\view($this->c);
-		
+
 		$this->c['View']->set('baseurl',$this->c['config']['dispatch']['base url'],'#');
 
 		return $this->c['View']
 			->set('body','<h2>This is the body</h2>')
 			->load('layout');
 	}
-	
-	public function dbAction() {
+
+	public function dbAction()
+	{
 		/* you could do this in basePublicController construct or with a hook */
 		new \myersd\libraries\database($this->c);
-		
+
 		echo '<pre>';
 
 		$mPeople = new \models\mpeople;
@@ -62,14 +68,15 @@ class mainController extends basePublicController {
 
 		var_dump($mPeople->count());
 	}
-	
-	public function jsonAction() {
+
+	public function jsonAction()
+	{
 		/* you could do this in basePublicController construct or with a hook */
 		new \myersd\libraries\view($this->c);
-		
+
 		return $this->c['View']
 			->set(array('name'=>'Don','age'=>42))
 			->json($data);
 	}
-	
+
 } /* end controller */

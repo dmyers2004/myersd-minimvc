@@ -13,16 +13,19 @@
 */
 namespace myersd\libraries;
 
-class view {
+class view
+{
 	public $data = array(); /* view data */
 	public $folder = '';
 
-	public function __construct(&$c) {
+	public function __construct(&$c)
+	{
 		$c['View'] = $this; /* assign a copy of me to the container */
 		$this->folder = $c['config']['folders']['view'];
 	}
 
-	public function load($file,$return=true) {
+	public function load($file,$return=true)
+	{
 		$capture = '';
 
 		$file = $this->folder.$file.'.php';
@@ -46,7 +49,8 @@ class view {
 		return $this;
 	}
 
-	public function set($name,$value=null,$where=null) {
+	public function set($name,$value=null,$where=null)
+	{
 		if (is_array($name)) {
 			foreach ($name as $key => $value) {
 				$this->set($key,$value);
@@ -74,7 +78,8 @@ class view {
 		return $this;
 	}
 
-	public function get($name=null) {
+	public function get($name=null)
+	{
 		if ($name == null) {
 			return $this->data;
 		}
@@ -82,17 +87,19 @@ class view {
 		return $this->data[$name];
 	}
 
-	public function json($value=null,$options=0) {
+	public function json($value=null,$options=0)
+	{
 		$value = ($value == null) ? $this->data : $value;
-		
+
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 		header('Content-Type: application/json; charset=utf=8');
-		
+
 		return json_encode($value,$options);
 	}
 
-	private function _capture($_mvc_file,$_mvc_data) {
+	private function _capture($_mvc_file,$_mvc_data)
+	{
 		extract((array) $_mvc_data);
 		ob_start();
 		include($_mvc_file);

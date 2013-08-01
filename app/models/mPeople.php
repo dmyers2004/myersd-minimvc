@@ -11,9 +11,10 @@
 	*/
 namespace models;
 
-class mpeople extends \myersd\libraries\orm {
-
-	public function __construct() {
+class mPeople extends \myersd\libraries\orm
+{
+	public function __construct()
+	{
 		$this->tablename = 'people';
 		$this->pkname = 'id'; //Name of auto-incremented Primary Key
 		$this->fields = array('id','hash','keyword_id');

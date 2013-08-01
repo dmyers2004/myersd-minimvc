@@ -10,18 +10,20 @@
 */
 namespace libraries;
 
-class errorhandlerbthp {
+class errorhandlerbthp
+{
+	public static $c;
 
-	static public $c;
-
-	public function __construct(&$c) {
+	public function __construct(&$c)
+	{
 		self::$c = &$c;
-		
+
 		set_exception_handler(array($this,'exceptionHandler'));
 		set_error_handler(array($this,'oldSchoolErrorHandler'),error_reporting());
 	}
 
-	public function exceptionHandler($exception) {
+	public function exceptionHandler($exception)
+	{
 		self::$c['Logger']->addCritical(print_r($exception,true));
 
 		header('Location: '.self::$c['config']['dispatcher']['base url']);
@@ -29,7 +31,8 @@ class errorhandlerbthp {
 	}
 
 	/* wrapper old school error handler into new error handler */
-	public function oldSchoolErrorHandler($errno, $errstr, $errfile, $errline) {
+	public function oldSchoolErrorHandler($errno, $errstr, $errfile, $errline)
+	{
 		$e = new \ErrorException($errstr,$errno,0,$errfile,$errline);
 		$this->exceptionHandler($e);
 		return true;

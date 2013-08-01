@@ -10,24 +10,26 @@
 */
 namespace myersd\core;
 
-class dispatcher {
-	
+class dispatcher
+{
 	public $events = array();
 	public $c;
-	
-	public function __construct(&$c) {
+
+	public function __construct(&$c)
+	{
 		$this->c = &$c;
-		
+
 		/* NOTE: don't switch anything here - switch them in startup.php! */
-		
+
 		/* Set default timezone of server so PHP doesn't complain */
 		date_default_timezone_set('UTC');
-		
+
 		/* turn off error by default */
 		error_reporting(0);
 	}
 
-	public function dispatch() {
+	public function dispatch()
+	{
 		/* what is the protocal http or https? this could be useful! */
 		$this->c['config']['dispatcher']['is https'] = (strstr('https',$this->c['input']['server']['SERVER_PROTOCOL']) === TRUE);
 
@@ -64,7 +66,7 @@ class dispatcher {
 
 		/* new routed classname (Controller) */
 		$this->c['config']['dispatcher']['classname'] = str_replace('-','_',array_shift($segs));
-		
+
 		/* new method to call on classname (Method or Action) replace dashes with underscores */
 		$this->c['config']['dispatcher']['called method'] = str_replace('-','_',array_shift($segs));
 
@@ -79,7 +81,7 @@ class dispatcher {
 			throw new \Exception($this->c['config']['dispatcher']['classname'].' not found',4004);
 		}
 
-		/* create new controller inject the container */	
+		/* create new controller inject the container */
 		$main_controller = new $this->c['config']['dispatcher']['classname']($this->c);
 
 		/* call dispatch event */
@@ -96,12 +98,14 @@ class dispatcher {
 		/* call dispatch event */
 		$this->trigger('preOutput');
 	}
-	
-	public function register($event,$callback) {
+
+	public function register($event,$callback)
+	{
 		$this->events[$event][get_class($callback[0]).'->'.$callback[1]] = $callback;
 	}
 
-	public function trigger($event) {
+	public function trigger($event)
+	{
 		$returned = array();
 
 		if ($this->has_event($event)) {
@@ -115,7 +119,8 @@ class dispatcher {
 		return $returned;
 	}
 
-	public function has_event($event) {
+	public function has_event($event)
+	{
 		return (isset($this->events[$event]) && count($this->events[$event]) > 0);
 	}
 

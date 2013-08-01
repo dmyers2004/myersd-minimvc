@@ -46,21 +46,25 @@ if (!headers_sent()) {
 
 /* example event */
 /*
-class foo {
-	public function bar(&$c) {
+class foo
+{
+	public function bar(&$c)
+	{
 		echo 'Setting Foo to Bar<pre>';
 		$c['foo'] = 'Bar';
 	}
 
-	public function echo_bar(&$c) {
+	public function echo_bar(&$c)
+	{
 		echo '<h1>foo is "'.$c['foo'].'"</h1>';
 		echo'<pre>';
 	}
-	
-	public function rot(&$c) {
+
+	public function rot(&$c)
+	{
 		$c['output'] = str_rot13($c['output']);
 	}
-	
+
 }
 
 $c['Dispatcher']->register('startup',array(new foo,'bar'));

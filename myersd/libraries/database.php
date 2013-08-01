@@ -10,14 +10,17 @@
 */
 namespace myersd\libraries;
 
-class database {
-	static public $c;
+class database
+{
+	public static $c;
 
-	public function __construct(&$c) {
+	public function __construct(&$c)
+	{
 		self::$c = &$c;
 	}
 
-	public function connect($dsn,$user,$password,$connection='default') {
+	public function connect($dsn,$user,$password,$connection='default')
+	{
 		/* if the connection isn't there then try to create it */
 		if (!isset(self::$c['config']['database'][$connection])) {
 			try {
@@ -31,7 +34,8 @@ class database {
 		return self::$c['config']['database'][$connection];
 	}
 
-	public function connection($connection='default') {
+	public function connection($connection='default')
+	{
 		$prefix = ($connection == 'default') ? '' : $connection.'.';
 
 		$dsn = self::$c['config']['database']['db.'.$prefix.'dsn'];
@@ -41,7 +45,8 @@ class database {
 		return $this->connect($dsn,$user,$password,$connection);
 	}
 
-	public function _columns($tablename,$connection='default') {
+	public function _columns($tablename,$connection='default')
+	{
 		$connection = $this->connection($connection);
 
 		$statement = $connection->prepare('DESCRIBE '.$tablename);

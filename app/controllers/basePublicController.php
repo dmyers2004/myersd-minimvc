@@ -11,10 +11,12 @@
 	*/
 namespace controllers;
 
-class basePublicController {
+class basePublicController
+{
 	public $c;
-	
-	public function __construct(&$c) {
+
+	public function __construct(&$c)
+	{
 		$this->c = $c;
 	}
 

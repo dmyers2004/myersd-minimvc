@@ -35,7 +35,7 @@ $c['config']['dispatcher'] = array(
 		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action',
 		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5',
 		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5/$6',
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5/$6/$7',	
+		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5/$6/$7',
 	)
 
 );

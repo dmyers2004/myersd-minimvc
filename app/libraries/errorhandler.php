@@ -10,35 +10,39 @@
 */
 namespace libraries;
 
-class errorhandler {
+class errorhandler
+{
+	public static $c;
 
-	static public $c;
-
-	public function __construct(&$c) {
+	public function __construct(&$c)
+	{
 		self::$c = $c;
-		
+
 		set_exception_handler(array($this,'exceptionHandler'));
 		set_error_handler(array($this,'oldSchoolErrorHandler'),error_reporting());
 	}
 
-	public function exceptionHandler($exception) {
+	public function exceptionHandler($exception)
+	{
 		self::$c['Logger']->addCritical(print_r($exception,true));
-		
+
 		$this->c64error($exception);
 	}
 
 	/* wrapper old school error handler into new error handler */
-	public function oldSchoolErrorHandler($errno, $errstr, $errfile, $errline) {
+	public function oldSchoolErrorHandler($errno, $errstr, $errfile, $errline)
+	{
 		$e = new \ErrorException($errstr,$errno,0,$errfile,$errline);
 		$this->exceptionHandler($e);
 		return true;
 	}
 
-	private function c64error($exception) {
+	private function c64error($exception)
+	{
 		if (!headers_sent()) {
 			header('HTTP/1.0 404 Not Found');
 		}
-	
+
 		die('<!DOCTYPE html>
 		<html lang="en">
 		<head>
