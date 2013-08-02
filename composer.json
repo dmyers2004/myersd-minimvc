@@ -6,10 +6,7 @@
     },
     "autoload": {
         "psr-0": {
-        	"myersd\\core": "",
-        	"myersd\\libraries": "",
-        	"example": "vendor/",
-        	"": "app/"
+        	"example": "vendor/"
         }
     }
 }

@@ -19,23 +19,16 @@ $c['config']['dispatcher'] = array(
 	'folder' => FOLDER,
 
 	'routes' => array(
-		'#^/([a-zA-Z0-9-_]*)/Get/red/([a-zA-Z0-9-_]*)/$#i' => '\\\example\\\controllers\\\redController/$2$1Action',
+		'#^(http|https)/(Ajax|)/Get/red/([a-zA-Z0-9-_]*)/$#i' => '\\\example\\\controllers\\\redController/$2$1Action',
 
-		'#^/([a-zA-Z0-9-_]*)/Get/$#i' => '\controllers\\\mainController/index$1Action',
-		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/index$1Action',
-		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$1$3Action',
-		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$3$1Action',
-		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$3$1Action/$4',
-		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$3$1Action/$4/$5',
-		'#^/([a-zA-Z0-9-_]*)/Get/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/$3$1Action/$4/$5/$6',
+		/* default */
+		'#^(http|https)/(Ajax|)/(Get)/$#i' => '\controllers\\\mainController/index$2Action',
+		'#^(http|https)/(Ajax|)/(Get)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$4Controller/index$2Action',
+		'#^(http|https)/(Ajax|)/(Get)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)(.*)$#i' => '\controllers\\\$4Controller/$5$2Action$6',
 
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/$#i' => '\controllers\\\mainController/index$1$2Action',
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$2Controller/index$1$2Action',
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action',
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action',
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5',
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5/$6',
-		'#^/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$3Controller/$4$1$2Action/$5/$6/$7',
+		'#^(http|https)/(Ajax|)/(Post|Delete|Put)/$#i' => '\controllers\\\mainController/index$2$3Action',
+		'#^(http|https)/(Ajax|)/(Post|Delete|Put)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$4Controller/index$2$3Action',
+		'#^(http|https)/(Ajax|)/(Post|Delete|Put)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)(.*)$#i' => '\controllers\\\$4Controller/$5$2$3Action$6',
 	)
 
 );

@@ -3,7 +3,10 @@
 define('FOLDER', realpath(__DIR__.'/../').'/');
 
 /* PSR-0 autoloader */
-require FOLDER.'vendor/autoload.php';
+$loader = require FOLDER.'vendor/autoload.php';
+$loader->add('', FOLDER.'app/');
+$loader->add('myersd\\core',FOLDER);
+$loader->add('myersd\\libraries',FOLDER);
 
 /* setup our "super simple" dependency injection container */
 $c = array();

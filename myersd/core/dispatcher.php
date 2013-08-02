@@ -46,7 +46,7 @@ class dispatcher
 		$this->c['config']['dispatcher']['uri'] = trim(urldecode(substr(parse_url($this->c['input']['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->c['input']['server']['SCRIPT_NAME'])))),'/');
 
 		/* what are we looking for? raw route will also contain the "raw" pre router route incase you need it */
-		$this->c['config']['dispatcher']['route'] = $this->c['config']['dispatcher']['route raw'] = '/'.($this->c['config']['dispatcher']['is ajax'] ? 'Ajax' : '').'/'.$this->c['config']['dispatcher']['request'].'/'.$this->c['config']['dispatcher']['uri'];
+		$this->c['config']['dispatcher']['route'] = $this->c['config']['dispatcher']['route raw'] = ($this->c['config']['dispatcher']['is https'] ? 'https' : 'http').'/'.($this->c['config']['dispatcher']['is ajax'] ? 'Ajax' : '').'/'.$this->c['config']['dispatcher']['request'].'/'.$this->c['config']['dispatcher']['uri'];
 
 		/* call dispatch event */
 		$this->trigger('preRouter');

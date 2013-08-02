@@ -29,9 +29,9 @@ $c['Error Handler']->pushHandler(new Whoops\Handler\PrettyPageHandler());
 $c['Error Handler']->register();
 */
 
-//$c['Error Handler'] = new myersd\libraries\errorHandler();
+$c['Error Handler'] = new libraries\errorhandlerbasic($c);
 
-$c['Error Handler'] = new libraries\errorhandlerbthp($c);
+//$c['Error Handler'] = new libraries\errorhandlerbthp($c);
 
 $c['Cache'] = new Desarrolla2\Cache\Cache(new Desarrolla2\Cache\Adapter\NotCache());
 
@@ -45,7 +45,7 @@ if (!headers_sent()) {
 */
 
 /* example event */
-/*
+
 class foo
 {
 	public function bar(&$c)
@@ -64,9 +64,19 @@ class foo
 	{
 		$c['output'] = str_rot13($c['output']);
 	}
+	
+	public function route(&$c)
+	{
+		echo '<pre>';
+		print_r($c);
+	}
 
 }
 
+//$c['Dispatcher']->register('preRouter',array(new foo,'route'));
+
+
+/*
 $c['Dispatcher']->register('startup',array(new foo,'bar'));
 $c['Dispatcher']->register('preRouter',array(new foo,'echo_bar'));
 $c['Dispatcher']->register('preOutput',array(new foo,'rot'));
