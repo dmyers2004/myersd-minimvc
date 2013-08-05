@@ -26,21 +26,21 @@ class dispatcher
 
 		/* turn off error by default */
 		error_reporting(0);
+
+		/* what is the protocal http or https? this could be useful! */
+		$this->c['config']['dispatcher']['is https'] = (strstr('https',$this->c['input']['server']['SERVER_PROTOCOL']) === TRUE);
+
+		/* Is this a ajax request? */
+		$this->c['config']['dispatcher']['is ajax'] = isset($this->c['input']['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->c['input']['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 	}
 
 	public function dispatch()
 	{
-		/* what is the protocal http or https? this could be useful! */
-		$this->c['config']['dispatcher']['is https'] = (strstr('https',$this->c['input']['server']['SERVER_PROTOCOL']) === TRUE);
-
 		/* what is the base url */
 		$this->c['config']['dispatcher']['base url'] = ($this->c['config']['dispatcher']['is https'] ? 'https' : 'http').'://'.trim($this->c['input']['server']['HTTP_HOST'].dirname($this->c['input']['server']['SCRIPT_NAME']),'/');
 
 		/* The GET method is default so controller methods look like openAction, others are handled directly openPostAction, openPutAction, openDeleteAction, etc... */
 		$this->c['config']['dispatcher']['request'] = ucfirst(strtolower($this->c['input']['server']['REQUEST_METHOD']));
-
-		/* Is this a ajax request? */
-		$this->c['config']['dispatcher']['is ajax'] = isset($this->c['input']['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->c['input']['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
 		/* get the uri (uniform resource identifier) */
 		$this->c['config']['dispatcher']['uri'] = trim(urldecode(substr(parse_url($this->c['input']['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->c['input']['server']['SCRIPT_NAME'])))),'/');
@@ -99,9 +99,9 @@ class dispatcher
 		$this->trigger('preOutput');
 	}
 
-	public function register($event,$callback)
+	public function register($event,$callback,$priority=10)
 	{
-		$this->events[$event][get_class($callback[0]).'->'.$callback[1]] = $callback;
+		$this->events[$event][$priority][get_class($callback[0]).'->'.$callback[1]] = $callback;
 	}
 
 	public function trigger($event)
@@ -109,9 +109,12 @@ class dispatcher
 		$returned = array();
 
 		if ($this->has_event($event)) {
-			foreach ($this->events[$event] as $event) {
-				if (is_callable($event)) {
-					$returned[] = call_user_func_array($event, array(&$this->c));
+			ksort($this->events[$event]);
+			foreach ($this->events[$event] as $priority) {
+				foreach ($priority as $event) {
+					if (is_callable($event)) {
+						$returned[] = call_user_func_array($event, array(&$this->c));
+					}
 				}
 			}
 		}

@@ -1,24 +1,26 @@
 <?php
-/* where are we? - this is used a lot so let's define it */
-define('FOLDER', realpath(__DIR__.'/../').'/');
+/* move us back to the root directory */
+chdir('..');
 
 /* PSR-0 autoloader */
-$loader = require FOLDER.'vendor/autoload.php';
-$loader->add('', FOLDER.'app/');
-$loader->add('myersd\\core',FOLDER);
-$loader->add('myersd\\libraries',FOLDER);
+$loader = require 'vendor/autoload.php';
+
+/* add our application folder and core folders */
+$loader->add('', getcwd().'/app/');
+$loader->add('myersd\\core',getcwd());
+$loader->add('myersd\\libraries',getcwd());
 
 /* setup our "super simple" dependency injection container */
 $c = array();
 
 /* load our config, input & output settings (or mocks for testing) */
-require FOLDER.'app/config.php';
+require 'app/config.php';
 
 /* instantiate dispatcher */
 $c['Dispatcher'] = new \myersd\core\dispatcher($c);
 
 /* load our applications startup - users can modify this file as needed */
-require FOLDER.'app/startup.php';
+require 'app/startup.php';
 
 /* Call Dispatch! */
 $c['Dispatcher']->dispatch();

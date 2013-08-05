@@ -1,0 +1,29 @@
+[
+	{
+		"protocol":"http,https",
+		"ajax":"yes",
+		"request":"Get",
+		"controller":"red,green,blue",
+		"method":true,
+		"args":true,
+		"class":"/example/controllers/"
+	},
+	{
+		"protocol":"http,https",
+		"ajax":"yes",
+		"request":"Get",
+		"controller":"red",
+		"method":false,
+		"args":false,
+		"class":"/example/controllers/"
+	},
+	{
+		"protocol":"http,https",
+		"ajax":"yes",
+		"request":"Get",
+		"controller":"red",
+		"method":true,
+		"args":true,
+		"class":"/example/controllers/"
+	}
+]

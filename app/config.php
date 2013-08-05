@@ -15,11 +15,12 @@ $c['config']['dispatcher'] = array(
  	'run code' => getenv('RUNCODE'),
  	'handler' => php_sapi_name(),
 
-	'app' => FOLDER.'app/',
-	'folder' => FOLDER,
+	'app' => getcwd().'/app/',
+	'folder' => getcwd(),
 
 	'routes' => array(
-		'#^(http|https)/(Ajax|)/Get/red/([a-zA-Z0-9-_]*)/$#i' => '\\\example\\\controllers\\\redController/$2$1Action',
+		'#^(http|https)/(Ajax|)/(Get)/(red)$#i' => '\\\example\\\controllers\\\$4Controller/index$2Action',
+		'#^(http|https)/(Ajax|)/(Get)/(red)/([a-zA-Z0-9-_]*)(.*)$#i' => '\\\example\\\controllers\\\$4Controller/$5$2Action$6',
 
 		/* default */
 		'#^(http|https)/(Ajax|)/(Get)/$#i' => '\controllers\\\mainController/index$2Action',
@@ -34,11 +35,11 @@ $c['config']['dispatcher'] = array(
 );
 
 $c['config']['folders'] = array(
-	'view' => FOLDER.'app/views/',
-	'logs' => FOLDER.'app/var/logs/',
-	'cache' => FOLDER.'app/var/cache/',
-	'session' => FOLDER.'app/var/sessions/',
-	'sqlite' => FOLDER.'app/var/sqlite/'
+	'view' => getcwd().'/app/views/',
+	'logs' => getcwd().'/app/var/logs/',
+	'cache' => getcwd().'/app/var/cache/',
+	'session' => getcwd().'/app/var/sessions/',
+	'sqlite' => getcwd().'/app/var/sqlite/'
 );
 
 /* database config */

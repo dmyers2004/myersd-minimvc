@@ -11,14 +11,14 @@
 */
 
 /* turn them back on (this could be based on $app->config['app']['run code'] or something else */
-//error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 
 /* Setup your time zone */
 //date_default_timezone_set('UTC');
 
 /* mono log example - create a log channel */
-$c['Logger'] = new \Monolog\Logger($c['config']['dispatcher']['folder']);
-$c['Logger']->pushHandler(new \Monolog\Handler\RotatingFileHandler($c['config']['folders']['logs'].'log.log', 5, \Monolog\Logger::WARNING));
+//$c['Logger'] = new \Monolog\Logger($c['config']['dispatcher']['folder']);
+//$c['Logger']->pushHandler(new \Monolog\Handler\RotatingFileHandler($c['config']['folders']['logs'].'log.log', 5, \Monolog\Logger::WARNING));
 
 //$c['Logger']->addWarning('Foo');
 //$c['Logger']->addError('Bar');
@@ -33,7 +33,7 @@ $c['Error Handler'] = new libraries\errorhandlerbasic($c);
 
 //$c['Error Handler'] = new libraries\errorhandlerbthp($c);
 
-$c['Cache'] = new Desarrolla2\Cache\Cache(new Desarrolla2\Cache\Adapter\NotCache());
+//$c['Cache'] = new Desarrolla2\Cache\Cache(new Desarrolla2\Cache\Adapter\NotCache());
 
 /* Start Session */
 /*
@@ -45,7 +45,7 @@ if (!headers_sent()) {
 */
 
 /* example event */
-
+/*
 class foo
 {
 	public function bar(&$c)
@@ -70,11 +70,20 @@ class foo
 		echo '<pre>';
 		print_r($c);
 	}
+	
+	public function date(&$c) {
+		echo '<p>'.date('Y-m-d').'</p><pre>';
+		print_r($c['Dispatcher']->events);
+		//print_r($c);
+	}
 
 }
 
-//$c['Dispatcher']->register('preRouter',array(new foo,'route'));
-
+$c['Dispatcher']->register('preRouter',array(new foo,'date'),3);
+$c['Dispatcher']->register('preRouter',array(new foo,'date'),1);
+$c['Dispatcher']->register('preRouter',array(new foo,'date'),12);
+$c['Dispatcher']->register('preRouter',array(new foo,'date'));
+*/
 
 /*
 $c['Dispatcher']->register('startup',array(new foo,'bar'));

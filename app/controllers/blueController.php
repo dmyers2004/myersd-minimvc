@@ -20,7 +20,7 @@ class blueController extends basePublicController
 
 	public function indexAction()
 	{
-		return '<h1>BlueIndex</h1><pre>'.print_r($this,true);
+		return 'blueController indexAction';
 	}
 
 	public function shoesAction()
