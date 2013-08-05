@@ -26,6 +26,13 @@ $loader->add('myersd\\libraries',getcwd());
 /* setup our "super simple" dependency injection container */
 $c = array();
 
+/*
+Normally I start objects/closures with uppercase letter scalar/array are all lowercase
+ie.
+$c['Dispatcher'] = objects/closures
+$c['dispatcher'] = scalar/array (config data for example)
+*/
+
 /* load our config, input & output settings (or mocks for testing) */
 require 'app/config.php';
 
@@ -39,7 +46,7 @@ require 'app/startup.php';
 $c['Dispatcher']->dispatch();
 
 /* send output */
-echo $c['output'];
+echo $c['response'];
 
 /* Show Request time & memory usage -- comment/uncomment */
 //echo '<p>'.(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']).'ms</p>';

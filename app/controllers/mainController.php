@@ -171,7 +171,7 @@ class mainController extends basePublicController
 		new \myersd\libraries\view($this->c);
 
 		return $this->c['View']
-			->set(array('name'=>'Don','age'=>42))
+			->set(array('name'=>'Don','age'=>23))
 			->json($data);
 	}
 

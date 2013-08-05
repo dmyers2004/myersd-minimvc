@@ -28,22 +28,22 @@ class dispatcher
 		error_reporting(0);
 
 		/* what is the protocal http or https? this could be useful! */
-		$this->is_https = (strstr('https',$this->c['input']['server']['SERVER_PROTOCOL']) === TRUE);
+		$this->is_https = (strstr('https',$this->c['request']['server']['SERVER_PROTOCOL']) === TRUE);
 
 		/* Is this a ajax request? */
-		$this->is_ajax = isset($this->c['input']['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->c['input']['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+		$this->is_ajax = isset($this->c['request']['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->c['request']['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 	}
 
 	public function dispatch()
 	{
 		/* what is the base url */
-		$this->base_url = ($this->c['config']['dispatcher']['is https'] ? 'https' : 'http').'://'.trim($this->c['input']['server']['HTTP_HOST'].dirname($this->c['input']['server']['SCRIPT_NAME']),'/');
+		$this->base_url = ($this->c['dispatcher']['is https'] ? 'https' : 'http').'://'.trim($this->c['request']['server']['HTTP_HOST'].dirname($this->c['request']['server']['SCRIPT_NAME']),'/');
 
 		/* The GET method is default so controller methods look like openAction, others are handled directly openPostAction, openPutAction, openDeleteAction, etc... */
-		$this->request = ucfirst(strtolower($this->c['input']['server']['REQUEST_METHOD']));
+		$this->request = ucfirst(strtolower($this->c['request']['server']['REQUEST_METHOD']));
 
 		/* get the uri (uniform resource identifier) */
-		$this->uri = trim(urldecode(substr(parse_url($this->c['input']['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->c['input']['server']['SCRIPT_NAME'])))),'/');
+		$this->uri = trim(urldecode(substr(parse_url($this->c['request']['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->c['request']['server']['SCRIPT_NAME'])))),'/');
 
 		/* what are we looking for? raw route will also contain the "raw" pre router route incase you need it */
 		$this->route = $this->route_raw = ($this->is_https ? 'https' : 'http').'/'.($this->is_ajax ? 'Ajax' : '').'/'.$this->request.'/'.$this->uri;
@@ -52,7 +52,7 @@ class dispatcher
 		$this->trigger('preRouter');
 
 		/* rewrite dispatch route */
-		foreach ($this->c['config']['dispatcher']['routes'] as $regexpath => $switchto) {
+		foreach ($this->c['dispatcher']['routes'] as $regexpath => $switchto) {
 			if (preg_match($regexpath, $this->route)) {
 				/* we got a match */
 				$this->route = preg_replace($regexpath, $switchto, $this->route);
@@ -90,7 +90,7 @@ class dispatcher
 		}
 
 		/* let's call our method and capture the output */
-		$this->c['output'] = call_user_func_array(array($main_controller,$this->called_method),$this->segs);
+		$this->c['response'] = call_user_func_array(array($main_controller,$this->called_method),$this->segs);
 
 		/* call dispatch event */
 		$this->trigger('preOutput');
