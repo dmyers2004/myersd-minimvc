@@ -2,7 +2,7 @@
 /**
 * DMyers Super Simple MVC
 *
-* @package    Dispatch file
+* @package    Dispatcher file
 * @language   PHP
 * @author     Don Myers
 * @copyright  Copyright (c) 2011

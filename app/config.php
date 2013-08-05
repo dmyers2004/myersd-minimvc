@@ -11,35 +11,35 @@
 */
 
 /* setup "assume nothing" config/injection and start the party! */
-$c['config']['dispatcher'] = array(
- 	'run code' => getenv('RUNCODE'),
- 	'handler' => php_sapi_name(),
+$c['config'] = array(
+	'dispatcher' => array(
+	 	'run code' => getenv('RUNCODE'),
+	 	'handler' => php_sapi_name(),
 
-	'app' => getcwd().'/app/',
-	'folder' => getcwd(),
+		'app' => getcwd().'/app/',
+		'folder' => getcwd(),
 
-	'routes' => array(
-		'#^(http|https)/(Ajax|)/(Get)/(red)$#i' => '\\\example\\\controllers\\\$4Controller/index$2Action',
-		'#^(http|https)/(Ajax|)/(Get)/(red)/([a-zA-Z0-9-_]*)(.*)$#i' => '\\\example\\\controllers\\\$4Controller/$5$2Action$6',
+		'routes' => array(
+			'#^(http|https)/(Ajax|)/(Get)/(red)$#i' => '\\\example\\\controllers\\\$4Controller/index$2Action',
+			'#^(http|https)/(Ajax|)/(Get)/(red)/([a-zA-Z0-9-_]*)(.*)$#i' => '\\\example\\\controllers\\\$4Controller/$5$2Action$6',
 
-		/* default */
-		'#^(http|https)/(Ajax|)/(Get)/$#i' => '\controllers\\\mainController/index$2Action',
-		'#^(http|https)/(Ajax|)/(Get)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$4Controller/index$2Action',
-		'#^(http|https)/(Ajax|)/(Get)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)(.*)$#i' => '\controllers\\\$4Controller/$5$2Action$6',
+			/* default */
+			'#^(http|https)/(Ajax|)/(Get)/$#i' => '\controllers\\\mainController/index$2Action',
+			'#^(http|https)/(Ajax|)/(Get)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$4Controller/index$2Action',
+			'#^(http|https)/(Ajax|)/(Get)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)(.*)$#i' => '\controllers\\\$4Controller/$5$2Action$6',
 
-		'#^(http|https)/(Ajax|)/(Post|Delete|Put)/$#i' => '\controllers\\\mainController/index$2$3Action',
-		'#^(http|https)/(Ajax|)/(Post|Delete|Put)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$4Controller/index$2$3Action',
-		'#^(http|https)/(Ajax|)/(Post|Delete|Put)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)(.*)$#i' => '\controllers\\\$4Controller/$5$2$3Action$6',
+			'#^(http|https)/(Ajax|)/(Post|Delete|Put)/$#i' => '\controllers\\\mainController/index$2$3Action',
+			'#^(http|https)/(Ajax|)/(Post|Delete|Put)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\$4Controller/index$2$3Action',
+			'#^(http|https)/(Ajax|)/(Post|Delete|Put)/([a-zA-Z0-9-_]*)/([a-zA-Z0-9-_]*)(.*)$#i' => '\controllers\\\$4Controller/$5$2$3Action$6',
+		)
+	),
+	'folders' => array(
+		'view' => getcwd().'/app/views/',
+		'logs' => getcwd().'/app/var/logs/',
+		'cache' => getcwd().'/app/var/cache/',
+		'session' => getcwd().'/app/var/sessions/',
+		'sqlite' => getcwd().'/app/var/sqlite/'
 	)
-
-);
-
-$c['config']['folders'] = array(
-	'view' => getcwd().'/app/views/',
-	'logs' => getcwd().'/app/var/logs/',
-	'cache' => getcwd().'/app/var/cache/',
-	'session' => getcwd().'/app/var/sessions/',
-	'sqlite' => getcwd().'/app/var/sqlite/'
 );
 
 /* database config */

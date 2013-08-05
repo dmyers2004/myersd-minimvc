@@ -1,12 +1,25 @@
 <?php
-/* move us back to the root directory */
+/**
+* DMyers Super Simple MVC
+*
+* @package    Config
+* @language   PHP
+* @author     Don Myers
+* @copyright  Copyright (c) 2011
+* @license    Released under the MIT License.
+*
+* The only publicly visible php file
+*
+*/
+
+/* we need to start in the root directory */
 chdir('..');
 
 /* PSR-0 autoloader */
 $loader = require 'vendor/autoload.php';
 
 /* add our application folder and core folders */
-$loader->add('', getcwd().'/app/');
+$loader->add('', getcwd().'/app');
 $loader->add('myersd\\core',getcwd());
 $loader->add('myersd\\libraries',getcwd());
 
@@ -29,6 +42,5 @@ $c['Dispatcher']->dispatch();
 echo $c['output'];
 
 /* Show Request time & memory usage -- comment/uncomment */
-
 //echo '<p>'.(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']).'ms</p>';
 //echo '<p>'.(memory_get_peak_usage(true)/1024).'k</p>';
