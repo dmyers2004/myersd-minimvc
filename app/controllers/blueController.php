@@ -13,9 +13,9 @@ namespace controllers;
 
 class blueController extends basePublicController
 {
-	public function __construct(&$app)
+	public function __construct(&$c)
 	{
-		parent::__construct($app);
+		parent::__construct($c);
 	}
 
 	public function indexAction()

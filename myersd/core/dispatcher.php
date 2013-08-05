@@ -12,44 +12,37 @@ namespace myersd\core;
 
 class dispatcher
 {
-	public $events = array();
-	public $c;
+	private $c;
 
 	public function __construct(&$c)
 	{
 		$this->c = &$c;
-
-		/* NOTE: don't switch anything here - switch them in startup.php! */
-
-		/* Set default timezone of server so PHP doesn't complain */
-		date_default_timezone_set('UTC');
-
-		/* turn off error by default */
-		error_reporting(0);
-
-		/* what is the protocal http or https? this could be useful! */
-		$this->is_https = (strstr('https',$this->c['request']['server']['SERVER_PROTOCOL']) === TRUE);
-
-		/* Is this a ajax request? */
-		$this->is_ajax = isset($this->c['request']['server']['HTTP_X_REQUESTED_WITH']) && strtolower($this->c['request']['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 	}
 
 	public function dispatch()
 	{
+		/* call dispatch event */
+		$this->c['Event']->trigger('preDispatch');
+
+		/* what is the protocal http or https? this could be useful! */
+		$this->is_https = (strstr('https',$this->c['Request']->server('SERVER_PROTOCOL')) === TRUE);
+
+		$this->is_ajax = ($this->c['Request']->server('HTTP_X_REQUESTED_WITH',NULL) !== NULL && strtolower($this->c['Request']->server('HTTP_X_REQUESTED_WITH')) === 'xmlhttprequest');
+
 		/* what is the base url */
-		$this->base_url = ($this->c['dispatcher']['is https'] ? 'https' : 'http').'://'.trim($this->c['request']['server']['HTTP_HOST'].dirname($this->c['request']['server']['SCRIPT_NAME']),'/');
+		$this->base_url = ($this->is_https ? 'https' : 'http').'://'.trim($this->c['Request']->server('HTTP_HOST').dirname($this->c['Request']->server('SCRIPT_NAME')),'/');
 
 		/* The GET method is default so controller methods look like openAction, others are handled directly openPostAction, openPutAction, openDeleteAction, etc... */
-		$this->request = ucfirst(strtolower($this->c['request']['server']['REQUEST_METHOD']));
+		$this->request = ucfirst(strtolower($this->c['Request']->server('REQUEST_METHOD')));
 
 		/* get the uri (uniform resource identifier) */
-		$this->uri = trim(urldecode(substr(parse_url($this->c['request']['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->c['request']['server']['SCRIPT_NAME'])))),'/');
+		$this->uri = trim(urldecode(substr(parse_url($this->c['Request']->server('REQUEST_URI'),PHP_URL_PATH),strlen(dirname($this->c['Request']->server('SCRIPT_NAME'))))),'/');
 
 		/* what are we looking for? raw route will also contain the "raw" pre router route incase you need it */
 		$this->route = $this->route_raw = ($this->is_https ? 'https' : 'http').'/'.($this->is_ajax ? 'Ajax' : '').'/'.$this->request.'/'.$this->uri;
 
 		/* call dispatch event */
-		$this->trigger('preRouter');
+		$this->c['Event']->trigger('preRouter');
 
 		/* rewrite dispatch route */
 		foreach ($this->c['dispatcher']['routes'] as $regexpath => $switchto) {
@@ -71,7 +64,7 @@ class dispatcher
 		$this->called_method = str_replace('-','_',array_shift($this->segs));
 
 		/* call dispatch event */
-		$this->trigger('preController');
+		$this->c['Event']->trigger('preController');
 
 		/* This throws a error and 4005 - handle it in your error handler */
 		if (!class_exists($this->classname)) {
@@ -82,7 +75,7 @@ class dispatcher
 		$main_controller = new $this->classname($this->c);
 
 		/* call dispatch event */
-		$this->trigger('preMethod');
+		$this->c['Event']->trigger('preMethod');
 
 		/* This throws a error and 4005 - handle it in your error handler */
 		if (!is_callable(array($main_controller,$this->called_method))) {
@@ -90,38 +83,7 @@ class dispatcher
 		}
 
 		/* let's call our method and capture the output */
-		$this->c['response'] = call_user_func_array(array($main_controller,$this->called_method),$this->segs);
-
-		/* call dispatch event */
-		$this->trigger('preOutput');
-	}
-
-	public function register($event,$callback,$priority=10)
-	{
-		$this->events[$event][$priority][get_class($callback[0]).'->'.$callback[1]] = $callback;
-	}
-
-	public function trigger($event)
-	{
-		$returned = array();
-
-		if ($this->has_event($event)) {
-			ksort($this->events[$event]);
-			foreach ($this->events[$event] as $priority) {
-				foreach ($priority as $event) {
-					if (is_callable($event)) {
-						$returned[] = call_user_func_array($event, array(&$this->c));
-					}
-				}
-			}
-		}
-
-		return $returned;
-	}
-
-	public function has_event($event)
-	{
-		return (isset($this->events[$event]) && count($this->events[$event]) > 0);
+		$this->c['Response']->body = call_user_func_array(array($main_controller,$this->called_method),$this->segs);
 	}
 
 } /* end dispatcher */

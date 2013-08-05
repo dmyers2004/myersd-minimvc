@@ -12,6 +12,13 @@
 *
 */
 
+/* Set default timezone of server so PHP doesn't complain */
+date_default_timezone_set('UTC');
+
+/* turn off error by default */
+error_reporting(0);
+
+
 /* we need to start in the root directory */
 chdir('..');
 
@@ -36,8 +43,11 @@ $c['dispatcher'] = scalar/array (config data for example)
 /* load our config, input & output settings (or mocks for testing) */
 require 'app/config.php';
 
-/* instantiate dispatcher */
+/* instantiate core classes but don't do anything yet! */
+$c['Event'] = new \myersd\core\event($c);
+$c['Request'] = new \myersd\core\request($c);
 $c['Dispatcher'] = new \myersd\core\dispatcher($c);
+$c['Response'] = new \myersd\core\response($c);
 
 /* load our applications startup - users can modify this file as needed */
 require 'app/startup.php';
@@ -46,8 +56,4 @@ require 'app/startup.php';
 $c['Dispatcher']->dispatch();
 
 /* send output */
-echo $c['response'];
-
-/* Show Request time & memory usage -- comment/uncomment */
-//echo '<p>'.(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']).'ms</p>';
-//echo '<p>'.(memory_get_peak_usage(true)/1024).'k</p>';
+$c['Response']->send_headers()->send_body();

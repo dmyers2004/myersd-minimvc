@@ -46,7 +46,8 @@ class mainController extends basePublicController
 
 	public function param4Action($a=null,$b=null,$c=null,$d=null)
 	{
-		return 'mainController param4Action '.$a.' '.$b.' '.$c.' '.$d;
+		$foo = $this->c['Request']->param($a);
+		return 'mainController param4Action '.$a.' '.$b.' '.$c.' '.$d.'/'.$foo;
 	}
 
 	public function indexAjaxAction()

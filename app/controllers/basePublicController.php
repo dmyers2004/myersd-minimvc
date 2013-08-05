@@ -17,7 +17,7 @@ class basePublicController
 
 	public function __construct(&$c)
 	{
-		$this->c = $c;
+		$this->c = &$c;
 	}
 
 } /* end controller */

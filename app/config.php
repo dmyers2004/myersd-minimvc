@@ -62,10 +62,18 @@ $c['request'] = array(
 	'get' => $_GET,
 	'post' => $_POST,
 	'files' => $_FILES,
-	'cookies' => $_COOKIE,
+	'cookie' => $_COOKIE,
 	'env' => $_ENV,
-	'session' => $_SESSION,
 	'put' => $_PUT
 );
 
-$c['response'] = '';
+$c['response'] = array(
+	'headers' => array('Content-Type: text/html; charset=utf-8'),
+	'body' => '',
+	'profile' => false,
+	'cookie expire' => 60*60*24*30,
+	'cookie path' => '/',
+	'cookie domain' => null,
+	'cookie secure' => false,
+	'cookie httponly' => false
+);
