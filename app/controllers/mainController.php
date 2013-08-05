@@ -140,7 +140,7 @@ class mainController extends basePublicController
 		/* you could create the view object in basePublicController construct or within a hook */
 		new \myersd\libraries\view($this->c);
 
-		$this->c['View']->set('baseurl',$this->c['config']['dispatch']['base url'],'#');
+		$this->c['View']->set('baseurl',$this->c['Dispatcher']->base_url,'#');
 
 		return $this->c['View']
 			->set('body','<h2>This is the body</h2>')
