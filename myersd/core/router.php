@@ -13,7 +13,7 @@ namespace myersd\core;
 class router
 {
 	private $c;
-	
+
 	public $route;
 	public $route_raw;
 	public $route_matched;
@@ -32,7 +32,7 @@ class router
 		$this->c->Event->preRouter();
 
 		/* rewrite dispatch route */
-		foreach ($this->c->router as $regexpath => $switchto) {
+		foreach ($this->c->router['routes'] as $regexpath => $switchto) {
 			if (preg_match($regexpath, $this->route)) {
 				/* we got a match */
 				$this->route = preg_replace($regexpath, $switchto, $this->route);

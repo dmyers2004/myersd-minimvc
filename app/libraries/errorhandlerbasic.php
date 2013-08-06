@@ -25,7 +25,7 @@ class errorhandlerbasic
 	public function exceptionHandler($exception)
 	{
 		echo '<pre>';
-		switch($exception->getCode()) {
+		switch ($exception->getCode()) {
 			case 4004:
 				echo $exception->getMessage();
 			break;

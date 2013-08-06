@@ -13,7 +13,7 @@ namespace myersd\core;
 class event
 {
 	private $c;
-	
+
 	public $events = array();
 
 	public function __construct(&$c)
@@ -26,7 +26,8 @@ class event
 		$this->events[$event][$priority][get_class($callback[0]).'->'.$callback[1]] = $callback;
 	}
 
-	public function __call($event, $arguments) {
+	public function __call($event, $arguments)
+	{
 		$returned = array();
 
 		if ($this->hasEvent($event)) {

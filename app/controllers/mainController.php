@@ -28,7 +28,7 @@ class mainController extends basePublicController
 	{
 		return 'mainController indexAction';
 	}
-	
+
 	public function param1Action($a=null)
 	{
 		return 'mainController param1Action '.$a;
@@ -53,7 +53,7 @@ class mainController extends basePublicController
 	{
 		return 'mainController indexAjaxAction';
 	}
-	
+
 	public function param1AjaxAction($a=null)
 	{
 		return 'mainController param1AjaxAction '.$a;
@@ -78,7 +78,7 @@ class mainController extends basePublicController
 	{
 		return 'mainController indexPostAction '.$this->c->Request->post('name');
 	}
-	
+
 	public function param1PostAction($a=null)
 	{
 		return 'mainController param1PostAction '.$a.' '.$this->c->Request->post('name');
@@ -103,7 +103,7 @@ class mainController extends basePublicController
 	{
 		return 'mainController indexAjaxPostAction '.$this->c->Request->post('name');
 	}
-	
+
 	public function param1AjaxPostAction($a=null)
 	{
 		return 'mainController param1AjaxPostAction '.$a.' '.$this->c->Request->post('name');

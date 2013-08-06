@@ -65,14 +65,15 @@ class foo
 	{
 		$c['output'] = str_rot13($c['output']);
 	}
-	
+
 	public function route(&$c)
 	{
 		echo '<pre>';
 		print_r($c);
 	}
-	
-	public function date(&$c) {
+
+	public function date(&$c)
+	{
 		echo '<p>'.date('Y-m-d').'</p><pre>';
 		print_r($c['Dispatcher']->events);
 		//print_r($c);

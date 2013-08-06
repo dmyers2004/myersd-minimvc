@@ -23,7 +23,8 @@ class request
 	public $route_raw;
 	public $requests = array();
 
-	public function __construct(&$c) {
+	public function __construct(&$c)
+	{
 		$this->c = &$c;
 
 		/* let's clean them out only use this class */
@@ -62,47 +63,58 @@ class request
 		$this->requests['parameters'] = explode('/',$this->uri);
 	}
 
-	public function get($key=null,$default=null,$filter=true) {
+	public function get($key=null,$default=null,$filter=true)
+	{
 		return $this->getVal('get',$key,$default,$filter);
 	}
 
-	public function post($key=null,$default=null,$filter=true) {
+	public function post($key=null,$default=null,$filter=true)
+	{
 		return $this->getVal('post',$key,$default,$filter);
 	}
 
-	public function put($key=null,$default=null,$filter=true) {
+	public function put($key=null,$default=null,$filter=true)
+	{
 		return $this->getVal('put',$key,$default,$filter);
 	}
 
-	public function env($key=null,$default=null,$filter=true) {
+	public function env($key=null,$default=null,$filter=true)
+	{
 		return $this->getVal('env',$key,$default,$filter);
 	}
 
-	public function files($key=null,$default=null,$filter=true) {
+	public function files($key=null,$default=null,$filter=true)
+	{
 		return $this->getVal('files',$key,$default,$filter);
 	}
 
-	public function cookie($key=null,$default=null,$filter=true) {
+	public function cookie($key=null,$default=null,$filter=true)
+	{
 		return $this->getVal('cookie',$key,$default,$filter);
 	}
 
-	public function parameters($idx=null,$default=null,$filter=true) {
+	public function parameters($idx=null,$default=null,$filter=true)
+	{
 		return $this->getVal('parameters',$idx-1,$default,$filter);
 	}
 
-	public function attributes($key=null,$default=null,$filter=false) {
+	public function attributes($key=null,$default=null,$filter=false)
+	{
 		return $this->getVal('attributes',$key,$default,$filter);
 	}
 
-	public function server($key=null,$default=null,$filter=false) {
+	public function server($key=null,$default=null,$filter=false)
+	{
 		return $this->getVal('server',$key,$default,$filter);
 	}
 
-	public function header($key=null,$default=null,$filter=false) {
+	public function header($key=null,$default=null,$filter=false)
+	{
 		return $this->getVal('header',$key,$default,$filter);
 	}
 
-	public function filter_xss($val) {
+	public function filter_xss($val)
+	{
 		if (is_array($val)) {
 			array_walk_recursive($val, function( &$str) {
 				$str = strip_tags($str);
@@ -114,7 +126,8 @@ class request
 		return $val;
 	}
 
-	private function getVal($ary,$key,$default,$filter) {
+	private function getVal($ary,$key,$default,$filter)
+	{
 		if ($key === null) {
 			return $this->c->request[$ary];
 		}
@@ -130,18 +143,18 @@ class request
 		}
 
 		$options = null;
-		
+
 		if (is_array($filter)) {
 			$key = array_keys($filter);
 			$options = $filter[0];
 			$filter = $key[0];
 		}
-		
+
 		if (in_array($filter,filter_list())) {
 			return filter_var($val,$filter,$options);
 		}
 
-		throw new \Exception('Filter '.$filter.' Not Found',4100);		
+		throw new \Exception('Filter '.$filter.' Not Found',4100);
 
 		return null;
 	}
