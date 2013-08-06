@@ -140,11 +140,9 @@ class mainController extends basePublicController
 		/* you could create the view object in basePublicController construct or within a hook */
 		new \myersd\libraries\view($this->c);
 
-		$this->c['View']->set('baseurl',$this->c->Request->base_url,'#');
+		$this->c->View->set('baseurl',$this->c->Request->base_url,'#');
 
-		return $this->c->View
-			->set('body','<h2>This is the body</h2>')
-			->load('layout');
+		return $this->c->View->set('body','<h2>This is the body</h2>')->load('layout');
 	}
 
 	public function dbAction()
@@ -152,17 +150,18 @@ class mainController extends basePublicController
 		/* you could do this in basePublicController construct or with a hook */
 		new \myersd\libraries\database($this->c);
 
-		echo '<pre>';
-
 		$mPeople = new \models\mpeople;
 
 		$mPeople->keyword_id = mt_rand(1, 9999);
 		$mPeople->hash = md5($mPeople->keyword_id);
 		$mPeople->create();
 
-		print_r($mPeople);
+		$html = '<pre>';
 
-		var_dump($mPeople->count());
+		$html .= print_r($mPeople,true);
+		$html .= print_r($mPeople->count(),true);
+		
+		return $html;
 	}
 
 	public function jsonAction()

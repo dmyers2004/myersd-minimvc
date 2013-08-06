@@ -11,8 +11,8 @@
 */
 
 /* turn them back on (this could be based on $app->config['app']['run code'] or something else */
-//error_reporting(E_ALL & ~E_NOTICE);
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_NOTICE);
+//error_reporting(E_ALL);
 
 /* Setup your time zone */
 //date_default_timezone_set('UTC');

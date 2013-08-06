@@ -16,7 +16,7 @@
 date_default_timezone_set('UTC');
 
 /* turn off error by default */
-//error_reporting(0);
+error_reporting(0);
 
 /* we need to start in the root directory */
 chdir('..');
@@ -29,7 +29,7 @@ $loader->add('', getcwd().'/app');
 $loader->add('myersd\\core',getcwd());
 $loader->add('myersd\\libraries',getcwd());
 
-/* setup our "super simple" dependency injection container */
+/* setup our dependency injection container */
 $c = new \myersd\core\container;
 
 /*
@@ -42,7 +42,7 @@ $c['dispatcher'] = scalar/array (config data for example)
 /* load our config, input & output settings (or mocks for testing) */
 require 'app/config.php';
 
-/* */
+/* Setup out even handler */
 $c->Event = new \myersd\core\event($c);
 
 /* load our applications startup - users can modify this file as needed */
@@ -54,11 +54,11 @@ $c->Router = new \myersd\core\router($c);
 $c->Dispatcher = new \myersd\core\dispatcher($c);
 $c->Response = new \myersd\core\response($c);
 
-/* */
+/* Run the router */
 $c->Router->route();
 
-/* Call Dispatch! */
+/* Call Dispatch! (too lazy load stuff) */
 $c->Dispatcher->dispatch();
 
-/* send output */
+/* Send Responses */
 $c->Response->sendHeaders()->sendBody();
