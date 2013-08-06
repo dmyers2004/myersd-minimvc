@@ -21,7 +21,7 @@ class view
 	public function __construct(&$c)
 	{
 		$c['View'] = $this; /* assign a copy of me to the container */
-		$this->folder = $c['folders']['view'];
+		$this->folder = $c['application']['folders']['view'];
 	}
 
 	public function load($file,$return=true)

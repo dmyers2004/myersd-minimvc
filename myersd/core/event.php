@@ -30,7 +30,7 @@ class event
 	{
 		$returned = array();
 
-		if ($this->has_event($event)) {
+		if ($this->hasEvent($event)) {
 			ksort($this->events[$event]);
 			foreach ($this->events[$event] as $priority) {
 				foreach ($priority as $event) {
@@ -44,7 +44,7 @@ class event
 		return $returned;
 	}
 
-	public function has_event($event)
+	public function hasEvent($event)
 	{
 		return (isset($this->events[$event]) && count($this->events[$event]) > 0);
 	}

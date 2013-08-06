@@ -61,4 +61,4 @@ $c['Router']->route();
 $c['Dispatcher']->dispatch();
 
 /* send output */
-$c['Response']->send_headers()->send_body();
+$c['Response']->sendHeaders()->sendBody();

@@ -51,40 +51,40 @@ class request
 	}
 
 	public function get($key=null,$default=null,$filter=true) {
-		return $this->get_val('get',$key,$default,$filter);
+		return $this->getVal('get',$key,$default,$filter);
 	}
 
 	public function post($key=null,$default=null,$filter=true) {
-		return $this->get_val('post',$key,$default,$filter);
+		return $this->getVal('post',$key,$default,$filter);
 	}
 
 	public function put($key=null,$default=null,$filter=true) {
-		return $this->get_val('put',$key,$default,$filter);
+		return $this->getVal('put',$key,$default,$filter);
 	}
 
 	public function env($key=null,$default=null,$filter=true) {
-		return $this->get_val('env',$key,$default,$filter);
+		return $this->getVal('env',$key,$default,$filter);
 	}
 
 	public function files($key=null,$default=null,$filter=true) {
-		return $this->get_val('files',$key,$default,$filter);
+		return $this->getVal('files',$key,$default,$filter);
 	}
 
 	public function cookie($key=null,$default=null,$filter=true) {
-		return $this->get_val('cookie',$key,$default,$filter);
+		return $this->getVal('cookie',$key,$default,$filter);
 	}
 
 	public function param($idx=null,$default=null,$filter=true) {
 		$this->c['request']['param'] = explode('/',$this->c['Request']->uri);
-		return $this->get_val('param',$idx-1,$default,$filter);
+		return $this->getVal('param',$idx-1,$default,$filter);
 	}
 
 	public function server($key=null,$default=null,$filter=false) {
-		return $this->get_val('server',$key,$default,$filter);
+		return $this->getVal('server',$key,$default,$filter);
 	}
 
 	public function header($key=null,$default=null,$filter=false) {
-		return $this->get_val('header',$key,$default,$filter);
+		return $this->getVal('header',$key,$default,$filter);
 	}
 
 	public function filter_xss($val) {
@@ -99,7 +99,7 @@ class request
 		return $val;
 	}
 
-	private function get_val($ary,$key,$default,$filter) {
+	private function getVal($ary,$key,$default,$filter) {
 		if ($key === null) {
 			return $this->c['request'][$ary];
 		}

@@ -15,8 +15,15 @@ $c['application'] = array(
  	'run code' => getenv('RUNCODE'),
  	'handler' => php_sapi_name(),
 
-	'app' => getcwd().'/app/',
+	'application' => getcwd().'/app/',
 	'folder' => getcwd(),
+	'folders' => array(
+		'view' => getcwd().'/app/views/',
+		'logs' => getcwd().'/app/var/logs/',
+		'cache' => getcwd().'/app/var/cache/',
+		'session' => getcwd().'/app/var/sessions/',
+		'sqlite' => getcwd().'/app/var/sqlite/'
+	)
 );
 
 $c['router'] = array(
@@ -35,17 +42,9 @@ $c['router'] = array(
 	)
 );
 
-$c['folders'] = array(
-	'view' => getcwd().'/app/views/',
-	'logs' => getcwd().'/app/var/logs/',
-	'cache' => getcwd().'/app/var/cache/',
-	'session' => getcwd().'/app/var/sessions/',
-	'sqlite' => getcwd().'/app/var/sqlite/'
-);
-
 /* database config */
 $c['database'] = array(
-	'db.dsn' => 'sqlite:'.$c['folders']['sqlite'] .'messaging.sqlite3',
+	'db.dsn' => 'sqlite:'.$c['application']['folders']['sqlite'] .'messaging.sqlite3',
 	'db.user' => null,
 	'db.password' => null,
 

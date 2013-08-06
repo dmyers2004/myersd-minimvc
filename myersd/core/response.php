@@ -26,7 +26,7 @@ class response
 		$this->body = $this->c['response']['body'];
 	}
 
-	public function add_header($header) {
+	public function addHeader($header) {
 		$key = strtolower(substr($header,0,strpos($header, ':')));
 		
 		$this->headers[$key] = $header;
@@ -45,7 +45,7 @@ class response
 		return $this;
 	}
 	
-	public function send_headers() {
+	public function sendHeaders() {
 		/* call dispatch event */
 		$this->c['Event']->trigger('preResponseHeaders');
 
@@ -56,7 +56,7 @@ class response
 		return $this;
 	}
 	
-	public function send_body() {
+	public function sendBody() {
 		/* call dispatch event */
 		$this->c['Event']->trigger('preResponseBody');
 
@@ -75,9 +75,9 @@ class response
 		/* call dispatch event */
 		$this->c['Event']->trigger('preResponseJson');
 
-		$this->add_header('Cache-Control: no-cache, must-revalidate');
-		$this->add_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-		$this->add_header('Content-Type: application/json; charset=utf=8');
+		$this->addHeader('Cache-Control: no-cache, must-revalidate');
+		$this->addHeader('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+		$this->addHeader('Content-Type: application/json; charset=utf=8');
 
 		$this->body = json_encode($this->json,$this->options);
 
@@ -85,7 +85,7 @@ class response
 	}
 	
 	/* lot o config */
-	public function set_cookie($key='',$value='',$expire=null,$path=null,$domain=null,$secure=null,$httponly=null) {
+	public function setCookie($key='',$value='',$expire=null,$path=null,$domain=null,$secure=null,$httponly=null) {
 
 		$expire = ($expire === null) ? $this->c['response']['cookie expire'] : 0;
 		$path = ($path === null) ? $this->c['response']['cookie path'] : '/';
