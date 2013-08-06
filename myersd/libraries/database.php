@@ -13,36 +13,37 @@ namespace myersd\libraries;
 class database
 {
 	public static $c;
+	public static $dbhs = array();
 
 	public function __construct(&$c)
 	{
 		self::$c = &$c;
 	}
 
+	public function connection($connection='default')
+	{
+		$prefix = ($connection == 'default') ? '' : $connection.'.';
+
+		$dsn = self::$c->database['db.'.$prefix.'dsn'];
+		$user = self::$c->database['db.'.$prefix.'user'];
+		$password = self::$c->database['db.'.$prefix.'password'];
+
+		return $this->connect($dsn,$user,$password,$connection);
+	}
+
 	public function connect($dsn,$user,$password,$connection='default')
 	{
 		/* if the connection isn't there then try to create it */
-		if (!isset(self::$c['database'][$connection])) {
+		if (!isset(self::$dbhs[$connection])) {
 			try {
 				$handle = new \PDO($dsn , $user, $password);
 			} catch (PDOException $e) {
 				throw new \Exception($e->getMessage());
 			}
-			self::$c['database'][$connection] = $handle;
+			self::$dbhs[$connection] = $handle;
 		}
 
-		return self::$c['database'][$connection];
-	}
-
-	public function connection($connection='default')
-	{
-		$prefix = ($connection == 'default') ? '' : $connection.'.';
-
-		$dsn = self::$c['database']['db.'.$prefix.'dsn'];
-		$user = self::$c['database']['db.'.$prefix.'user'];
-		$password = self::$c['database']['db.'.$prefix.'password'];
-
-		return $this->connect($dsn,$user,$password,$connection);
+		return self::$dbhs[$connection];
 	}
 
 	public function _columns($tablename,$connection='default')

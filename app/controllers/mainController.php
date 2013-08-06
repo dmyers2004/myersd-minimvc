@@ -28,7 +28,7 @@ class mainController extends basePublicController
 	{
 		return 'mainController indexAction';
 	}
-	
+
 	public function param1Action($a=null)
 	{
 		return 'mainController param1Action '.$a;
@@ -53,7 +53,7 @@ class mainController extends basePublicController
 	{
 		return 'mainController indexAjaxAction';
 	}
-	
+
 	public function param1AjaxAction($a=null)
 	{
 		return 'mainController param1AjaxAction '.$a;
@@ -76,52 +76,52 @@ class mainController extends basePublicController
 
 	public function indexPostAction()
 	{
-		return 'mainController indexPostAction '.$this->c['Request']->post('name');
+		return 'mainController indexPostAction '.$this->c->Request->post('name');
 	}
-	
+
 	public function param1PostAction($a=null)
 	{
-		return 'mainController param1PostAction '.$a.' '.$this->c['Request']->post('name');
+		return 'mainController param1PostAction '.$a.' '.$this->c->Request->post('name');
 	}
 
 	public function param2PostAction($a=null,$b=null)
 	{
-		return 'mainController param2PostAction '.$a.' '.$b.' '.$this->c['Request']->post('name');
+		return 'mainController param2PostAction '.$a.' '.$b.' '.$this->c->Request->post('name');
 	}
 
 	public function param3PostAction($a=null,$b=null,$c=null)
 	{
-		return 'mainController param3PostAction '.$a.' '.$b.' '.$c.' '.$this->c['Request']->post('name');
+		return 'mainController param3PostAction '.$a.' '.$b.' '.$c.' '.$this->c->Request->post('name');
 	}
 
 	public function param4PostAction($a=null,$b=null,$c=null,$d=null)
 	{
-		return 'mainController param4PostAction '.$a.' '.$b.' '.$c.' '.$d.' '.$this->c['Request']->post('name');
+		return 'mainController param4PostAction '.$a.' '.$b.' '.$c.' '.$d.' '.$this->c->Request->post('name');
 	}
 
 	public function indexAjaxPostAction()
 	{
-		return 'mainController indexAjaxPostAction '.$this->c['Request']->post('name');
+		return 'mainController indexAjaxPostAction '.$this->c->Request->post('name');
 	}
-	
+
 	public function param1AjaxPostAction($a=null)
 	{
-		return 'mainController param1AjaxPostAction '.$a.' '.$this->c['Request']->post('name');
+		return 'mainController param1AjaxPostAction '.$a.' '.$this->c->Request->post('name');
 	}
 
 	public function param2AjaxPostAction($a=null,$b=null)
 	{
-		return 'mainController param2AjaxPostAction '.$a.' '.$b.' '.$this->c['Request']->post('name');
+		return 'mainController param2AjaxPostAction '.$a.' '.$b.' '.$this->c->Request->post('name');
 	}
 
 	public function param3AjaxPostAction($a=null,$b=null,$c=null)
 	{
-		return 'mainController param3AjaxPostAction '.$a.' '.$b.' '.$c.' '.$this->c['Request']->post('name');
+		return 'mainController param3AjaxPostAction '.$a.' '.$b.' '.$c.' '.$this->c->Request->post('name');
 	}
 
 	public function param4AjaxPostAction($a=null,$b=null,$c=null,$d=null)
 	{
-		return 'mainController param4AjaxPostAction '.$a.' '.$b.' '.$c.' '.$d.' '.$this->c['Request']->post('name');
+		return 'mainController param4AjaxPostAction '.$a.' '.$b.' '.$c.' '.$d.' '.$this->c->Request->post('name');
 	}
 
 
@@ -140,11 +140,9 @@ class mainController extends basePublicController
 		/* you could create the view object in basePublicController construct or within a hook */
 		new \myersd\libraries\view($this->c);
 
-		$this->c['View']->set('baseurl',$this->c['Request']->base_url,'#');
+		$this->c->View->set('baseurl',$this->c->Request->base_url,'#');
 
-		return $this->c['View']
-			->set('body','<h2>This is the body</h2>')
-			->load('layout');
+		return $this->c->View->set('body','<h2>This is the body</h2>')->load('layout');
 	}
 
 	public function dbAction()
@@ -152,17 +150,18 @@ class mainController extends basePublicController
 		/* you could do this in basePublicController construct or with a hook */
 		new \myersd\libraries\database($this->c);
 
-		echo '<pre>';
-
 		$mPeople = new \models\mpeople;
 
 		$mPeople->keyword_id = mt_rand(1, 9999);
 		$mPeople->hash = md5($mPeople->keyword_id);
 		$mPeople->create();
 
-		print_r($mPeople);
+		$html = '<pre>';
 
-		var_dump($mPeople->count());
+		$html .= print_r($mPeople,true);
+		$html .= print_r($mPeople->count(),true);
+		
+		return $html;
 	}
 
 	public function jsonAction()
@@ -170,7 +169,7 @@ class mainController extends basePublicController
 		/* you could do this in basePublicController construct or with a hook */
 		new \myersd\libraries\view($this->c);
 
-		return $this->c['View']
+		return $this->c->View
 			->set(array('name'=>'Don','age'=>23))
 			->json($data);
 	}

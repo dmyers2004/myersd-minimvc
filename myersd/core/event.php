@@ -13,7 +13,7 @@ namespace myersd\core;
 class event
 {
 	private $c;
-	
+
 	public $events = array();
 
 	public function __construct(&$c)
@@ -26,7 +26,7 @@ class event
 		$this->events[$event][$priority][get_class($callback[0]).'->'.$callback[1]] = $callback;
 	}
 
-	public function trigger($event)
+	public function __call($event, $arguments)
 	{
 		$returned = array();
 
@@ -35,7 +35,7 @@ class event
 			foreach ($this->events[$event] as $priority) {
 				foreach ($priority as $event) {
 					if (is_callable($event)) {
-						$returned[] = call_user_func_array($event, array(&$this->c));
+						$returned[] = call_user_func_array($event, array_unshift($argments,$this->c));
 					}
 				}
 			}

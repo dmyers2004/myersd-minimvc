@@ -11,8 +11,8 @@
 */
 
 /* turn them back on (this could be based on $app->config['app']['run code'] or something else */
-//error_reporting(E_ALL & ~E_NOTICE);
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_NOTICE);
+//error_reporting(E_ALL);
 
 /* Setup your time zone */
 //date_default_timezone_set('UTC');
@@ -30,7 +30,7 @@ $c['Error Handler']->pushHandler(new Whoops\Handler\PrettyPageHandler());
 $c['Error Handler']->register();
 */
 
-$c['Error Handler'] = new libraries\errorhandlerbasic($c);
+$c->ErrorHandler = new libraries\errorhandlerbasic($c);
 
 //$c['Error Handler'] = new libraries\errorhandlerbthp($c);
 
@@ -65,14 +65,15 @@ class foo
 	{
 		$c['output'] = str_rot13($c['output']);
 	}
-	
+
 	public function route(&$c)
 	{
 		echo '<pre>';
 		print_r($c);
 	}
-	
-	public function date(&$c) {
+
+	public function date(&$c)
+	{
 		echo '<p>'.date('Y-m-d').'</p><pre>';
 		print_r($c['Dispatcher']->events);
 		//print_r($c);

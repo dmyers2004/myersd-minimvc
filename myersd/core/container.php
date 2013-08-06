@@ -10,15 +10,26 @@
 */
 namespace myersd\core;
 
-class container {
+class container
+{
 	protected $container = array();
-	
-	function __set($key, $val) {
+
+	public function __set($key, $val)
+	{
 		$this->container[$key] = $val;
 	}
-	
-	function __get($key) {
+
+	public function __get($key)
+	{
 		return $this->container[$key];
 	}
-	
+
+	public function set($path,$val)
+	{
+	   foreach (explode('\\', $path) as $step) {
+	     $loc = &$this->container[$step];
+	   }
+
+	   return $loc = $val;
+	}
 }

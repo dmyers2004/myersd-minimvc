@@ -26,14 +26,14 @@ class cookController extends basePublicController
 	public function setAction($key='',$value='')
 	{
 		$foo = $this->c['Response']->set_cookie($key,$value);
-		
+
 		return 'Done'.print_r($foo,true);
 	}
 
 	public function getAction($key='')
 	{
 		if ($key == '') {
-			return print_r($this->c['Request']->cookie(),true);	
+			return print_r($this->c['Request']->cookie(),true);
 		}
 
 		return $this->c['Request']->cookie($key);

@@ -22,7 +22,7 @@ class dispatcher
 	public function dispatch()
 	{
 		/* ok let's explode our post router route */
-		$this->segs = explode('/',$this->c['Router']->route);
+		$this->segs = explode('/',$this->c->Router->route);
 
 		/* new routed classname (Controller) */
 		$this->classname = str_replace('-','_',array_shift($this->segs));
@@ -31,7 +31,7 @@ class dispatcher
 		$this->called_method = str_replace('-','_',array_shift($this->segs));
 
 		/* call dispatch event */
-		$this->c['Event']->trigger('preController');
+		$this->c->Event->preController();
 
 		/* This throws a error and 4005 - handle it in your error handler */
 		if (!class_exists($this->classname)) {
@@ -42,7 +42,7 @@ class dispatcher
 		$main_controller = new $this->classname($this->c);
 
 		/* call dispatch event */
-		$this->c['Event']->trigger('preMethod');
+		$this->c->Event->preMethod();
 
 		/* This throws a error and 4005 - handle it in your error handler */
 		if (!is_callable(array($main_controller,$this->called_method))) {
@@ -50,7 +50,7 @@ class dispatcher
 		}
 
 		/* let's call our method and capture the output */
-		$this->c['Response']->body = call_user_func_array(array($main_controller,$this->called_method),$this->segs);
+		$this->c->Response->body = call_user_func_array(array($main_controller,$this->called_method),$this->segs);
 	}
 
 } /* end dispatcher */

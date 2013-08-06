@@ -20,8 +20,8 @@ class view
 
 	public function __construct(&$c)
 	{
-		$c['View'] = $this; /* assign a copy of me to the container */
-		$this->folder = $c['application']['folders']['view'];
+		$c->View = $this; /* assign a copy of me to the container */
+		$this->folder = $c->application['folders.view'];
 	}
 
 	public function load($file,$return=true)
@@ -85,17 +85,6 @@ class view
 		}
 
 		return $this->data[$name];
-	}
-
-	public function json($value=null,$options=0)
-	{
-		$value = ($value == null) ? $this->data : $value;
-
-		header('Cache-Control: no-cache, must-revalidate');
-		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-		header('Content-Type: application/json; charset=utf=8');
-
-		return json_encode($value,$options);
 	}
 
 	private function _capture($_mvc_file,$_mvc_data)
