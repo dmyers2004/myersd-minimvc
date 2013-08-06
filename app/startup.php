@@ -30,7 +30,7 @@ $c['Error Handler']->pushHandler(new Whoops\Handler\PrettyPageHandler());
 $c['Error Handler']->register();
 */
 
-$c['Error Handler'] = new libraries\errorhandlerbasic($c);
+$c->ErrorHandler = new libraries\errorhandlerbasic($c);
 
 //$c['Error Handler'] = new libraries\errorhandlerbthp($c);
 

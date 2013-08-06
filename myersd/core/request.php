@@ -28,10 +28,11 @@ class request
 		/* let's clean them out only use this class */
 		$_POST = $_GET = $_SERVER = $_FILES = $_COOKIE = $_ENV = $_REQUEST = null;
 
-		foreach ($this->c['request']['server'] as $key => $val) {
+		foreach ($this->c->request['server'] as $key => $val) {
 			if (substr(strtolower($key),0,4) == 'http') {
-				$this->c['request']['header'][substr($key,strpos($key,'_') + 1)] = $val;
+				$foo[substr($key,strpos($key,'_') + 1)] = $val;
 			}
+			$this->c->set('request/header',$foo);
 		}
 
 		/* what is the protocol http or https? this could be useful! */
@@ -75,7 +76,7 @@ class request
 	}
 
 	public function param($idx=null,$default=null,$filter=true) {
-		$this->c['request']['param'] = explode('/',$this->c['Request']->uri);
+		$this->c['request']['param'] = explode('/',$this->uri);
 		return $this->getVal('param',$idx-1,$default,$filter);
 	}
 
@@ -101,10 +102,10 @@ class request
 
 	private function getVal($ary,$key,$default,$filter) {
 		if ($key === null) {
-			return $this->c['request'][$ary];
+			return $this->c->request[$ary];
 		}
 
-		$val = (isset($this->c['request'][$ary][$key])) ? $this->c['request'][$ary][$key] : $default;
+		$val = (isset($this->c->request[$ary][$key])) ? $this->c->request[$ary][$key] : $default;
 
 		if ($filter === false) {
 			return $val;

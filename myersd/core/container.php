@@ -21,4 +21,8 @@ class container {
 		return $this->container[$key];
 	}
 	
+	function set($key,$val) {
+		$this->container[$key] = $val;	
+	}
+	
 }

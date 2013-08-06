@@ -30,7 +30,7 @@ $loader->add('myersd\\core',getcwd());
 $loader->add('myersd\\libraries',getcwd());
 
 /* setup our "super simple" dependency injection container */
-$c = array();
+$c = new \myersd\core\container;
 
 /*
 Normally I start objects/closures with uppercase letter scalar/array are all lowercase
@@ -43,22 +43,22 @@ $c['dispatcher'] = scalar/array (config data for example)
 require 'app/config.php';
 
 /* */
-$c['Event'] = new \myersd\core\event($c);
+$c->Event = new \myersd\core\event($c);
 
 /* load our applications startup - users can modify this file as needed */
 require 'app/startup.php';
 
 /* instantiate core classes but don't do anything yet! */
-$c['Request'] = new \myersd\core\request($c);
-$c['Router'] = new \myersd\core\router($c);
-$c['Dispatcher'] = new \myersd\core\dispatcher($c);
-$c['Response'] = new \myersd\core\response($c);
+$c->Request = new \myersd\core\request($c);
+$c->Router = new \myersd\core\router($c);
+$c->Dispatcher = new \myersd\core\dispatcher($c);
+$c->Response = new \myersd\core\response($c);
 
 /* */
-$c['Router']->route();
+$c->Router->route();
 
 /* Call Dispatch! */
-$c['Dispatcher']->dispatch();
+$c->Dispatcher->dispatch();
 
 /* send output */
-$c['Response']->sendHeaders()->sendBody();
+$c->Response->sendHeaders()->sendBody();
