@@ -21,6 +21,7 @@ class request
 	public $uri;
 	public $route;
 	public $route_raw;
+	public $requests = array();
 
 	public function __construct(&$c) {
 		$this->c = &$c;
@@ -28,11 +29,19 @@ class request
 		/* let's clean them out only use this class */
 		$_POST = $_GET = $_SERVER = $_FILES = $_COOKIE = $_ENV = $_REQUEST = null;
 
-		foreach ($this->c->request['server'] as $key => $val) {
+		$this->requests['server'] = $c->request['server'];
+		$this->requests['get'] = $c->request['get'];
+		$this->requests['post'] = $c->request['post'];
+		$this->requests['files'] = $c->request['files'];
+		$this->requests['cookie'] = $c->request['cookie'];
+		$this->requests['env'] = $c->request['env'];
+		$this->requests['put'] = $c->request['put'];
+		$this->requests['attributes'] = $c->request['attributes'];
+
+		foreach ($this->requests['server'] as $key => $val) {
 			if (substr(strtolower($key),0,4) == 'http') {
-				$foo[substr($key,strpos($key,'_') + 1)] = $val;
+				$this->requests['header'][substr($key,strpos($key,'_') + 1)] = $val;
 			}
-			$this->c->set('request/header',$foo);
 		}
 
 		/* what is the protocol http or https? this could be useful! */
@@ -49,6 +58,8 @@ class request
 
 		/* get the uri (uniform resource identifier) */
 		$this->uri = trim(urldecode(substr(parse_url($this->server('REQUEST_URI'),PHP_URL_PATH),strlen(dirname($this->server('SCRIPT_NAME'))))),'/');
+
+		$this->requests['parameters'] = explode('/',$this->uri);
 	}
 
 	public function get($key=null,$default=null,$filter=true) {
@@ -75,9 +86,12 @@ class request
 		return $this->getVal('cookie',$key,$default,$filter);
 	}
 
-	public function param($idx=null,$default=null,$filter=true) {
-		$this->c['request']['param'] = explode('/',$this->uri);
-		return $this->getVal('param',$idx-1,$default,$filter);
+	public function parameters($idx=null,$default=null,$filter=true) {
+		return $this->getVal('parameters',$idx-1,$default,$filter);
+	}
+
+	public function attributes($key=null,$default=null,$filter=false) {
+		return $this->getVal('attributes',$key,$default,$filter);
 	}
 
 	public function server($key=null,$default=null,$filter=false) {

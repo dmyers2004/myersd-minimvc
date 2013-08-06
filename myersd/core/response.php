@@ -22,8 +22,8 @@ class response
 	public function __construct(&$c) {
 		$this->c = &$c;
 
-		$this->headers = $this->c->Response['headers'];
-		$this->body = $this->c->Response['body'];
+		$this->headers = $this->c->response['headers'];
+		$this->body = $this->c->response['body'];
 	}
 
 	public function addHeader($header) {
@@ -38,7 +38,7 @@ class response
 		/* call dispatch event */
 		$this->url = &$url;
 		
-		$this->c->Event->trigger('preResponseRedirect');
+		$this->c->Event->preResponseRedirect();
 
 		$this->add_header('Location: '.$this->url);
 		
@@ -47,7 +47,7 @@ class response
 	
 	public function sendHeaders() {
 		/* call dispatch event */
-		$this->c->Event->trigger('preResponseHeaders');
+		$this->c->Event->preResponseHeaders();
 
 		foreach ($this->headers as $h) {
 			header($h);	
@@ -58,11 +58,11 @@ class response
 	
 	public function sendBody() {
 		/* call dispatch event */
-		$this->c->Event->trigger('preResponseBody');
+		$this->c->Event->preResponseBody();
 
 		echo $this->body;
 		
-		if ($this->c->Response['profile']) {
+		if ($this->c->response['profile']) {
 			echo '<p>'.(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']).'ms</p>';
 			echo '<p>'.(memory_get_peak_usage(true)/1024).'k</p>';
 		}
@@ -73,7 +73,7 @@ class response
 		$this->options = &$options;
 		
 		/* call dispatch event */
-		$this->c->Event->trigger('preResponseJson');
+		$this->c->Event->preResponseJson();
 
 		$this->addHeader('Cache-Control: no-cache, must-revalidate');
 		$this->addHeader('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -87,11 +87,11 @@ class response
 	/* lot o config */
 	public function setCookie($key='',$value='',$expire=null,$path=null,$domain=null,$secure=null,$httponly=null) {
 
-		$expire = ($expire === null) ? $this->c->Response['cookie expire'] : 0;
-		$path = ($path === null) ? $this->c->Response['cookie path'] : '/';
-		$domain = ($domain === null) ? $this->c->Response['cookie domain'] : null;
-		$secure = ($secure === null) ? $this->c->Response['cookie secure'] : false;
-		$httponly = ($httponly === null) ? $this->c->Response['cookie httponly'] : false;
+		$expire = ($expire === null) ? $this->c->response['cookie.expire'] : 0;
+		$path = ($path === null) ? $this->c->response['cookie.path'] : '/';
+		$domain = ($domain === null) ? $this->c->response['cookie.domain'] : null;
+		$secure = ($secure === null) ? $this->c->response['cookie.secure'] : false;
+		$httponly = ($httponly === null) ? $this->c->response['cookie.httponly'] : false;
 		
 		return setcookie($key,$value,time() + $expire,$path,$domain,$secure,$httponly);
 	}

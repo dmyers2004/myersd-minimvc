@@ -26,13 +26,13 @@ class router
 	public function route()
 	{
 		/* build our route format */
-		$this->route = $this->route_raw = ($this->c['Request']->is_https ? 'https' : 'http').'/'.($this->c['Request']->is_ajax ? 'Ajax' : '').'/'.$this->c['Request']->request.'/'.$this->c['Request']->uri;
+		$this->route = $this->route_raw = ($this->c->Request->is_https ? 'https' : 'http').'/'.($this->c->Request->is_ajax ? 'Ajax' : '').'/'.$this->c->Request->request.'/'.$this->c->Request->uri;
 
 		/* call dispatch event */
-		$this->c['Event']->trigger('preRouter');
+		$this->c->Event->preRouter();
 
 		/* rewrite dispatch route */
-		foreach ($this->c['router']['routes'] as $regexpath => $switchto) {
+		foreach ($this->c->router as $regexpath => $switchto) {
 			if (preg_match($regexpath, $this->route)) {
 				/* we got a match */
 				$this->route = preg_replace($regexpath, $switchto, $this->route);
@@ -42,7 +42,7 @@ class router
 		}
 
 		/* call dispatch event */
-		$this->c['Event']->trigger('postRouter');
+		$this->c->Event->postRouter();
 
 	}
 

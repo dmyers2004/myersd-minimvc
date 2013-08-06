@@ -21,8 +21,11 @@ class container {
 		return $this->container[$key];
 	}
 	
-	function set($key,$val) {
-		$this->container[$key] = $val;	
+	function set($path,$val) {
+	   foreach(explode('\\', $path) as $step) {
+	     $loc = &$this->container[$step];
+	   }
+	   
+	   return $loc = $val;
 	}
-	
 }
