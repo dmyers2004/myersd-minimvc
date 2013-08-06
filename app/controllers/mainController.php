@@ -46,8 +46,7 @@ class mainController extends basePublicController
 
 	public function param4Action($a=null,$b=null,$c=null,$d=null)
 	{
-		$foo = $this->c['Request']->param($a);
-		return 'mainController param4Action '.$a.' '.$b.' '.$c.' '.$d.'/'.$foo;
+		return 'mainController param4Action '.$a.' '.$b.' '.$c.' '.$d;
 	}
 
 	public function indexAjaxAction()
@@ -77,52 +76,52 @@ class mainController extends basePublicController
 
 	public function indexPostAction()
 	{
-		return 'mainController indexPostAction '.$_POST['name'];
+		return 'mainController indexPostAction '.$this->c['Request']->post('name');
 	}
 	
 	public function param1PostAction($a=null)
 	{
-		return 'mainController param1PostAction '.$a.' '.$_POST['name'];
+		return 'mainController param1PostAction '.$a.' '.$this->c['Request']->post('name');
 	}
 
 	public function param2PostAction($a=null,$b=null)
 	{
-		return 'mainController param2PostAction '.$a.' '.$b.' '.$_POST['name'];
+		return 'mainController param2PostAction '.$a.' '.$b.' '.$this->c['Request']->post('name');
 	}
 
 	public function param3PostAction($a=null,$b=null,$c=null)
 	{
-		return 'mainController param3PostAction '.$a.' '.$b.' '.$c.' '.$_POST['name'];
+		return 'mainController param3PostAction '.$a.' '.$b.' '.$c.' '.$this->c['Request']->post('name');
 	}
 
 	public function param4PostAction($a=null,$b=null,$c=null,$d=null)
 	{
-		return 'mainController param4PostAction '.$a.' '.$b.' '.$c.' '.$d.' '.$_POST['name'];
+		return 'mainController param4PostAction '.$a.' '.$b.' '.$c.' '.$d.' '.$this->c['Request']->post('name');
 	}
 
 	public function indexAjaxPostAction()
 	{
-		return 'mainController indexAjaxPostAction '.$_POST['name'];;
+		return 'mainController indexAjaxPostAction '.$this->c['Request']->post('name');
 	}
 	
 	public function param1AjaxPostAction($a=null)
 	{
-		return 'mainController param1AjaxPostAction '.$a.' '.$_POST['name'];;
+		return 'mainController param1AjaxPostAction '.$a.' '.$this->c['Request']->post('name');
 	}
 
 	public function param2AjaxPostAction($a=null,$b=null)
 	{
-		return 'mainController param2AjaxPostAction '.$a.' '.$b.' '.$_POST['name'];;
+		return 'mainController param2AjaxPostAction '.$a.' '.$b.' '.$this->c['Request']->post('name');
 	}
 
 	public function param3AjaxPostAction($a=null,$b=null,$c=null)
 	{
-		return 'mainController param3AjaxPostAction '.$a.' '.$b.' '.$c.' '.$_POST['name'];;
+		return 'mainController param3AjaxPostAction '.$a.' '.$b.' '.$c.' '.$this->c['Request']->post('name');
 	}
 
 	public function param4AjaxPostAction($a=null,$b=null,$c=null,$d=null)
 	{
-		return 'mainController param4AjaxPostAction '.$a.' '.$b.' '.$c.' '.$d.' '.$_POST['name'];;
+		return 'mainController param4AjaxPostAction '.$a.' '.$b.' '.$c.' '.$d.' '.$this->c['Request']->post('name');
 	}
 
 
@@ -131,7 +130,7 @@ class mainController extends basePublicController
 		return '<pre><h3>debug</h3>'.print_r($this->c,true);
 	}
 
-	public function helloAction($name)
+	public function helloAction($name=null)
 	{
 		return 'Hello '.$name.'<pre>'.print_r($this->c,true);
 	}
@@ -141,7 +140,7 @@ class mainController extends basePublicController
 		/* you could create the view object in basePublicController construct or within a hook */
 		new \myersd\libraries\view($this->c);
 
-		$this->c['View']->set('baseurl',$this->c['Dispatcher']->base_url,'#');
+		$this->c['View']->set('baseurl',$this->c['Request']->base_url,'#');
 
 		return $this->c['View']
 			->set('body','<h2>This is the body</h2>')

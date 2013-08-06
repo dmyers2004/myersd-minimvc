@@ -16,8 +16,7 @@
 date_default_timezone_set('UTC');
 
 /* turn off error by default */
-error_reporting(0);
-
+//error_reporting(0);
 
 /* we need to start in the root directory */
 chdir('..');
@@ -43,14 +42,20 @@ $c['dispatcher'] = scalar/array (config data for example)
 /* load our config, input & output settings (or mocks for testing) */
 require 'app/config.php';
 
-/* instantiate core classes but don't do anything yet! */
+/* */
 $c['Event'] = new \myersd\core\event($c);
-$c['Request'] = new \myersd\core\request($c);
-$c['Dispatcher'] = new \myersd\core\dispatcher($c);
-$c['Response'] = new \myersd\core\response($c);
 
 /* load our applications startup - users can modify this file as needed */
 require 'app/startup.php';
+
+/* instantiate core classes but don't do anything yet! */
+$c['Request'] = new \myersd\core\request($c);
+$c['Router'] = new \myersd\core\router($c);
+$c['Dispatcher'] = new \myersd\core\dispatcher($c);
+$c['Response'] = new \myersd\core\response($c);
+
+/* */
+$c['Router']->route();
 
 /* Call Dispatch! */
 $c['Dispatcher']->dispatch();
