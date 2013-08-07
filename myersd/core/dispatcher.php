@@ -24,33 +24,33 @@ class dispatcher
 		/* ok let's explode our post router route */
 		$this->segs = explode('/',$this->c->Router->route);
 
-		/* new routed classname (Controller) */
-		$this->classname = str_replace('-','_',array_shift($this->segs));
+		/* classname seg1 (Controller) */
+		$this->className = str_replace('-','_',array_shift($this->segs));
 
-		/* new method to call on classname (Method or Action) replace dashes with underscores */
-		$this->called_method = str_replace('-','_',array_shift($this->segs));
+		/* method seg2 */
+		$this->methodName = str_replace('-','_',array_shift($this->segs));
 
-		/* call dispatch event */
+		/* call event */
 		$this->c->Event->preController();
 
-		/* This throws a error and 4005 - handle it in your error handler */
-		if (!class_exists($this->classname)) {
-			throw new \Exception($this->classname.' not found',4004);
+		/* This throws a error and 4004 - handle it in your error handler */
+		if (!class_exists($this->className)) {
+			throw new \Exception($this->className.' not found',4004);
 		}
 
 		/* create new controller inject the container */
-		$main_controller = new $this->classname($this->c);
+		$controller = new $this->className($this->c);
 
 		/* call dispatch event */
 		$this->c->Event->preMethod();
 
 		/* This throws a error and 4005 - handle it in your error handler */
-		if (!is_callable(array($main_controller,$this->called_method))) {
-			throw new \Exception($this->classname.' method '.$this->called_method.' not found',4005);
+		if (!is_callable(array($controller,$this->methodName))) {
+			throw new \Exception($this->className.' method '.$this->methodName.' not found',4005);
 		}
 
 		/* let's call our method and capture the output */
-		$this->c->Response->body = call_user_func_array(array($main_controller,$this->called_method),$this->segs);
+		$this->c->Response->body .= call_user_func_array(array($controller,$this->methodName),$this->segs);
 	}
 
 } /* end dispatcher */

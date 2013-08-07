@@ -2,11 +2,7 @@
     "require": {
         "monolog/monolog": "1.2.*",
         "filp/whoops": "dev-master",
-				"desarrolla2/cache": "dev-master"
-    },
-    "autoload": {
-        "psr-0": {
-        	"example": "vendor/"
-        }
+				"desarrolla2/cache": "dev-master",
+				"vlucas/valitron": "dev-master"
     }
 }

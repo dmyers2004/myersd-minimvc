@@ -29,13 +29,14 @@ class event
 	public function __call($event, $arguments)
 	{
 		$returned = array();
+		$arguments = ($arguments === null) ? array() : $arguments;
 
 		if ($this->hasEvent($event)) {
 			ksort($this->events[$event]);
 			foreach ($this->events[$event] as $priority) {
 				foreach ($priority as $event) {
 					if (is_callable($event)) {
-						$returned[] = call_user_func_array($event, array_unshift($argments,$this->c));
+						$returned[] = call_user_func_array($event, array(&$this->c) + $arguments);
 					}
 				}
 			}

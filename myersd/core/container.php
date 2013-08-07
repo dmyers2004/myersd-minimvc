@@ -32,4 +32,5 @@ class container
 
 	   return $loc = $val;
 	}
-}
+	
+} /* end container */

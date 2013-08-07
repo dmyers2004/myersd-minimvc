@@ -8,19 +8,19 @@ class RedController extends \controllers\basePublicController {
 	}
 	
 	public function indexAction() {
-		return '<h1>Red Index</h1><pre>'.print_r($this,true);
+		return '<h1>RedController indexAction</h1>';
 	}
 	
 	public function shoesAction() {
-		return '<h1>Red Shoes</h1><pre>'.print_r($this,true);
+		return '<h1>RedController shoesAction</h1>';
 	}
 	
 	public function inputAction($a=null) {
-		return '<h1>Red inputAction</h1><p>'.$a.'</p><pre>'.print_r($this,true);
+		return '<h1>RedController inputAction</h1><p>'.$a.'</p>';
 	}
 
 	public function input_moreAction($a=null,$b=null) {
-		return '<h1>Red inputAction</h1><p>'.$a.'</p><p>'.$b.'</p><pre>'.print_r($this,true);
+		return '<h1>RedController input_moreAction</h1><p>'.$a.'</p><p>'.$b.'</p>';
 	}
 
 	

@@ -9,9 +9,9 @@
 	* @license    Released under the MIT License.
 	*
 	*/
-namespace controllers;
+namespace example\controllers;
 
-class blueController extends basePublicController
+class blueShoesController extends  \controllers\basePublicController
 {
 	public function __construct(&$c)
 	{
@@ -20,22 +20,22 @@ class blueController extends basePublicController
 
 	public function indexAction()
 	{
-		return 'blueController indexAction';
+		return 'blueShoesController indexAction';
 	}
 
 	public function shoesAction()
 	{
-		return '<h1>BlueShoes</h1><pre>'.print_r($this,true);
+		return '<h1>blueShoesController shoesAction</h1>';
 	}
 
 	public function inputAction($a=null)
 	{
-		return '<h1>inputAction</h1><p>'.$a.'</p><pre>'.print_r($this,true);
+		return '<h1>blueShoesController inputAction</h1><p>'.$a.'</p>';
 	}
 
 	public function input_moreAction($a=null,$b=null)
 	{
-		return '<h1>inputAction</h1><p>'.$a.'</p><p>'.$b.'</p><pre>'.print_r($this,true);
+		return '<h1>blueShoesController input_moreAction</h1><p>'.$a.'</p><p>'.$b.'</p>';
 	}
 
 } /* end controller */

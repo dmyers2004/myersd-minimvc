@@ -102,4 +102,4 @@ class response
 		return setcookie($key,$value,time() + $expire,$path,$domain,$secure,$httponly);
 	}
 
-}
+} /* end response */

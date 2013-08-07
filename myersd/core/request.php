@@ -27,7 +27,7 @@ class request
 	{
 		$this->c = &$c;
 
-		/* let's clean them out only use this class */
+		/* let's clean them out only use this class to pull request data */
 		$_POST = $_GET = $_SERVER = $_FILES = $_COOKIE = $_ENV = $_REQUEST = null;
 
 		$this->requests['server'] = $c->request['server'];
@@ -45,118 +45,49 @@ class request
 			}
 		}
 
-		/* what is the protocol http or https? this could be useful! */
-		$this->is_https = (strstr('https',strtolower($this->server('SERVER_PROTOCOL'))) === TRUE);
+		/* is this http or https? */
+		$this->is_https = (strstr('https',strtolower($this->requests['server']['SERVER_PROTOCOL'])) === TRUE);
 
 		/* is this a ajax request? */
-		$this->is_ajax = ($this->server('HTTP_X_REQUESTED_WITH',NULL) !== NULL && strtolower($this->server('HTTP_X_REQUESTED_WITH')) === 'xmlhttprequest');
+		$this->is_ajax = ($this->requests['server']['HTTP_X_REQUESTED_WITH'] !== NULL && strtolower($this->requests['server']['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
 
 		/* what is the base url */
-		$this->base_url = ($this->is_https ? 'https' : 'http').'://'.trim($this->server('HTTP_HOST').dirname($this->server('SCRIPT_NAME')),'/');
+		$this->base_url = ($this->is_https ? 'https' : 'http').'://'.trim($this->requests['server']['HTTP_HOST'].dirname($this->requests['server']['SCRIPT_NAME']),'/');
 
-		/* The request method */
-		$this->request = ucfirst(strtolower($this->server('REQUEST_METHOD')));
+		/* what is the requested method? */
+		$this->request = ucfirst(strtolower($this->requests['server']['REQUEST_METHOD']));
 
-		/* get the uri (uniform resource identifier) */
-		$this->uri = trim(urldecode(substr(parse_url($this->server('REQUEST_URI'),PHP_URL_PATH),strlen(dirname($this->server('SCRIPT_NAME'))))),'/');
+		/* what is the uri */
+		$this->uri = trim(urldecode(substr(parse_url($this->requests['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->requests['server']['SCRIPT_NAME'])))),'/');
 
+		/* put these in parameters */
 		$this->requests['parameters'] = explode('/',$this->uri);
 	}
 
-	public function get($key=null,$default=null,$filter=true)
+	public function __call($method,$args)
 	{
-		return $this->getVal('get',$key,$default,$filter);
-	}
-
-	public function post($key=null,$default=null,$filter=true)
-	{
-		return $this->getVal('post',$key,$default,$filter);
-	}
-
-	public function put($key=null,$default=null,$filter=true)
-	{
-		return $this->getVal('put',$key,$default,$filter);
-	}
-
-	public function env($key=null,$default=null,$filter=true)
-	{
-		return $this->getVal('env',$key,$default,$filter);
-	}
-
-	public function files($key=null,$default=null,$filter=true)
-	{
-		return $this->getVal('files',$key,$default,$filter);
-	}
-
-	public function cookie($key=null,$default=null,$filter=true)
-	{
-		return $this->getVal('cookie',$key,$default,$filter);
-	}
-
-	public function parameters($idx=null,$default=null,$filter=true)
-	{
-		return $this->getVal('parameters',$idx-1,$default,$filter);
-	}
-
-	public function attributes($key=null,$default=null,$filter=false)
-	{
-		return $this->getVal('attributes',$key,$default,$filter);
-	}
-
-	public function server($key=null,$default=null,$filter=false)
-	{
-		return $this->getVal('server',$key,$default,$filter);
-	}
-
-	public function header($key=null,$default=null,$filter=false)
-	{
-		return $this->getVal('header',$key,$default,$filter);
-	}
-
-	public function filter_xss($val)
-	{
-		if (is_array($val)) {
-			array_walk_recursive($val, function( &$str) {
-				$str = strip_tags($str);
-			});
-		} else {
-			$val = strip_tags($val);
+		if (!in_array($method,array('server','get','post','files','cookies','env','put','attributes'))) {
+			return null;
 		}
 
-		return $val;
-	}
+		$key = ($args[0]) ? $args[0] : null;
 
-	private function getVal($ary,$key,$default,$filter)
-	{
 		if ($key === null) {
-			return $this->c->request[$ary];
+			return $this->request[$method];
 		}
 
-		$val = (isset($this->c->request[$ary][$key])) ? $this->c->request[$ary][$key] : $default;
+		$default = ($args[1]) ? $args[1] : null;
 
-		if ($filter === false) {
+		$val = (isset($this->requests[$method][$key])) ? $this->requests[$method][$key] : $default;
+
+		$filter = ($args[2]) ? $args[2] : null;
+		$options = ($args[3]) ? $args[3] : null;
+
+		if ($filter) {
+			return filter_var($val,$filter,$options);
+		} else {
 			return $val;
 		}
-
-		if ($filter === true) {
-			return $this->filter_xss($val);
-		}
-
-		$options = null;
-
-		if (is_array($filter)) {
-			$key = array_keys($filter);
-			$options = $filter[0];
-			$filter = $key[0];
-		}
-
-		if (in_array($filter,filter_list())) {
-			return filter_var($val,$filter,$options);
-		}
-
-		throw new \Exception('Filter '.$filter.' Not Found',4100);
-
-		return null;
 	}
 
-}
+} /* end request */

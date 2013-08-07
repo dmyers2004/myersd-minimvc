@@ -16,7 +16,7 @@
 date_default_timezone_set('UTC');
 
 /* turn off error by default */
-error_reporting(0);
+//error_reporting(0);
 
 /* we need to start in the root directory */
 chdir('..');
@@ -24,20 +24,15 @@ chdir('..');
 /* PSR-0 autoloader */
 $loader = require 'vendor/autoload.php';
 
-/* add our application folder and core folders */
-$loader->add('', getcwd().'/app');
+/* manually add core */
 $loader->add('myersd\\core',getcwd());
-$loader->add('myersd\\libraries',getcwd());
 
 /* setup our dependency injection container */
 $c = new \myersd\core\container;
 
-/*
-Normally I start objects/closures with uppercase letter scalar/array are all lowercase
-ie.
-$c['Dispatcher'] = objects/closures
-$c['dispatcher'] = scalar/array (config data for example)
-*/
+$c->Loader = $loader;
+$c->Loader->add('', getcwd().'/app');
+$c->Loader->add('myersd\\libraries',getcwd());
 
 /* load our config, input & output settings (or mocks for testing) */
 require 'app/config.php';
@@ -57,7 +52,7 @@ $c->Response = new \myersd\core\response($c);
 /* Run the router */
 $c->Router->route();
 
-/* Call Dispatch! (too lazy load stuff) */
+/* Call Dispatch! (too lazy load a controllers) */
 $c->Dispatcher->dispatch();
 
 /* Send Responses */

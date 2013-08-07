@@ -13,7 +13,7 @@ namespace myersd\libraries;
 class database
 {
 	public static $c;
-	public static $dbhs = array();
+	public static $databaseHandles = array();
 
 	public function __construct(&$c)
 	{
@@ -34,16 +34,16 @@ class database
 	public function connect($dsn,$user,$password,$connection='default')
 	{
 		/* if the connection isn't there then try to create it */
-		if (!isset(self::$dbhs[$connection])) {
+		if (!isset(self::$databaseHandles[$connection])) {
 			try {
 				$handle = new \PDO($dsn , $user, $password);
 			} catch (PDOException $e) {
 				throw new \Exception($e->getMessage());
 			}
-			self::$dbhs[$connection] = $handle;
+			self::$databaseHandles[$connection] = $handle;
 		}
 
-		return self::$dbhs[$connection];
+		return self::$databaseHandles[$connection];
 	}
 
 	public function _columns($tablename,$connection='default')
