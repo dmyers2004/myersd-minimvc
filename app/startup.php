@@ -18,4 +18,3 @@ $c->ErrorHandler = new libraries\errorhandlerbasic($c);
 
 /* where are "our" modules are */
 $c->Loader->add('example', getcwd().'/modules/');
-

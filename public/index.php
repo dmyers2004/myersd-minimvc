@@ -35,7 +35,8 @@ $c->Loader->add('', getcwd().'/app');
 $c->Loader->add('myersd\\libraries',getcwd());
 
 /* load our config, input & output settings (or mocks for testing) */
-require 'app/config.php';
+$config = (getenv('CONFIG')) ? getenv('CONFIG') : 'config.php';
+require 'app/'.$config;
 
 /* Setup out even handler */
 $c->Event = new \myersd\core\event($c);

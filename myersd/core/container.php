@@ -26,11 +26,25 @@ class container
 
 	public function set($path,$val)
 	{
-	   foreach (explode('\\', $path) as $step) {
-	     $loc = &$this->container[$step];
-	   }
+		/* cheap and fast 4 levels */
+		$parts = explode('\\', $path);
+		
+		switch (count($parts)) {
+			case 1:
+				$this->container[$parts[0]] = &$val;
+			break;
+			case 2:
+				$this->container[$parts[0]][$parts[1]] = &$val;
+			break;
+			case 3:
+				$this->container[$parts[0]][$parts[1]][$parts[2]] = &$val;
+			break;
+			case 4:
+				$this->container[$parts[0]][$parts[1]][$parts[2]][$parts[3]] = &$val;
+			break;
+		}			
 
-	   return $loc = $val;
+		return $this;
 	}
 	
 } /* end container */
