@@ -31,7 +31,7 @@ class database
 			try {
 				$handle = new \PDO($dsn , $user, $password);
 			} catch (PDOException $e) {
-				throw new \Exception($e->getMessage());
+				throw new \DatabaseException($e->getMessage(),$e->getCode());
 			}
 			self::$databaseHandles[$prefix] = $handle;
 		}

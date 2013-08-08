@@ -25,6 +25,9 @@ $c->Event = new \myersd\core\event($c);
 /* load our applications startup - users can modify this file as needed */
 require 'app/setup.php';
 
+/* my exception handlers */
+require $c->application['exception.handlers'];
+
 /* instantiate core classes but don't do anything yet! */
 $c->Request = new \myersd\core\request($c);
 $c->Router = new \myersd\core\router($c);

@@ -20,7 +20,8 @@ $c->application = array(
 	'folders.logs' => getcwd().'/app/var/logs/',
 	'folders.cache' => getcwd().'/app/var/cache/',
 	'folders.session' => getcwd().'/app/var/sessions/',
-	'folders.sqlite' => getcwd().'/app/var/sqlite/'
+	'folders.sqlite' => getcwd().'/app/var/sqlite/',
+	'exception.handlers' => getcwd().'/myersd/libraries/exceptions.php'
 );
 
 $c->router = array(

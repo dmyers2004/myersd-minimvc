@@ -35,7 +35,7 @@ class dispatcher
 
 		/* This throws a error and 4004 - handle it in your error handler */
 		if (!class_exists($this->className)) {
-			throw new \Exception($this->className.' not found',4004);
+			throw new \DispatcherException(4004,$this->className);
 		}
 
 		/* create new controller inject the container */
@@ -46,7 +46,7 @@ class dispatcher
 
 		/* This throws a error and 4005 - handle it in your error handler */
 		if (!is_callable(array($controller,$this->methodName))) {
-			throw new \Exception($this->className.' method '.$this->methodName.' not found',4005);
+			throw new \DispatcherException(4005,$this->className,$this->methodName);
 		}
 
 		/* let's call our method and capture the output */

@@ -18,7 +18,7 @@ if (!ini_get('date.timezone')) {
 }
 
 /* turn off error by default */
-error_reporting(0);
+//error_reporting(0);
 
 /* we need to start in the root directory */
 chdir('..');
