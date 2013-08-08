@@ -20,30 +20,23 @@ class database
 		self::$c = &$c;
 	}
 
-	public function connection($connection='default')
+	public function connection($prefix='default')
 	{
-		$prefix = ($connection == 'default') ? '' : $connection.'.';
-
-		$dsn = self::$c->database['db.'.$prefix.'dsn'];
-		$user = self::$c->database['db.'.$prefix.'user'];
-		$password = self::$c->database['db.'.$prefix.'password'];
-
-		return $this->connect($dsn,$user,$password,$connection);
-	}
-
-	public function connect($dsn,$user,$password,$connection='default')
-	{
+		$dsn = self::$c->database['db.'.$prefix.'.dsn'];
+		$user = self::$c->database['db.'.$prefix.'.user'];
+		$password = self::$c->database['db.'.$prefix.'.password'];
+		
 		/* if the connection isn't there then try to create it */
-		if (!isset(self::$databaseHandles[$connection])) {
+		if (!isset(self::$databaseHandles[$prefix])) {
 			try {
 				$handle = new \PDO($dsn , $user, $password);
 			} catch (PDOException $e) {
 				throw new \Exception($e->getMessage());
 			}
-			self::$databaseHandles[$connection] = $handle;
+			self::$databaseHandles[$prefix] = $handle;
 		}
 
-		return self::$databaseHandles[$connection];
+		return self::$databaseHandles[$prefix];
 	}
 
 	public function _columns($tablename,$connection='default')

@@ -44,9 +44,9 @@ $c->router = array(
 
 /* database config */
 $c->database = array(
-	'db.dsn' => 'sqlite:'.$c->application['folders.sqlite'] .'messaging.sqlite3',
-	'db.user' => null,
-	'db.password' => null,
+	'db.default.dsn' => 'sqlite:'.$c->application['folders.sqlite'] .'messaging.sqlite3',
+	'db.default.user' => null,
+	'db.default.password' => null,
 
 	'db.mysql.dsn' => 'mysql:host=localhost;dbname=pi',
 	'db.mysql.user' => 'root',

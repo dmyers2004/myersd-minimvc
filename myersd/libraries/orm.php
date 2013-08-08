@@ -17,7 +17,7 @@ class orm extends database
 	public $perpage = 10;
 
 	public $debug = FALSE;
-	public $connection;
+	public $dbh;
 	public $pkname;
 	public $tablename;
 	public $fields = array(); // for holding all object property variables
@@ -25,7 +25,7 @@ class orm extends database
 
 	public function __construct()
 	{
-		/* no need to call database parent it should already be setup */
+		$this->dbh = $this->connection($this->connection);
 		$this->clear();
 	}
 
@@ -93,7 +93,7 @@ class orm extends database
 		$this->execute($sql,$bindings);
 
 		if ($this->count > 0) {
-			$this->data[$this->pkname] = $this->connection->lastInsertId();
+			$this->data[$this->pkname] = $this->dbh->lastInsertId();
 		}
 
 		return $this;
@@ -161,7 +161,7 @@ class orm extends database
 
 		$this->records = array();
 		foreach ($cursor as $record) {
-			$single = new $class($this->connection);
+			$single = new $class($this->dbh);
 			foreach ($record as $key => $val) {
 				if (in_array($key,$this->fields)) {
 					$single->$key = $val;
@@ -223,7 +223,7 @@ class orm extends database
 
 	public function execute($sql,$bindings=NULL)
 	{
-		$statement = $this->connection->prepare($sql);
+		$statement = $this->dbh->prepare($sql);
 
 		if ($this->debug) {
 			echo '<pre>SQL: '.$sql.chr(10).'Bindings'.substr(print_r($bindings,TRUE),5).'</pre>';

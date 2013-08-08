@@ -13,13 +13,13 @@ namespace models;
 
 class mPeople extends \myersd\libraries\orm
 {
+	public $tablename = 'people';
+	public $pkname = 'id'; //Name of auto-incremented Primary Key
+	public $fields = array('id','hash','keyword_id');
+	public $connection = 'default';
+	
 	public function __construct()
 	{
-		$this->tablename = 'people';
-		$this->pkname = 'id'; //Name of auto-incremented Primary Key
-		$this->fields = array('id','hash','keyword_id');
-		$this->connection = $this->connection(); // database connection
-
 		parent::__construct();
 	}
 

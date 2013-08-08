@@ -25,7 +25,8 @@ class router
 
 	public function route()
 	{
-		/* build our route format */
+		/* build our route URI format - it's a little different then most */
+		/* [http|https]/[Ajax|]/[Get|Post|Delete|Put]/uri */
 		$this->route = $this->route_raw = ($this->c->Request->is_https ? 'https' : 'http').'/'.($this->c->Request->is_ajax ? 'Ajax' : '').'/'.$this->c->Request->request.'/'.$this->c->Request->uri;
 
 		/* call dispatch event */
