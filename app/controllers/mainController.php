@@ -132,7 +132,7 @@ class mainController extends basePublicController
 
 	public function helloAction($name=null)
 	{
-		return 'Hello '.$name.'<pre>'.print_r($this->c,true);
+		return 'Hello "'.$name.'"';
 	}
 
 	public function viewAction()

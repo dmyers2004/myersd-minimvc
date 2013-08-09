@@ -26,6 +26,8 @@ $c->application = array(
 
 $c->router = array(
 	'routes' => array(
+		'#^(http|https)/(Ajax|)/(Get)/(hello)/([a-zA-Z0-9-_]*)$#i' => '\controllers\\\mainController/hello$2Action/$5',
+
 		'#^(http|https)/(Ajax|)/(Get)/(red)$#i' => '\\\example\\\controllers\\\$4Controller/index$2Action',
 		'#^(http|https)/(Ajax|)/(Get)/(red)/([a-zA-Z0-9-_]*)(.*)$#i' => '\\\example\\\controllers\\\$4Controller/$5$2Action$6',
 
@@ -80,3 +82,8 @@ $c->response = array(
 	'cookie.secure' => false,
 	'cookie.httponly' => false
 );
+
+$c->Loader->add('', getcwd().'/app');
+$c->Loader->add('myersd\\libraries',getcwd());
+$c->Loader->add('example', getcwd().'/modules/');
+

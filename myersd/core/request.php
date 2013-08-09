@@ -27,23 +27,27 @@ class request
 	{
 		$this->c = &$c;
 
-		/* let's clean them out only use this class to pull request data */
-		$_POST = $_GET = $_SERVER = $_FILES = $_COOKIE = $_ENV = $_REQUEST = null;
+		$this->requests['server'] = ($c->request['server']) ? $c->request['server'] : $_SERVER;
+		$this->requests['get'] = ($c->request['get']) ? $c->request['get'] : $_GET;
+		$this->requests['post'] = ($c->request['post']) ? $c->request['post'] : $_POST;
+		$this->requests['files'] = ($c->request['files']) ? $c->request['files'] : $_FILES;
+		$this->requests['cookie'] = ($c->request['cookie']) ? $c->request['cookie'] : $_COOKIE;
+		$this->requests['env'] = ($c->request['env']) ? $c->request['env'] : $_ENV;
+		
+		$_PUT = array();
+		\parse_str(file_get_contents('php://input'), $_PUT);
 
-		$this->requests['server'] = $c->request['server'];
-		$this->requests['get'] = $c->request['get'];
-		$this->requests['post'] = $c->request['post'];
-		$this->requests['files'] = $c->request['files'];
-		$this->requests['cookie'] = $c->request['cookie'];
-		$this->requests['env'] = $c->request['env'];
-		$this->requests['put'] = $c->request['put'];
-		$this->requests['attributes'] = $c->request['attributes'];
+		$this->requests['put'] = ($c->request['put']) ? $c->request['put'] : $_PUT;
+		$this->requests['attributes'] = ($c->request['attributes']) ? $c->request['attributes'] : array();
 
 		foreach ($this->requests['server'] as $key => $val) {
 			if (substr(strtolower($key),0,4) == 'http') {
 				$this->requests['header'][substr($key,strpos($key,'_') + 1)] = $val;
 			}
 		}
+
+		/* let's clean them out only use this class to pull request data */
+		$_POST = $_GET = $_SERVER = $_FILES = $_COOKIE = $_ENV = $_REQUEST = null;
 
 		/* is this http or https? */
 		$this->is_https = (strstr('https',strtolower($this->requests['server']['SERVER_PROTOCOL'])) === TRUE);
@@ -55,7 +59,7 @@ class request
 		$this->base_url = ($this->is_https ? 'https' : 'http').'://'.trim($this->requests['server']['HTTP_HOST'].dirname($this->requests['server']['SCRIPT_NAME']),'/');
 
 		/* what is the requested method? */
-		$this->request = ucfirst(strtolower($this->requests['server']['REQUEST_METHOD']));
+		$this->request = ucwords($this->requests['server']['REQUEST_METHOD']);
 
 		/* what is the uri */
 		$this->uri = trim(urldecode(substr(parse_url($this->requests['server']['REQUEST_URI'],PHP_URL_PATH),strlen(dirname($this->requests['server']['SCRIPT_NAME'])))),'/');

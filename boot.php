@@ -3,7 +3,7 @@
 /* PSR-0 autoloader */
 $loader = require 'vendor/autoload.php';
 
-/* manually add core */
+/* manually add our core */
 $loader->add('myersd\\core',getcwd());
 
 /* setup our dependency injection container */
@@ -11,8 +11,6 @@ $c = new \myersd\core\container;
 
 /* attach the loader */
 $c->Loader = $loader;
-$c->Loader->add('', getcwd().'/app');
-$c->Loader->add('myersd\\libraries',getcwd());
 
 /* load our config, input & output settings (or mocks for testing) */
 $config = (getenv('CONFIG')) ? getenv('CONFIG') : 'config.php';

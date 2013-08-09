@@ -24,4 +24,4 @@ if (!ini_get('date.timezone')) {
 chdir('..');
 
 /* load the boot strap and away we go! */
-require 'app/boot.php';
+require 'boot.php';
